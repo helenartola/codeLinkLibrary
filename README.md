@@ -80,3 +80,8 @@ https://www.loom.com/share/5933cf4ace734702951450a273995e47?sid=77801fe8-f9e6-47
 **Paso 4 · Intenta hacer el push otra vez:**
 
 -- git push origin nombre-de-la-rama
+
+**Hacer un pull - Descargar los cambios**
+Asegúrate de estar en la rama donde quieres descargar los cambios -> git checkout nombre-de-la-rama
+
+Realiza el pull desde la rama remota main -> git pull origin main
