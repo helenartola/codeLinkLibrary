@@ -85,3 +85,25 @@ https://www.loom.com/share/5933cf4ace734702951450a273995e47?sid=77801fe8-f9e6-47
 Asegúrate de estar en la rama donde quieres descargar los cambios -> git checkout nombre-de-la-rama
 
 Realiza el pull desde la rama remota main -> git pull origin main
+
+# Hoja de ruta para el proyecto
+
+**Configuración inicial del proyecto:**
+
+- Abrimos el proyecto `code .` en la terminal para abrir el directorio actual en VS Code.
+
+**Configuramos extensiones:**
+
+- npm i / npm install: express, dotenv, mysql2, nodemon...
+
+**Definimos la BDD:**
+
+- Definimos tablas y su contenido para la base de datos.
+
+**Manejo de errores:**
+
+- Definimos posibles errores
+
+**Postman:**
+
+- Creamos colecciones postman
