@@ -7,6 +7,20 @@ const main = async () => {
   try {
     pool = await getPool();
 
+    console.log("Creando base de datos...");
+
+    // Crear la base de datos si no existe.
+    await pool.query(`
+      CREATE DATABASE IF NOT EXISTS codelinklibrarydatabase;
+    `);
+
+    console.log("Seleccionando la base de datos...");
+
+    // Seleccionar la base de datos recién creada o existente.
+    await pool.query(`
+      USE codelinklibrarydatabase;
+    `);
+
     console.log("Borrando tablas...");
 
     await pool.query("DROP TABLE IF EXISTS users, posts");
