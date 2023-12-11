@@ -51,7 +51,7 @@ const main = async () => {
                 postId CHAR(36) PRIMARY KEY NOT NULL,
                 title VARCHAR(50) NOT NULL,
                 description TEXT NOT NULL,
-                userId CHAR(36) NOT NULL,
+                userId INT,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
                 FOREIGN KEY (userId) REFERENCES users(userId)
             )
