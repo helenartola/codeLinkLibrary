@@ -1,4 +1,5 @@
 import getPool from "./getPool.js";
+import mysql from "mysql2/promise"; //Importo dependencia de mysql para manejo de base de datos
 
 const main = async () => {
   // Variable que almacenará una conexión con la base de datos.
