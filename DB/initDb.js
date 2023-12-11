@@ -20,7 +20,7 @@ const main = async () => {
                 email VARCHAR(100) UNIQUE NOT NULL,
                 name CHAR(20) NOT NULL, 
                 lastname CHAR(20) NOT NULL,
-                age NOT NULL DATE,
+                age DATE NOT NULL,
                 username VARCHAR(30) UNIQUE NOT NULL,
                 password VARCHAR(100) NOT NULL,
                 userAvatar BLOB,
