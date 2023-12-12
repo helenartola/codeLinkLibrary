@@ -107,3 +107,35 @@ Realiza el pull desde la rama remota main -> git pull origin main
 **Postman:**
 
 - Creamos colecciones postman
+
+# Endpoints
+
+Registro y Autenticación:
+
+POST /api/signup: Registro de un nuevo usuario.
+POST /api/login: Inicio de sesión de un usuario.
+
+Enlaces Compartidos:
+
+GET /api/links: Obtener todos los enlaces compartidos (públicos o privados) por los usuarios.
+GET /api/links/:userId: Obtener enlaces específicos compartidos por un usuario.
+POST /api/links: Compartir un nuevo enlace.
+PUT /api/links/:linkId: Actualizar información de un enlace compartido.
+DELETE /api/links/:linkId: Eliminar un enlace compartido.
+
+Usuarios:
+
+GET /api/users: Obtener información de todos los usuarios.
+GET /api/users/:userId: Obtener información específica de un usuario.
+PUT /api/users/:userId: Actualizar información de un usuario.
+DELETE /api/users/:userId: Eliminar un usuario.
+
+Likes:
+
+POST /api/like/:linkId: Dar un "like" a un enlace específico.
+DELETE /api/like/:linkId: Quitar el "like" de un enlace específico.
+GET /api/like/:linkId/count: Obtener la cantidad total de "likes" para un enlace específico.
+
+Búsqueda ?:
+
+GET /api/search?q=query: Realizar una búsqueda de enlaces o usuarios basada en una consulta.
