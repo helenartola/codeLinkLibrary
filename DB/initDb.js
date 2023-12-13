@@ -6,7 +6,7 @@ const main = async () => {
   let pool;
 
   try {
-    pool = await getPool();
+    pool = await getPool(mysql);
 
     console.log("Creando base de datos...");
 
