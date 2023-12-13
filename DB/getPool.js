@@ -1,5 +1,5 @@
-import dotenv from "dotenv"; //Importo dependendecia DOTENV que me sirve para acceder al archivo .env
-import mysql from "mysql2/promise"; //Importo dependencia de mysql para manejo de base de datos
+import dotenv from 'dotenv'; //Importo dependendecia DOTENV que me sirve para acceder al archivo .env
+import mysql from 'mysql2/promise'; //Importo dependencia de mysql para manejo de base de datos
 
 dotenv.config(); //inicializo la dependencia de dotenv, lo que hace es agregar a las variables globales (process) las variables de entorno del archivo .env
 
@@ -22,7 +22,7 @@ const getPool = async () => {
         port: DB_PORT,
         connectionLimit: 10, //determino la cantidad máxima de conexiones (10 por poner 10)
         database: DB_NAME, //determino la base a la cual conectarme
-        timezone: "Z", //Z para horario UTC (horario global)
+        timezone: 'Z', //Z para horario UTC (horario global)
       }); //cierro el createPool
     } //cierro el if donde valido si no está inicializado el pool
 

@@ -1,11 +1,14 @@
 //importamos .env (variables de entorno)
-import "dotenv/config";
-
-//imporrtamos express
-import express from "express";
+import 'dotenv/config';
+//importamos express
+import express from 'express';
+//importamos morgan
+import morgan from 'morgan';
 
 //creacion del servidor con express
 const app = express();
+
+app.use(morgan('dev'));
 
 //middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion
 app.use((req, res, next) => {
@@ -16,26 +19,35 @@ app.use((req, res, next) => {
 });
 
 //middleware que devuelve los posts de la base de datos
-app.get("/posts", (req, res) => {
+app.get('/posts', (req, res) => {
   res.send({
-    status: "ok",
-    message: "Aqui tines el listado de posts",
+    status: 'ok',
+    message: 'Aqui tines el listado de posts',
   });
 });
 
 //middleware que crea post en base de datos
-app.post("/posts", (req, res) => {
+app.post('/posts', (req, res) => {
   res.status(201).send({
-    status: "ok",
-    message: "Post creado",
+    status: 'ok',
+    message: 'Post creado',
   });
 });
 
 //middleware de ruta no encontrada
 app.use((req, res) => {
   res.status(404).send({
-    status: "error",
-    message: "Ruta no encontrada",
+    status: 'error',
+    message: 'Ruta no encontrada',
+  });
+});
+
+//middleware de gestión de errores
+app.use((error, req, res, next) => {
+  console.error(error);
+  res.status(error.httpStatus || 500).send({
+    status: 'error',
+    message: error.message,
   });
 });
 
