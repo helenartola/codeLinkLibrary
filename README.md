@@ -124,7 +124,7 @@ PUT /api/links/:linkId: Actualizar información de un enlace compartido.
 DELETE /api/links/:linkId: Eliminar un enlace compartido.
 
 Usuarios:
-
+✓ POST /users: Crear un usuario nuevo ✓
 GET /api/users: Obtener información de todos los usuarios.
 GET /api/users/:userId: Obtener información específica de un usuario.
 PUT /api/users/:userId: Actualizar información de un usuario.
