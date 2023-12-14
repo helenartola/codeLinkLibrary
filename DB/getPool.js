@@ -7,7 +7,7 @@ const { DB_HOST, DB_USER, DB_NAME, DB_PASS, DB_PORT } = process.env; //Desestruc
 
 let pool; //Declaro la variable para mi POOL de conexiones (NO LA INICIALIZO)
 
-const getPool = async () => {
+const getConnection = async () => {
   //Inicia mi función getPool que devuelve el pool a crear
   try {
     //Inicia TRY
@@ -26,11 +26,11 @@ const getPool = async () => {
       }); //cierro el createPool
     } //cierro el if donde valido si no está inicializado el pool
 
-    return pool; //devuelvo el pool ya creado
+    return await pool.getConnection(); //devuelvo el pool ya creado
   } catch (error) {
     //catcheo el error, recibo error como variable
     console.error(error); //muestro el error
   } //finaliza el trycatch
 }; //finaliza la función
 
-export default getPool; //exporto por default la función
+export default getConnection; //exporto por default la función
