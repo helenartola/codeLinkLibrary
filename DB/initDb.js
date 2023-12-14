@@ -1,5 +1,5 @@
-import getPool from "./getPool.js";
-import mysql from "mysql2/promise"; //Importo dependencia de mysql para manejo de base de datos
+import getPool from './getPool.js';
+import mysql from 'mysql2/promise'; //Importo dependencia de mysql para manejo de base de datos
 
 const main = async () => {
   // Variable que almacenará una conexión con la base de datos.
@@ -8,35 +8,35 @@ const main = async () => {
   try {
     pool = await getPool(mysql);
 
-    console.log("Creando base de datos...");
+    console.log('Creando base de datos...');
 
     // Crear la base de datos si no existe.
     await pool.query(`
       CREATE DATABASE IF NOT EXISTS codelinklibrarydatabase;
     `);
 
-    console.log("Seleccionando la base de datos...");
+    console.log('Seleccionando la base de datos...');
 
     // Seleccionar la base de datos recién creada o existente.
     await pool.query(`
       USE codelinklibrarydatabase;
     `);
 
-    console.log("Borrando tablas...");
+    console.log('Borrando tablas...');
 
-    await pool.query("DROP TABLE IF EXISTS users, posts");
+    await pool.query('DROP TABLE IF EXISTS users, posts');
 
-    console.log("Creando tablas...");
+    console.log('Creando tablas...');
 
     // Creamos la tabla de usuarios.
     await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 userId INT PRIMARY KEY AUTO_INCREMENT, 
                 email VARCHAR(100) UNIQUE NOT NULL,
-                name CHAR(20) NOT NULL, 
-                lastname CHAR(20) NOT NULL,
-                age DATE NOT NULL,
-                username VARCHAR(30) UNIQUE NOT NULL,
+                name CHAR(20), 
+                lastname CHAR(20) ,
+                age DATE ,
+                username VARCHAR(30) UNIQUE,
                 password VARCHAR(100) NOT NULL,
                 userAvatar BLOB,
                 bio VARCHAR(200),
@@ -57,7 +57,7 @@ const main = async () => {
             )
         `);
 
-    console.log("¡Tablas creadas!");
+    console.log('¡Tablas creadas!');
   } catch (err) {
     console.error(err);
   } finally {
