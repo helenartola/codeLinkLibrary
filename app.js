@@ -2,15 +2,43 @@
 import 'dotenv/config';
 //importamos express
 import express from 'express';
-//importamos morgan
+//middleware morgan que imprime en terminal el tiempo de petición
 import morgan from 'morgan';
+
+// Importamos las funciones que hemos creado en el users.js
+import {
+  newUserController,
+  getUserController,
+  loginController,
+} from './controllers/users.js';
+
+// Importamos las funciones que hemos creado en tweets.js
+import {
+  getPostsController,
+  newPostController,
+  getSinglePostController,
+  deletePostController,
+} from './controllers/posts.js';
 
 //creacion del servidor con express
 const app = express();
-
+//le decimos a express que intente procesar los datos que se envien en la petición en formato json.
+app.use(express.json());
 app.use(morgan('dev'));
 
-//middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion
+//Rutas de usuarios (cada ruta tendrá que gestionar un controlador)
+//Las funciones newUserController, getUser... las creamos dentro del archivo users.js de la carpeta controllers. Y luego las importamos aquí.
+app.post('/user', newUserController);
+app.get('/user/:id', getUserController);
+app.post('/login', loginController);
+
+//Rutas de posts
+app.get('/', getPostsController);
+app.post('/', newPostController);
+app.get('/posts/:id', getSinglePostController);
+app.delete('/posts/:id', deletePostController);
+
+/* //middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
 
@@ -24,7 +52,7 @@ app.get('/posts', (req, res) => {
     status: 'ok',
     message: 'Aqui tines el listado de posts',
   });
-});
+}); */
 
 //middleware que crea post en base de datos
 app.post('/posts', (req, res) => {
@@ -52,6 +80,6 @@ app.use((error, req, res, next) => {
 });
 
 //puerto desde donde se escuchan peticiones
-app.listen(3306, () => {
-  console.log(`Servidor escuchando en http://localhost:3306`);
+app.listen(3000, () => {
+  console.log(`Servidor escuchando en http://localhost:3000`);
 });
