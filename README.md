@@ -112,8 +112,8 @@ Realiza el pull desde la rama remota main -> git pull origin main
 
 Registro y Autenticación:
 
-POST /api/signup: Registro de un nuevo usuario.
-POST /api/login: Inicio de sesión de un usuario.
+✓POST /api/signup: Registro de un nuevo usuario. (Este paso está en la línea 127, no se puede hacer por duplicado)✓
+✓POST /api/login: Inicio de sesión de un usuario.✓
 
 Enlaces Compartidos:
 

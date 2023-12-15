@@ -1,15 +1,17 @@
 import { generateError } from '../helpers.js';
-import { createUser, getAllUsers, getUserById } from '../DB/usersDb.js';
+import { createUser, getAllUsers, getUserById, getUserLoginDataByEmail} from '../DB/usersDb.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const newUserController = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, name, lastName, birthDate, userName, bio } = req.body;
 
-    if (!email || !password) {
-      throw generateError('Debes enviar un correo y una contraseña', 400);
+    if (!email || !password || !name || !lastName || !birthDate ||!userName) {
+      throw generateError('No se han recibido todos los campos obligatorios.', 400);
     }
 
-    const id = await createUser(email, password);
+    const id = await createUser(email, password, name, lastName, birthDate, userName, bio);
     console.log(id);
 
     res.send({
@@ -49,9 +51,28 @@ const getUserController = async (req, res, next) => {
 
 const loginController = async (req, res, next) => {
   try {
+    const { email, password } = req.body;
+    if (!email ||!password) {  
+      throw generateError ('Es necesario introducir todos los campos obligatorios.', 400);
+    }
+    // Obtenemos datos privados del usuario
+    const user = await getUserLoginDataByEmail(email);
+
+    // Comprobamos que la contraseña es válida
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      throw generateError ('El password es incorrecto.', 401);
+    }
+
+    //Creamos el payload para el token
+    const payload = {userId: user.userId};
+
+    // Generamos el token para el inicio de sesión
+    const token = jwt.sign(payload, process.env.SECRET, { expiresIn: '30d' });
+
     res.send({
-      status: 'error',
-      message: 'Not implemented',
+      status: 'OK',
+      message: token,
     });
   } catch (error) {
     next(error);
