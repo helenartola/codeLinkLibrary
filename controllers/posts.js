@@ -1,8 +1,11 @@
+import { getAllPosts } from "../DB/postsDb.js";
+
 const getPostsController = async (req, res, next) => {
   try {
+    const posts = await getAllPosts();
     res.send({
-      status: 'error',
-      message: 'Not implemented',
+      status: 'ok',
+      message: posts,
     });
   } catch (error) {
     next(error);

@@ -47,5 +47,44 @@ const createUser = async (email, password) => {
     if (connection) connection.release();
   }
 };
+//Obtenemos los datos públicales de todos los usuarios de la base de datos y omitimos información sensible como id, password, email, etc
+const getAllUsers = async () => {
+  let connection;
 
-export { createUser };
+  try {
+    connection = await getConnection();
+    const [users] = await connection.query(
+      `
+      SELECT name, lastname, age, username, userAvatar, bio, createdAt, modifiedAt FROM users
+      `
+    );
+    return users;
+  } finally {
+    if (connection) connection.release();
+  }
+}
+//Obtenemos los datos públicos del usuario solicitado  
+const getUserById = async (id) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+    const [user] = await connection.query(
+      `
+      SELECT name, lastname, age, username, userAvatar, bio, createdAt, modifiedAt FROM users WHERE userId = ?`,
+      [id]
+    );
+
+    if (user.length === 0) {
+      throw generateError(
+        `El usuario con el id ${id} no existe`,
+        404
+      );
+    }
+    return user [0];
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
+export { createUser, getAllUsers, getUserById };
