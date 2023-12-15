@@ -6,10 +6,17 @@ import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 import bcrypt from 'bcrypt';
 
-
 //Creamos función async que recibe un email y una password.
 //Crea un usuario en la base de datos y devuelve su id
-const createUser = async (email, password, name, lastName, birthDate, userName, bio = '') => {
+const createUser = async (
+  email,
+  password,
+  name,
+  lastName,
+  birthDate,
+  userName,
+  bio = ''
+) => {
   let connection;
 
   try {
@@ -58,9 +65,10 @@ const createUser = async (email, password, name, lastName, birthDate, userName, 
         let day = dateObj.getDate();
         let month = dateObj.getMonth() + 1;
         const year = dateObj.getFullYear();
-        finalDate = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
-      }
-      else {
+        finalDate = `${year}-${month < 10 ? '0' + month : month}-${
+          day < 10 ? '0' + day : day
+        }`;
+      } else {
         throw generateError('Fecha de nacimiento invalida', 400);
       }
     }
@@ -97,8 +105,8 @@ const getAllUsers = async () => {
   } finally {
     if (connection) connection.release();
   }
-}
-//Obtenemos los datos públicos del usuario solicitado  
+};
+//Obtenemos los datos públicos del usuario solicitado
 const getUserById = async (id) => {
   let connection;
 
@@ -111,16 +119,13 @@ const getUserById = async (id) => {
     );
 
     if (user.length === 0) {
-      throw generateError(
-        `El usuario con el id ${id} no existe`,
-        404
-      );
+      throw generateError(`El usuario con el id ${id} no existe`, 404);
     }
-    return user [0];
+    return user[0];
   } finally {
     if (connection) connection.release();
   }
-}
+};
 
 // Obtenemos datos privados del usuario solicitado, necesarios para el login
 const getUserLoginDataByEmail = async (email) => {
@@ -135,28 +140,28 @@ const getUserLoginDataByEmail = async (email) => {
     );
 
     if (user.length === 0) {
-      throw generateError(
-        `El usuario con el id ${email} no existe`,
-        404
-      );
+      throw generateError(`El usuario con el email ${email} no existe`, 404);
     }
-    return user [0];
+    return user[0];
   } finally {
     if (connection) connection.release();
   }
-}
+};
 
 const deleteUserById = async (userId) => {
   let connection;
   try {
     connection = await getConnection();
-    await connection.query(
-      `DELETE FROM users WHERE userId =?`,
-      [userId]
-    );
+    await connection.query(`DELETE FROM users WHERE userId =?`, [userId]);
   } finally {
     if (connection) connection.release();
   }
-}
+};
 
-export { createUser, getAllUsers, getUserById, getUserLoginDataByEmail, deleteUserById};
+export {
+  createUser,
+  getAllUsers,
+  getUserById,
+  getUserLoginDataByEmail,
+  deleteUserById,
+};
