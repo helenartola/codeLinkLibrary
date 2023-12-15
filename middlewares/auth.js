@@ -19,7 +19,7 @@ const authUser = async (req, res, next) => {
         }
 
         // Metemos la información del token en la request para usarla en el controlador
-        req.userId = token.userIdid;
+        req.userId = token.userId;
         
         // Saltamos al controlador
         next();
