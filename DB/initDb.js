@@ -50,6 +50,7 @@ const main = async () => {
             CREATE TABLE IF NOT EXISTS posts (
                 postId INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
                 title VARCHAR(50) NOT NULL,
+                url VARCHAR(200) NOT NULL,
                 description TEXT NOT NULL,
                 userId INT NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 

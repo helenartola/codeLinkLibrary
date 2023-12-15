@@ -112,7 +112,6 @@ Realiza el pull desde la rama remota main -> git pull origin main
 
 Registro y Autenticación:
 
-✓POST /api/signup: Registro de un nuevo usuario. (Este paso está en la línea 127, no se puede hacer por duplicado)✓
 ✓POST /api/login: Inicio de sesión de un usuario.✓
 
 Enlaces Compartidos:
@@ -120,7 +119,7 @@ Enlaces Compartidos:
 ✓ GET /api/links: Obtener todos los enlaces compartidos (públicos o privados) por los usuarios. ✓
 ✓ GET /api/links/:userId: Obtener enlaces específicos compartidos por un usuario. ✓
 ✓ POST /api/links: Compartir un nuevo enlace. ✓ 
-PUT /api/links/:linkId: Actualizar información de un enlace compartido.
+/*PUT /api/links/:linkId: Actualizar información de un enlace compartido.*/
 DELETE /api/links/:linkId: Eliminar un enlace compartido.
 
 Usuarios:
@@ -138,4 +137,4 @@ GET /api/like/:linkId/count: Obtener la cantidad total de "likes" para un enlace
 
 Búsqueda ?:
 
-GET /api/search?q=query: Realizar una búsqueda de enlaces o usuarios basada en una consulta.
+/*GET /api/search?q=query: Realizar una búsqueda de enlaces o usuarios basada en una consulta.*/
