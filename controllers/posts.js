@@ -1,4 +1,4 @@
-import { getAllPosts } from "../DB/postsDb.js";
+import { getAllPosts, getAllPostsByUserId } from "../DB/postsDb.js";
 
 const getPostsController = async (req, res, next) => {
   try {
@@ -23,11 +23,13 @@ const newPostController = async (req, res, next) => {
   }
 };
 
-const getSinglePostController = async (req, res, next) => {
+const getPostsByUserController = async (req, res, next) => {
   try {
+    const {id} = req.params;
+    const posts = await getAllPostsByUserId(id);
     res.send({
-      status: 'error',
-      message: 'Not implemented',
+      status: 'ok',
+      message: posts,
     });
   } catch (error) {
     next(error);
@@ -48,6 +50,6 @@ const deletePostController = async (req, res, next) => {
 export {
   getPostsController,
   newPostController,
-  getSinglePostController,
+  getPostsByUserController,
   deletePostController,
 };

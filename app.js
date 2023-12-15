@@ -14,12 +14,12 @@ import {
   deleteUserController,
 } from './controllers/users.js';
 
-// Importamos las funciones que hemos creado en tweets.js
+// Importamos las funciones que hemos creado en posts.js
 import {
   getPostsController,
   newPostController,
-  getSinglePostController,
   deletePostController,
+  getPostsByUserController,
 } from './controllers/posts.js';
 
 // Importamos las funciones que hemos creado en auth.js
@@ -42,7 +42,7 @@ app.delete('/user/:id', authUser, deleteUserController);
 //Rutas de posts
 app.get('/', getPostsController);
 app.post('/', newPostController);
-app.get('/posts/:id', getSinglePostController);
+app.get('/posts/:id', getPostsByUserController);
 app.delete('/posts/:id', deletePostController);
 
 /* //middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion

@@ -1,6 +1,7 @@
 import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 
+
 const createPost = async () => {
   let connection;
 
@@ -30,5 +31,23 @@ const getAllPosts = async () => {
   }
 }
 
+const getAllPostsByUserId = async (userId) => {
+  let connection;
 
-export { createPost, getAllPosts };
+  try {
+    connection = await getConnection();
+
+    //Obtenemos los datos publicos de todos los posts.
+    const [posts] = await connection.query(
+      `
+      SELECT a.title, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId and a.userId = ?
+      `,
+      [userId]
+    );
+    return posts;
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
+export { createPost, getAllPosts, getAllPostsByUserId };
