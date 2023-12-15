@@ -11,15 +11,19 @@ import {
   getAllUsersController,
   getUserController,
   loginController,
+  deleteUserController,
 } from './controllers/users.js';
 
-// Importamos las funciones que hemos creado en tweets.js
+// Importamos las funciones que hemos creado en posts.js
 import {
   getPostsController,
   newPostController,
-  getSinglePostController,
   deletePostController,
+  getPostsByUserController,
 } from './controllers/posts.js';
+
+// Importamos las funciones que hemos creado en auth.js
+import { authUser } from './middlewares/auth.js';
 
 //creacion del servidor con express
 const app = express();
@@ -33,11 +37,12 @@ app.post('/user', newUserController);
 app.get('/users', getAllUsersController);
 app.get('/user/:id', getUserController);
 app.post('/login', loginController);
+app.delete('/user/:id', authUser, deleteUserController);
 
 //Rutas de posts
 app.get('/', getPostsController);
-app.post('/', newPostController);
-app.get('/posts/:id', getSinglePostController);
+app.post('/', authUser, newPostController);
+app.get('/posts/:id', getPostsByUserController);
 app.delete('/posts/:id', deletePostController);
 
 /* //middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion

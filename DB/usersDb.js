@@ -6,27 +6,63 @@ import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 import bcrypt from 'bcrypt';
 
+
 //Creamos función async que recibe un email y una password.
 //Crea un usuario en la base de datos y devuelve su id
-const createUser = async (email, password) => {
+const createUser = async (email, password, name, lastName, birthDate, userName, bio = '') => {
   let connection;
 
   try {
     connection = await getConnection();
+
     //Comprobamos que no exista otro usuario con ese email
-    //Los corchetes de user los ponemos para desestructurar y que coja solo el primer valor del array que no va a devolver el await
-    const [user] = await connection.query(
-      `
-      SELECT userId FROM users WHERE email = ?
-      `,
-      [email]
-    );
-    //con el if le vamos a decir que si el usuario es mayor de 1 nos devuelva que ya existe un usuario con el mismo email.
-    if (user.length > 0) {
-      throw generateError(
-        'Ya existe un usuario en la base de datos con este email.',
-        409
+    {
+      //Los corchetes de user los ponemos para desestructurar y que coja solo el primer valor del array que no va a devolver el await
+      const [user] = await connection.query(
+        `
+        SELECT userId FROM users WHERE email = ?
+        `,
+        [email]
       );
+      //con el if le vamos a decir que si el usuario es mayor de 1 nos devuelva que ya existe un usuario con el mismo email.
+      if (user.length > 0) {
+        throw generateError(
+          'Ya existe un usuario en la base de datos con este email.',
+          409
+        );
+      }
+    }
+
+    //Comprobamos que no exista otro usuario con ese userName
+    {
+      const [user] = await connection.query(
+        `
+        SELECT userId FROM users WHERE userName = ?
+        `,
+        [userName]
+      );
+      //con el if le vamos a decir que si el usuario es mayor de 1 nos devuelva que ya existe un usuario con el mismo userName.
+      if (user.length > 0) {
+        throw generateError(
+          'Ya existe un usuario en la base de datos con este nombre de usuario.',
+          409
+        );
+      }
+    }
+
+    //Comprobamos que la fecha resibida es válida y la formateamos correctamente
+    let finalDate;
+    {
+      let dateObj = new Date(birthDate);
+      if (!isNaN(dateObj) && dateObj < new Date()) {
+        let day = dateObj.getDate();
+        let month = dateObj.getMonth() + 1;
+        const year = dateObj.getFullYear();
+        finalDate = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
+      }
+      else {
+        throw generateError('Fecha de nacimiento invalida', 400);
+      }
     }
 
     // Encriptamos la password
@@ -34,9 +70,8 @@ const createUser = async (email, password) => {
 
     //Creamos el usuario
     const [newUser] = await connection.query(
-      `
-    INSERT INTO users (email, password) VALUES(?,?)`,
-      [email, passwordHash]
+      `INSERT INTO users (email, password, name, lastName, birthDate, userName, bio) VALUES(?,?,?,?,?,?,?)`,
+      [email, passwordHash, name, lastName, finalDate, userName, bio]
     );
     //Devolvemos el id
     //insertId nos da el Id del elemento que acabamos de introducir
@@ -47,7 +82,7 @@ const createUser = async (email, password) => {
     if (connection) connection.release();
   }
 };
-//Obtenemos los datos públicales de todos los usuarios de la base de datos y omitimos información sensible como id, password, email, etc
+//Obtenemos los datos públicos de todos los usuarios de la base de datos y omitimos información sensible como id, password, email, etc
 const getAllUsers = async () => {
   let connection;
 
@@ -55,7 +90,7 @@ const getAllUsers = async () => {
     connection = await getConnection();
     const [users] = await connection.query(
       `
-      SELECT name, lastname, age, username, userAvatar, bio, createdAt, modifiedAt FROM users
+      SELECT name, lastName, userName, userAvatar, bio, createdAt, modifiedAt FROM users
       `
     );
     return users;
@@ -71,7 +106,7 @@ const getUserById = async (id) => {
     connection = await getConnection();
     const [user] = await connection.query(
       `
-      SELECT name, lastname, age, username, userAvatar, bio, createdAt, modifiedAt FROM users WHERE userId = ?`,
+      SELECT name, lastName, userName, userAvatar, bio, createdAt, modifiedAt FROM users WHERE userId = ?`,
       [id]
     );
 
@@ -87,4 +122,41 @@ const getUserById = async (id) => {
   }
 }
 
-export { createUser, getAllUsers, getUserById };
+// Obtenemos datos privados del usuario solicitado, necesarios para el login
+const getUserLoginDataByEmail = async (email) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+    const [user] = await connection.query(
+      `
+      SELECT userId, password FROM users WHERE email = ?`,
+      [email]
+    );
+
+    if (user.length === 0) {
+      throw generateError(
+        `El usuario con el id ${email} no existe`,
+        404
+      );
+    }
+    return user [0];
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
+const deleteUserById = async (userId) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    await connection.query(
+      `DELETE FROM users WHERE userId =?`,
+      [userId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
+export { createUser, getAllUsers, getUserById, getUserLoginDataByEmail, deleteUserById};

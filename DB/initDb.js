@@ -33,10 +33,10 @@ const main = async () => {
             CREATE TABLE IF NOT EXISTS users (
                 userId INT PRIMARY KEY AUTO_INCREMENT, 
                 email VARCHAR(100) UNIQUE NOT NULL,
-                name CHAR(20), 
-                lastname CHAR(20) ,
-                age DATE ,
-                username VARCHAR(30) UNIQUE,
+                name CHAR(20) NOT NULL,
+                lastName CHAR(20) NOT NULL, 
+                birthDate DATE NOT NULL, 
+                userName VARCHAR(30) UNIQUE NOT NULL, 
                 password VARCHAR(100) NOT NULL,
                 userAvatar BLOB,
                 bio VARCHAR(200),
@@ -48,10 +48,11 @@ const main = async () => {
     // Creamos la tabla de posts.
     await pool.query(`
             CREATE TABLE IF NOT EXISTS posts (
-                postId CHAR(36) PRIMARY KEY NOT NULL,
+                postId INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
                 title VARCHAR(50) NOT NULL,
+                url VARCHAR(200) NOT NULL,
                 description TEXT NOT NULL,
-                userId INT,
+                userId INT NOT NULL,
                 createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
                 FOREIGN KEY (userId) REFERENCES users(userId)
             )
