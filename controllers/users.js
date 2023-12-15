@@ -1,5 +1,5 @@
 import { generateError } from '../helpers.js';
-import { createUser } from '../DB/usersDb.js';
+import { createUser, getAllUsers, getUserById } from '../DB/usersDb.js';
 
 const newUserController = async (req, res, next) => {
   try {
@@ -20,12 +20,27 @@ const newUserController = async (req, res, next) => {
     next(error);
   }
 };
+const getAllUsersController = async (req, res, next) => {
+  try {
+    const users = await getAllUsers();
+
+    res.send({
+      status: 'ok',
+      message: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getUserController = async (req, res, next) => {
   try {
+    const {id} = req.params;
+    const user = await getUserById (id);
+
     res.send({
-      status: 'error',
-      message: 'Not implemented',
+      status: 'ok',
+      message: user,
     });
   } catch (error) {
     next(error);
@@ -44,4 +59,4 @@ const loginController = async (req, res, next) => {
 };
 
 // Exportamos las funciones que importaremos en el server.js
-export { newUserController, getUserController, loginController };
+export { newUserController, getAllUsersController, getUserController, loginController };

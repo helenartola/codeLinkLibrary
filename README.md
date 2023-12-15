@@ -117,16 +117,16 @@ POST /api/login: Inicio de sesión de un usuario.
 
 Enlaces Compartidos:
 
-GET /api/links: Obtener todos los enlaces compartidos (públicos o privados) por los usuarios.
+ ✓ GET /api/links: Obtener todos los enlaces compartidos (públicos o privados) por los usuarios. ✓
 GET /api/links/:userId: Obtener enlaces específicos compartidos por un usuario.
 POST /api/links: Compartir un nuevo enlace.
 PUT /api/links/:linkId: Actualizar información de un enlace compartido.
 DELETE /api/links/:linkId: Eliminar un enlace compartido.
 
 Usuarios:
-✓ POST /users: Crear un usuario nuevo ✓
-GET /api/users: Obtener información de todos los usuarios.
-GET /api/users/:userId: Obtener información específica de un usuario.
+✓ POST /users: Crear un usuario nuevo. ✓
+✓ GET /api/users: Obtener información de todos los usuarios. ✓
+✓ GET /api/users/:userId: Obtener información específica de un usuario. ✓
 PUT /api/users/:userId: Actualizar información de un usuario.
 DELETE /api/users/:userId: Eliminar un usuario.
 

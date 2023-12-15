@@ -8,6 +8,7 @@ import morgan from 'morgan';
 // Importamos las funciones que hemos creado en el users.js
 import {
   newUserController,
+  getAllUsersController,
   getUserController,
   loginController,
 } from './controllers/users.js';
@@ -29,6 +30,7 @@ app.use(morgan('dev'));
 //Rutas de usuarios (cada ruta tendrá que gestionar un controlador)
 //Las funciones newUserController, getUser... las creamos dentro del archivo users.js de la carpeta controllers. Y luego las importamos aquí.
 app.post('/user', newUserController);
+app.get('/users', getAllUsersController);
 app.get('/user/:id', getUserController);
 app.post('/login', loginController);
 
