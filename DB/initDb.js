@@ -48,7 +48,7 @@ const main = async () => {
     // Creamos la tabla de posts.
     await pool.query(`
             CREATE TABLE IF NOT EXISTS posts (
-                postId CHAR(36) PRIMARY KEY NOT NULL,
+                postId INT PRIMARY KEY AUTO_INCREMENT NOT NULL, 
                 title VARCHAR(50) NOT NULL,
                 description TEXT NOT NULL,
                 userId INT NOT NULL,

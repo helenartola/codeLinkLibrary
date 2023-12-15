@@ -38,7 +38,7 @@ const newPostController = async (req, res, next) => {
     const postId = await createPost(title, description, req.user.id);
     res.send({
       status: 'ok',
-      message: postId,
+      message: `Post creado con ${postId}`,
     });
     
   } catch (error) {
