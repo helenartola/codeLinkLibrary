@@ -119,7 +119,7 @@ Enlaces Compartidos:
 
 ✓ GET /api/links: Obtener todos los enlaces compartidos (públicos o privados) por los usuarios. ✓
 ✓ GET /api/links/:userId: Obtener enlaces específicos compartidos por un usuario. ✓
-POST /api/links: Compartir un nuevo enlace.
+✓ POST /api/links: Compartir un nuevo enlace. ✓ 
 PUT /api/links/:linkId: Actualizar información de un enlace compartido.
 DELETE /api/links/:linkId: Eliminar un enlace compartido.
 

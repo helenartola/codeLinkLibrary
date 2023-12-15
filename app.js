@@ -41,7 +41,7 @@ app.delete('/user/:id', authUser, deleteUserController);
 
 //Rutas de posts
 app.get('/', getPostsController);
-app.post('/', newPostController);
+app.post('/', authUser, newPostController);
 app.get('/posts/:id', getPostsByUserController);
 app.delete('/posts/:id', deletePostController);
 

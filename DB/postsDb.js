@@ -2,11 +2,19 @@ import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 
 
-const createPost = async () => {
+const createPost = async (title, description, userId) => {
   let connection;
 
   try {
     connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+      INSERT INTO posts (title, description, userId) VALUES (?,?,?)`,
+      [title, description, userId]
+    )
+     
+    return result.insertId;
    
   } finally {
     if (connection) connection.release();
