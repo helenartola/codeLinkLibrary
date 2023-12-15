@@ -82,8 +82,15 @@ const loginController = async (req, res, next) => {
 //Borramos el usuario solicitado
 const deleteUserController = async (req, res, next) => {
   try {
-    const {userId} = req.params;
-    await deleteUserById(userId);
+    const {id} = req.params;
+    
+   //Comprobamos que el usuario autenticado sólo puede borrarse a si mismo.
+    if (req.userId!= id) {
+      throw generateError('No tienes permisos para realizar esta acción.', 401);
+    }
+
+    
+    await deleteUserById(id);
 
     res.send({
       status: 'ok',

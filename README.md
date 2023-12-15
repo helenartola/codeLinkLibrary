@@ -128,7 +128,7 @@ Usuarios:
 ✓ GET /api/users: Obtener información de todos los usuarios. ✓
 ✓ GET /api/users/:userId: Obtener información específica de un usuario. ✓
 PUT /api/users/:userId: Actualizar información de un usuario.
-DELETE /api/users/:userId: Eliminar un usuario.
+✓ DELETE /api/users/:userId: Eliminar un usuario. ✓
 
 Likes:
 

@@ -11,6 +11,7 @@ import {
   getAllUsersController,
   getUserController,
   loginController,
+  deleteUserController,
 } from './controllers/users.js';
 
 // Importamos las funciones que hemos creado en tweets.js
@@ -20,6 +21,9 @@ import {
   getSinglePostController,
   deletePostController,
 } from './controllers/posts.js';
+
+// Importamos las funciones que hemos creado en auth.js
+import { authUser } from './middlewares/auth.js';
 
 //creacion del servidor con express
 const app = express();
@@ -33,6 +37,7 @@ app.post('/user', newUserController);
 app.get('/users', getAllUsersController);
 app.get('/user/:id', getUserController);
 app.post('/login', loginController);
+app.delete('/user/:id', authUser, deleteUserController);
 
 //Rutas de posts
 app.get('/', getPostsController);
