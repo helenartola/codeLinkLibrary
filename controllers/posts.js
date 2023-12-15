@@ -25,17 +25,18 @@ const isValidHttpUrl = (string) => {
 const newPostController = async (req, res, next) => {
   try {
     const { title, description } = req.body;
-    if (!title ||!description) {
-      throw generateError('Titulo y texto oblgatorio', 400);
+    if (!title || !description) {
+      throw generateError('Titulo y texto obligatorio', 400);
     }
 
-      //Validamos que la descripción sea una URL válida.
-      if (!isValidHttpUrl(description)) {
-        throw generateError('URL no válida', 400);
-      }
+    // Validamos que la descripción sea una URL válida.
+    if (!isValidHttpUrl(description)) {
+      throw generateError('URL no válida', 400);
+    }
     
-   
-    const postId = await createPost(title, description, req.user.id);
+    const url = '';
+
+    const postId = await createPost(title, url, description, req.user.id);
     res.send({
       status: 'ok',
       message: `Post creado con ${postId}`,
