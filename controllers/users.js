@@ -1,5 +1,5 @@
 import { generateError } from '../helpers.js';
-import { createUser, getAllUsers, getUserById, getUserLoginDataByEmail} from '../DB/usersDb.js';
+import { createUser, getAllUsers, getUserById, getUserLoginDataByEmail, deleteUserById} from '../DB/usersDb.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -79,5 +79,20 @@ const loginController = async (req, res, next) => {
   }
 };
 
+//Borramos el usuario solicitado
+const deleteUserController = async (req, res, next) => {
+  try {
+    const {userId} = req.params;
+    await deleteUserById(userId);
+
+    res.send({
+      status: 'ok',
+      message: 'Usuario eliminado',
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
 // Exportamos las funciones que importaremos en el server.js
-export { newUserController, getAllUsersController, getUserController, loginController };
+export { newUserController, getAllUsersController, getUserController, loginController, deleteUserController };

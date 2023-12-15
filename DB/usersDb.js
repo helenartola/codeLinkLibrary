@@ -6,6 +6,7 @@ import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 import bcrypt from 'bcrypt';
 
+
 //Creamos función async que recibe un email y una password.
 //Crea un usuario en la base de datos y devuelve su id
 const createUser = async (email, password, name, lastName, birthDate, userName, bio = '') => {
@@ -145,4 +146,17 @@ const getUserLoginDataByEmail = async (email) => {
   }
 }
 
-export { createUser, getAllUsers, getUserById, getUserLoginDataByEmail };
+const deleteUserById = async (userId) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    await connection.query(
+      `DELETE FROM users WHERE userId =?`,
+      [userId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
+export { createUser, getAllUsers, getUserById, getUserLoginDataByEmail, deleteUserById};
