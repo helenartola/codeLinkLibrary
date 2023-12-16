@@ -56,7 +56,7 @@ const getAllPostsByUserId = async (userId) => {
   }
 };
 
-const getPostById = async (postId) => {
+const getSinglePost = async (postId) => {
   let connection;
 
   try {
@@ -65,7 +65,7 @@ const getPostById = async (postId) => {
     //Obtenemos los datos publicos del post del user.
     const [posts] = await connection.query(
       `
-      SELECT a.title, a.url, a.description, b.userId, a.createdAt FROM posts a, users b where b.userId = a.postId and b.userId = ?
+      SELECT a.title, a.url, a.description, b.userId, a.createdAt FROM posts a, users b where a.userId = a.postId and b.userId = ?
       `,
       [postId]
     );
@@ -86,4 +86,4 @@ const deletePostById = async (postId) => {
   }
 };
 
-export { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getPostById };
+export { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost };

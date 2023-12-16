@@ -20,6 +20,7 @@ import {
   newPostController,
   deletePostController,
   getPostsByUserController,
+  getPostByUserIdController,
 } from './controllers/posts.js';
 
 // Importamos las funciones que hemos creado en auth.js
@@ -43,7 +44,8 @@ app.delete('/user/:id', authUser, deleteUserController);
 app.get('/', getPostsController);
 app.post('/', authUser, newPostController);
 app.get('/posts/:id', getPostsByUserController);
-app.delete('/posts/:id', deletePostController);
+app.delete('/posts/:id', authUser, deletePostController);//modificamos ruta
+app.get('/post/:id', getPostByUserIdController);//añadimos ruta para post por usuario ID
 
 /* //middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion
 app.use((req, res, next) => {

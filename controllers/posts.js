@@ -1,7 +1,19 @@
-import { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getPostById } from '../DB/postsDb.js';
+import { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost } from '../DB/postsDb.js';
 
 
 import { generateError } from '../helpers.js';
+
+const getPostByUserIdController = async (req, res, next) => {
+  try {
+    const post = await getSinglePost();
+    res.send({
+      status: 'ok',
+      message: post,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getPostsController = async (req, res, next) => {
   try {
@@ -69,13 +81,13 @@ const deletePostController = async (req, res, next) => {
   try {
     const { id: postId } = req.params;
 
-    // Verificar si userId está presente en req
+// Verificar si userId está presente en req
     if (!req.userId) {
       throw generateError('Usuario no autenticado', 401);
     }
 
     // Obtener información del post para verificar si el usuario es el creador
-    const post = await getPostById(postId);
+    const post = await getSinglePost();
 
     // Verificar si el usuario es el creador del post
     if (post.userId !== req.userId) {
@@ -94,9 +106,8 @@ const deletePostController = async (req, res, next) => {
   }
 };
 
-
-
 export {
+  getPostByUserIdController,
   getPostsController,
   newPostController,
   getPostsByUserController,
