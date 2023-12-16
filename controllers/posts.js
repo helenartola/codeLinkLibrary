@@ -1,4 +1,6 @@
-import { createPost, getAllPosts, getAllPostsByUserId } from '../DB/postsDb.js';
+import { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getPostById } from '../DB/postsDb.js';
+
+
 import { generateError } from '../helpers.js';
 
 const getPostsController = async (req, res, next) => {
@@ -21,31 +23,6 @@ const isValidHttpUrl = (string) => {
     return false;
   }
 };
-
-/* const newPostController = async (req, res, next) => {
-  try {
-    const { title, description } = req.body;
-    if (!title || !description) {
-      throw generateError('Titulo y texto obligatorio', 400);
-    }
-
-    // Validamos que la descripción sea una URL válida.
-    if (!isValidHttpUrl(description)) {
-      throw generateError('URL no válida', 400);
-    }
-    
-    const url = '';
-
-    const postId = await createPost(title, url, description, req.user.id);
-    res.send({
-      status: 'ok',
-      message: `Post creado con ${postId}`,
-    });
-    
-  } catch (error) {
-    next(error);
-  }
-};  */
 
 const newPostController = async (req, res, next) => {
   try {
@@ -90,14 +67,34 @@ const getPostsByUserController = async (req, res, next) => {
 
 const deletePostController = async (req, res, next) => {
   try {
+    const { id: postId } = req.params;
+
+    // Verificar si userId está presente en req
+    if (!req.userId) {
+      throw generateError('Usuario no autenticado', 401);
+    }
+
+    // Obtener información del post para verificar si el usuario es el creador
+    const post = await getPostById(postId);
+
+    // Verificar si el usuario es el creador del post
+    if (post.userId !== req.userId) {
+      throw generateError('No tienes permisos para eliminar este post.', 403);
+    }
+
+    // Eliminar el post
+    await deletePostById(postId);
+
     res.send({
-      status: 'error',
-      message: 'Not implemented',
+      status: 'ok',
+      message: 'Post eliminado con éxito',
     });
   } catch (error) {
     next(error);
   }
 };
+
+
 
 export {
   getPostsController,

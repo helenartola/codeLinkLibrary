@@ -56,4 +56,34 @@ const getAllPostsByUserId = async (userId) => {
   }
 };
 
-export { createPost, getAllPosts, getAllPostsByUserId };
+const getPostById = async (postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    //Obtenemos los datos publicos del post del user.
+    const [posts] = await connection.query(
+      `
+      SELECT a.title, a.url, a.description, b.userId, a.createdAt FROM posts a, users b where b.userId = a.postId and b.userId = ?
+      `,
+      [postId]
+    );
+    return posts;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+
+const deletePostById = async (postId) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    await connection.query(`DELETE FROM posts WHERE postId =?,` [postId]);
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+export { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getPostById };
