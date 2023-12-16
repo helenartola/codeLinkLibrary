@@ -41,27 +41,11 @@ app.post('/login', loginController);
 app.delete('/user/:id', authUser, deleteUserController);
 
 //Rutas de posts
-app.get('/', getPostsController);
-app.post('/', authUser, newPostController);
-app.get('/posts/:id', getPostsByUserController);
-app.delete('/posts/:id', authUser, deletePostController);//modificamos ruta
+app.get('/', getPostsController);//nos devuelve todos los posts
+app.get('/posts/:id', getPostsByUserController);//posts del usuario
 app.get('/post/:id', getPostByUserIdController);//añadimos ruta para post por usuario ID
-
-/* //middleware (peticiones) qe muestra el metodo y la ruta (endpoint) de la peticion
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-
-  //pasamos al siguiente middleware
-  next();
-});
-
-//middleware que devuelve los posts de la base de datos
-app.get('/posts', (req, res) => {
-  res.send({
-    status: 'ok',
-    message: 'Aqui tines el listado de posts',
-  });
-}); */
+app.post('/', authUser, newPostController);//crea post
+app.delete('/post/:id', authUser, deletePostController);//borramos un post del usuario
 
 //middleware que crea post en base de datos
 app.post('/posts', (req, res) => {
