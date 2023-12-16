@@ -1,5 +1,5 @@
-import { createPost, getAllPosts, getAllPostsByUserId } from "../DB/postsDb.js";
-import { generateError } from "../helpers.js";
+import { createPost, getAllPosts, getAllPostsByUserId } from '../DB/postsDb.js';
+import { generateError } from '../helpers.js';
 
 const getPostsController = async (req, res, next) => {
   try {
@@ -15,14 +15,14 @@ const getPostsController = async (req, res, next) => {
 
 const isValidHttpUrl = (string) => {
   try {
-  const newUrl = new URL(string);
-  return newUrl.protocol === 'http:' || newUrl.protocol === 'https:';
- } catch {
-  return false;
- }
-}
+    const newUrl = new URL(string);
+    return newUrl.protocol === 'http:' || newUrl.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
 
-const newPostController = async (req, res, next) => {
+/* const newPostController = async (req, res, next) => {
   try {
     const { title, description } = req.body;
     if (!title || !description) {
@@ -45,11 +45,36 @@ const newPostController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}; 
+};  */
+
+const newPostController = async (req, res, next) => {
+  try {
+    const { title, url, description } = req.body;
+    if (!title || !url || !description) {
+      throw generateError('Titulo, url y texto obligatorio', 400);
+    }
+
+    // Validamos que la descripción sea una URL válida.
+    if (!isValidHttpUrl(url)) {
+      throw generateError('URL no válida', 400);
+    }
+
+    // Agrega un valor para 'url', ya que es requerido en createPost.
+    /*  const url = ''; */ // Puedes proporcionar un valor de URL o generarlo según tus necesidades.
+
+    const postId = await createPost(title, url, description, req.userId);
+    res.send({
+      status: 'ok',
+      message: `Post ${postId} creado con éxito!`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 const getPostsByUserController = async (req, res, next) => {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
     const posts = await getAllPostsByUserId(id);
     res.send({
       status: 'ok',
