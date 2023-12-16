@@ -1,7 +1,7 @@
 //import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 
-const createPost = async (title, url, description) => {
+const createPost = async (title, url, description, userId) => {
   let connection;
 
   try {
@@ -9,8 +9,8 @@ const createPost = async (title, url, description) => {
 
     const [result] = await connection.query(
       `
-      INSERT INTO posts (title, url, description) VALUES (?,?,?)`,
-      [title, url, description]
+      INSERT INTO posts (title, url, description, userId) VALUES (?,?,?,?)`,
+      [title, url, description, userId]
     );
 
     return result.insertId;

@@ -50,6 +50,12 @@ const isValidHttpUrl = (string) => {
 const newPostController = async (req, res, next) => {
   try {
     const { title, url, description } = req.body;
+
+    // Verificar si userId está presente en req
+    if (!req.userId) {
+      throw generateError('Usuario no autenticado', 401);
+    }
+
     if (!title || !url || !description) {
       throw generateError('Titulo, url y texto obligatorio', 400);
     }
@@ -58,9 +64,6 @@ const newPostController = async (req, res, next) => {
     if (!isValidHttpUrl(url)) {
       throw generateError('URL no válida', 400);
     }
-
-    // Agrega un valor para 'url', ya que es requerido en createPost.
-    /*  const url = ''; */ // Puedes proporcionar un valor de URL o generarlo según tus necesidades.
 
     const postId = await createPost(title, url, description, req.userId);
     res.send({
