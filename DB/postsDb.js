@@ -65,7 +65,28 @@ const getSinglePost = async (postId) => {
     //Obtenemos los datos publicos del post del user.
     const [post] = await connection.query(//PENDIENTE HACER BIEN LA BUSQEDA EN MYSQL!!!!!
       `
-      SELECT a.title, a.url, a.description, b.userId, a.createdAt FROM posts a, users b WHERE a.userId = b.userId and a.postId = ?
+      SELECT 
+    posts.postId,
+    posts.title,
+    posts.url,
+    posts.description,
+    posts.createdAt AS postCreatedAt,
+    users.userId AS userId,
+    users.email,
+    users.name,
+    users.lastName,
+    users.birthDate,
+    users.userName,
+    users.userAvatar,
+    users.bio,
+    users.createdAt AS userCreatedAt,
+    users.modifiedAt AS userModifiedAt
+FROM 
+    posts
+JOIN 
+    users ON posts.userId = users.userId
+WHERE 
+    posts.postId = ?;
       `,
       [postId]
     );
