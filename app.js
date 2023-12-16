@@ -21,6 +21,7 @@ import {
   deletePostController,
   getPostsByUserController,
   getPostByUserIdController,
+  //likePostController
 } from './controllers/posts.js';
 
 // Importamos las funciones que hemos creado en auth.js
@@ -46,6 +47,9 @@ app.get('/posts/:id', getPostsByUserController);//posts del usuario
 app.get('/post/:id', getPostByUserIdController);//añadimos ruta para post por usuario ID
 app.post('/', authUser, newPostController);//crea post
 app.delete('/post/:id', authUser, deletePostController);//borramos un post del usuario
+
+/* // Nuevas rutas para "Likes"
+app.post('/post/:postId/like', authUser, likePostController); */
 
 //middleware que crea post en base de datos
 app.post('/posts', (req, res) => {

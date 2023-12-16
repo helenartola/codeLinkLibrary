@@ -57,6 +57,17 @@ const main = async () => {
                 FOREIGN KEY (userId) REFERENCES users(userId)
             )
         `);
+        //creamos tabla de likes
+        await pool.query(`
+        CREATE TABLE IF NOT EXISTS likes (
+            likeId INT AUTO_INCREMENT PRIMARY KEY, 
+            userId INT,
+            FOREIGN KEY (userId) REFERENCES users(userId),
+            postId INT,
+            FOREIGN KEY (postId) REFERENCES posts(postId),
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    `);
 
     console.log('¡Tablas creadas!');
   } catch (err) {

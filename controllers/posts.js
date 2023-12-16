@@ -1,4 +1,4 @@
-import { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost } from '../DB/postsDb.js';
+import { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost, /* likes, getLikesByUserAndPost */ } from '../DB/postsDb.js';
 
 
 import { generateError } from '../helpers.js';
@@ -106,10 +106,39 @@ const deletePostController = async (req, res, next) => {
   }
 };
 
+/* const likePostController = async (req, res, next) => {
+  const { postId } = req.params;
+  const userId = req.user.userId; // Suponiendo que ya has autenticado al usuario.
+
+  try {
+    // Verifica si el usuario ya ha dado "Like" al post.
+    const existingLikes = await getLikesByUserAndPost(userId, postId);
+
+    if (existingLikes.length === 0) {
+      // Si no ha dado "Like", le permite dar "Like".
+      await likes(userId, postId);
+
+      res.status(201).json({
+        status: 'ok',
+        message: 'Like agregado con éxito.',
+      });
+    } else {
+      // Si ya ha dado "Like", puedes manejarlo de acuerdo a tus necesidades.
+      res.status(400).json({
+        status: 'error',
+        message: 'El usuario ya ha dado like a este post.',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+}; */
+
 export {
   getPostByUserIdController,
   getPostsController,
   newPostController,
   getPostsByUserController,
   deletePostController,
+  /* likePostController */
 };

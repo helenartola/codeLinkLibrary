@@ -107,4 +107,44 @@ const deletePostById = async (postId) => {
   }
 };
 
-export { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost };
+/* const likes = async (userId, postId) => {//creamos funcion para likes
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      'INSERT INTO likes (userId, postId) VALUES (?, ?)',
+      [userId, postId]
+    );
+
+    return result.insertId;
+  } finally {
+    if (connection) connection.release();
+  } 
+};*/
+
+// En postDB.js
+
+// ...
+
+/* const getLikesByUserAndPost = async (userId, postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Consulta los "Likes" para un usuario y un post específicos.
+    const [likes] = await connection.query(
+      'SELECT * FROM likes WHERE userId = ? AND postId = ?',
+      [userId, postId]
+    );
+
+    return likes;
+  } finally {
+    if (connection) connection.release();
+  }
+}; */
+
+
+export { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost, /* likes, getLikesByUserAndPost */ };
