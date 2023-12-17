@@ -56,7 +56,24 @@ const getAllPostsByUserId = async (userId) => {
   }
 };
 
-const getSinglePost = async (postId) => {
+const getPostByUserIdAndPostId = async (userId, postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [post] = await connection.query(
+      'SELECT * FROM posts WHERE userId = ? AND postId = ?',
+      [userId, postId]
+    );
+
+    return post;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+/* const getSinglePost = async (postId) => {
   let connection;
 
   try {
@@ -94,14 +111,13 @@ WHERE
   } finally {
     if (connection) connection.release();
   }
-};
-
+}; */
 
 const deletePostById = async (postId) => {
   let connection;
   try {
     connection = await getConnection();
-    await connection.query(`DELETE FROM posts WHERE postId =?,` [postId]);
+    await connection.query(`DELETE FROM posts WHERE postId =?,`[postId]);
   } finally {
     if (connection) connection.release();
   }
@@ -146,5 +162,10 @@ const deletePostById = async (postId) => {
   }
 }; */
 
-
-export { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost, /* likes, getLikesByUserAndPost */ };
+export {
+  createPost,
+  getAllPosts,
+  getAllPostsByUserId,
+  deletePostById,
+  /* getSinglePost */ getPostByUserIdAndPostId /* likes, getLikesByUserAndPost */,
+};

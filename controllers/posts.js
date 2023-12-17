@@ -3,14 +3,38 @@ import {
   getAllPosts,
   getAllPostsByUserId,
   deletePostById,
-  getSinglePost /* likes, getLikesByUserAndPost */,
+  getPostByUserIdAndPostId,
+  //getSinglePost /* likes, getLikesByUserAndPost */,
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
 
 //Función que maneja las solicitudes para obtener un solo post por ID de usuario.
 
-const getPostByUserIdController = async (req, res, next) => {
+const getPostByUserController = async (req, res, next) => {
+  try {
+    const { userId, postId } = req.params;
+
+    // Puedes usar las funciones específicas para obtener un post por ID de usuario y ID de post
+    const post = await getPostByUserIdAndPostId(userId, postId);
+
+    if (!post) {
+      return res.status(404).send({
+        status: 'error',
+        message: 'Post not found',
+      });
+    }
+
+    res.send({
+      status: 'ok',
+      message: post,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+/* const getPostByUserIdController = async (req, res, next) => {
   try {
     const post = await getSinglePost();
     res.send({
@@ -20,7 +44,7 @@ const getPostByUserIdController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};
+}; */
 
 //Función que maneja las solicitudes para obtener todos los posts.
 
@@ -104,7 +128,7 @@ const deletePostController = async (req, res, next) => {
     }
 
     // Obtener información del post para verificar si el usuario es el creador
-    const post = await getSinglePost();
+    const post = await getPostByUserIdAndPostId();
 
     // Verificar si el usuario es el creador del post
     if (post.userId !== req.userId) {
@@ -154,7 +178,8 @@ const deletePostController = async (req, res, next) => {
 //Exportamos todas las funciones definidas.
 
 export {
-  getPostByUserIdController,
+  getPostByUserController,
+  //getPostByUserIdController,
   getPostsController,
   newPostController,
   getPostsByUserController,
