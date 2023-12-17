@@ -20,7 +20,6 @@ import {
   newPostController,
   deletePostController,
   getPostsByUserController,
-  //getPostByUserIdController,
   getPostByUserController,
   //likePostController
 } from './controllers/posts.js';
@@ -43,14 +42,11 @@ app.post('/login', loginController);
 app.delete('/user/:id', authUser, deleteUserController);
 
 //Rutas de posts
-app.get('/', getPostsController); //nos devuelve todos los posts
-app.get('/posts/:id', getPostsByUserController); //posts del usuario
-app.get('/user/:userId/post/:postId', getPostByUserController);
-
-/* app.get('/post/:id', getPostByUserIdController);//añadimos ruta para post por usuario ID
- */
-app.post('/', authUser, newPostController); //crea post
-app.delete('/post/:id', authUser, deletePostController); //borramos un post del usuario
+app.get('/', getPostsController); //Devuelve todos los posts de todos los usuarios
+app.get('/posts/:id', getPostsByUserController); //Devuelve todos los posts de un único usuario
+app.get('/user/:userId/post/:postId', getPostByUserController); //Nos devuelve un post concreto de un usuario en concreto
+app.post('/', authUser, newPostController); //Crea un post
+app.delete('/user/:userId/post/:postId', authUser, deletePostController); //Borramos un post concreto de un usuario concreto
 
 /* // Nuevas rutas para "Likes"
 app.post('/post/:postId/like', authUser, likePostController); */

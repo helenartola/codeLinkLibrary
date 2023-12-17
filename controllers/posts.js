@@ -2,9 +2,9 @@ import {
   createPost,
   getAllPosts,
   getAllPostsByUserId,
-  deletePostById,
+  deletePostByUserIdAndPostId,
   getPostByUserIdAndPostId,
-  //getSinglePost /* likes, getLikesByUserAndPost */,
+  /* likes, getLikesByUserAndPost */
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -33,18 +33,6 @@ const getPostByUserController = async (req, res, next) => {
     next(error);
   }
 };
-
-/* const getPostByUserIdController = async (req, res, next) => {
-  try {
-    const post = await getSinglePost();
-    res.send({
-      status: 'ok',
-      message: post,
-    });
-  } catch (error) {
-    next(error);
-  }
-}; */
 
 //Función que maneja las solicitudes para obtener todos los posts.
 
@@ -117,31 +105,24 @@ const getPostsByUserController = async (req, res, next) => {
 };
 
 //Función que maneja las solicitudes para eliminar un post.
-//Verifica la autenticación del usuario, verifica si el usuario es el creador del post y luego elimina el post.
+
 const deletePostController = async (req, res, next) => {
   try {
-    const { id: postId } = req.params;
+    const { userId, postId } = req.params;
 
-    // Verificar si userId está presente en req
-    if (!req.userId) {
-      throw generateError('Usuario no autenticado', 401);
+    const postDeleted = await deletePostByUserIdAndPostId(userId, postId);
+
+    if (postDeleted) {
+      res.send({
+        status: 'ok',
+        message: 'El post se ha borrado!',
+      });
+    } else {
+      res.status(404).send({
+        status: 'error',
+        message: 'No se ha encontrado el post o no se ha podido borrar',
+      });
     }
-
-    // Obtener información del post para verificar si el usuario es el creador
-    const post = await getPostByUserIdAndPostId();
-
-    // Verificar si el usuario es el creador del post
-    if (post.userId !== req.userId) {
-      throw generateError('No tienes permisos para eliminar este post.', 403);
-    }
-
-    // Eliminar el post
-    await deletePostById(postId);
-
-    res.send({
-      status: 'ok',
-      message: 'Post eliminado con éxito',
-    });
   } catch (error) {
     next(error);
   }
@@ -179,7 +160,6 @@ const deletePostController = async (req, res, next) => {
 
 export {
   getPostByUserController,
-  //getPostByUserIdController,
   getPostsController,
   newPostController,
   getPostsByUserController,

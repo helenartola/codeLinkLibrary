@@ -1,6 +1,7 @@
 //import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 
+//Función para poder crear un post
 const createPost = async (title, url, description, userId) => {
   let connection;
 
@@ -19,6 +20,7 @@ const createPost = async (title, url, description, userId) => {
   }
 };
 
+//Función que obtiene todos los posts de todos los usuarios
 const getAllPosts = async () => {
   let connection;
 
@@ -37,6 +39,7 @@ const getAllPosts = async () => {
   }
 };
 
+//Función que obtiene todos los post de un usuario concreto
 const getAllPostsByUserId = async (userId) => {
   let connection;
 
@@ -56,6 +59,8 @@ const getAllPostsByUserId = async (userId) => {
   }
 };
 
+//Función que obtiene un post concreto de un usuario concreto
+
 const getPostByUserIdAndPostId = async (userId, postId) => {
   let connection;
 
@@ -73,51 +78,15 @@ const getPostByUserIdAndPostId = async (userId, postId) => {
   }
 };
 
-/* const getSinglePost = async (postId) => {
+//Función para borrar un post concreto de un usuario en concreto
+const deletePostByUserIdAndPostId = async (userId, postId) => {
   let connection;
-
   try {
     connection = await getConnection();
-
-    //Obtenemos los datos publicos del post del user.
-    const [post] = await connection.query(//PENDIENTE HACER BIEN LA BUSQEDA EN MYSQL!!!!!
-      `
-      SELECT 
-    posts.postId,
-    posts.title,
-    posts.url,
-    posts.description,
-    posts.createdAt AS postCreatedAt,
-    users.userId AS userId,
-    users.email,
-    users.name,
-    users.lastName,
-    users.birthDate,
-    users.userName,
-    users.userAvatar,
-    users.bio,
-    users.createdAt AS userCreatedAt,
-    users.modifiedAt AS userModifiedAt
-FROM 
-    posts
-JOIN 
-    users ON posts.userId = users.userId
-WHERE 
-    posts.postId = ?;
-      `,
-      [postId]
+    await connection.query(
+      'DELETE FROM posts WHERE userId = ? AND postId = ?',
+      [userId, postId]
     );
-    return post;
-  } finally {
-    if (connection) connection.release();
-  }
-}; */
-
-const deletePostById = async (postId) => {
-  let connection;
-  try {
-    connection = await getConnection();
-    await connection.query(`DELETE FROM posts WHERE postId =?,`[postId]);
   } finally {
     if (connection) connection.release();
   }
@@ -166,6 +135,7 @@ export {
   createPost,
   getAllPosts,
   getAllPostsByUserId,
-  deletePostById,
-  /* getSinglePost */ getPostByUserIdAndPostId /* likes, getLikesByUserAndPost */,
+  deletePostByUserIdAndPostId,
+  getPostByUserIdAndPostId,
+  /* likes, getLikesByUserAndPost */
 };
