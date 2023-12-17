@@ -1,7 +1,14 @@
-import { createPost, getAllPosts, getAllPostsByUserId, deletePostById, getSinglePost, /* likes, getLikesByUserAndPost */ } from '../DB/postsDb.js';
-
+import {
+  createPost,
+  getAllPosts,
+  getAllPostsByUserId,
+  deletePostById,
+  getSinglePost /* likes, getLikesByUserAndPost */,
+} from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
+
+//Función que maneja las solicitudes para obtener un solo post por ID de usuario.
 
 const getPostByUserIdController = async (req, res, next) => {
   try {
@@ -15,6 +22,8 @@ const getPostByUserIdController = async (req, res, next) => {
   }
 };
 
+//Función que maneja las solicitudes para obtener todos los posts.
+
 const getPostsController = async (req, res, next) => {
   try {
     const posts = await getAllPosts();
@@ -27,6 +36,8 @@ const getPostsController = async (req, res, next) => {
   }
 };
 
+// Función que comprueba que la url sea válida.
+
 const isValidHttpUrl = (string) => {
   try {
     const newUrl = new URL(string);
@@ -36,6 +47,8 @@ const isValidHttpUrl = (string) => {
   }
 };
 
+//Función que maneja las solicitudes para crear un nuevo post.
+// Verifica si el usuario está autenticado, y valida los datos del post antes de crearlo.
 const newPostController = async (req, res, next) => {
   try {
     const { title, url, description } = req.body;
@@ -64,6 +77,8 @@ const newPostController = async (req, res, next) => {
   }
 };
 
+//Función que maneja las solicitudes para obtener todos los posts asociados a un usuario específico, identificado por su ID.
+
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -77,11 +92,13 @@ const getPostsByUserController = async (req, res, next) => {
   }
 };
 
+//Función que maneja las solicitudes para eliminar un post.
+//Verifica la autenticación del usuario, verifica si el usuario es el creador del post y luego elimina el post.
 const deletePostController = async (req, res, next) => {
   try {
     const { id: postId } = req.params;
 
-// Verificar si userId está presente en req
+    // Verificar si userId está presente en req
     if (!req.userId) {
       throw generateError('Usuario no autenticado', 401);
     }
@@ -133,6 +150,8 @@ const deletePostController = async (req, res, next) => {
     next(error);
   }
 }; */
+
+//Exportamos todas las funciones definidas.
 
 export {
   getPostByUserIdController,
