@@ -22,18 +22,25 @@ const createPost = async (title, url, description, userId) => {
 };
 
 //Función que obtiene todos los posts de todos los usuarios
-const getAllPosts = async () => {
+const getAllPosts = async (today) => {
   let connection;
 
   try {
     connection = await getConnection();
 
+    let txtQuery = `
+    SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
+    `
+
+    if(today==="true"){
+      // query que devuelve los posts de hoy
+      txtQuery = `
+        SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
+      `
+    }
+
     //Obtenemos los datos publicos de todos los posts.
-    const [posts] = await connection.query(
-      `
-      SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
-      `
-    );
+    const [posts] = await connection.query(txtQuery);
     return posts;
   } finally {
     if (connection) connection.release();
@@ -126,44 +133,53 @@ const getSinglePost = async (postId) => {
     if (connection) connection.release();
   }
 }
-/* const likes = async (userId, postId) => {//creamos funcion para likes
+
+
+
+ const likePost = async (userId, postId) => {//creamos funcion para likes
   let connection;
 
   try {
     connection = await getConnection();
 
-    const [result] = await connection.query(
-      'INSERT INTO likes (userId, postId) VALUES (?, ?)',
-      [userId, postId]
-    );
+    let isLiked;
 
-    return result.insertId;
-  } finally {
-    if (connection) connection.release();
-  } 
-};*/
-
-// En postDB.js
-
-// ...
-
-/* const getLikesByUserAndPost = async (userId, postId) => {
-  let connection;
-
-  try {
-    connection = await getConnection();
-
-    // Consulta los "Likes" para un usuario y un post específicos.
-    const [likes] = await connection.query(
+    // compruebo si ya di like
+     const [likes] = await connection.query(
       'SELECT * FROM likes WHERE userId = ? AND postId = ?',
       [userId, postId]
     );
 
-    return likes;
+    if(likes.length === 0){
+      // si no di like añado tupla (insert)
+     await connection.query(
+        'INSERT INTO likes (userId, postId) VALUES (?, ?)',
+        [userId, postId])
+        isLiked = true;
+    }else {
+      // si di like elimino la tupla (delete)
+     await connection.query(
+        'DELETE FROM likes WHERE userId=? AND postId=?',
+        [userId, postId])
+      isLiked = false;
+    }
+
+    // Saco el numero de like del post
+    const [result] = await connection.query(
+      'SELECT count(*) AS numLikes FROM likes WHERE postId = ?',
+      [postId]
+    );
+
+    console.log( result[0].numLikes)
+  
+    return {
+      numLikes: result[0].numLikes, 
+      isLiked
+    }
   } finally {
     if (connection) connection.release();
-  }
-}; */
+  } 
+};
 
 export {
   createPost,
@@ -173,5 +189,5 @@ export {
   getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
-  /* likes, getLikesByUserAndPost */
+  likePost
 };

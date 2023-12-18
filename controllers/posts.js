@@ -5,8 +5,7 @@ import {
   getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
-
-  /* likes, getLikesByUserAndPost */
+  likePost
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -40,7 +39,7 @@ const getPostByUserController = async (req, res, next) => {
 
 const getPostsController = async (req, res, next) => {
   try {
-    const posts = await getAllPosts();
+    const posts = await getAllPosts(req.query.today);
     res.send({
       status: 'ok',
       message: posts,
@@ -132,33 +131,25 @@ const deletePostController = async (req, res, next) => {
 
    
 
-/* const likePostController = async (req, res, next) => {
+ const likePostController = async (req, res, next) => {
   const { postId } = req.params;
-  const userId = req.user.userId; // Suponiendo que ya has autenticado al usuario.
+  const userId = req.userId; // Suponiendo que ya has autenticado al usuario.
 
   try {
-    // Verifica si el usuario ya ha dado "Like" al post.
-    const existingLikes = await getLikesByUserAndPost(userId, postId);
-
-    if (existingLikes.length === 0) {
-      // Si no ha dado "Like", le permite dar "Like".
-      await likes(userId, postId);
-
-      res.status(201).json({
+    const {numLikes, isLiked} = await likePost(userId, postId);
+    res.status(200).json({
         status: 'ok',
-        message: 'Like agregado con éxito.',
+        message: 'Operacion correcta',
+        data: {
+          numLikes,
+          isLiked
+        }
       });
-    } else {
-      // Si ya ha dado "Like", puedes manejarlo de acuerdo a tus necesidades.
-      res.status(400).json({
-        status: 'error',
-        message: 'El usuario ya ha dado like a este post.',
-      });
-    }
+    
   } catch (error) {
     next(error);
   }
-}; */
+}; 
 
 //Exportamos todas las funciones definidas.
 
@@ -168,5 +159,5 @@ export {
   newPostController,
   getPostsByUserController,
   deletePostController,
-  /* likePostController */
+  likePostController 
 };
