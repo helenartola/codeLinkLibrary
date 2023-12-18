@@ -1,5 +1,6 @@
 //import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
+import { generateError } from '../helpers.js';
 
 //Función para poder crear un post
 const createPost = async (title, url, description, userId) => {
@@ -92,6 +93,39 @@ const deletePostByUserIdAndPostId = async (userId, postId) => {
   }
 };
 
+//Función para borrar un post concreto de un usuario en concreto
+const deletePostById = async (postId) => {
+  let connection;
+  try {
+    connection = await getConnection();
+    await connection.query(
+      'DELETE FROM posts WHERE postId = ?',
+      [postId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+//Obtener un post concreto para verificar si el usuario es el autor del post. 
+const getSinglePost = async (postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [post] = await connection.query(
+      'SELECT * FROM posts WHERE postId =?',
+      [postId]
+    );
+    if (post.length === 0) {
+      throw generateError(`El post con el id ${postId} no existe`, 404);
+    }
+    return post [0];
+  } finally {
+    if (connection) connection.release();
+  }
+}
 /* const likes = async (userId, postId) => {//creamos funcion para likes
   let connection;
 
@@ -137,5 +171,7 @@ export {
   getAllPostsByUserId,
   deletePostByUserIdAndPostId,
   getPostByUserIdAndPostId,
+  getSinglePost,
+  deletePostById,
   /* likes, getLikesByUserAndPost */
 };

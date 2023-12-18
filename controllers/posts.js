@@ -2,8 +2,10 @@ import {
   createPost,
   getAllPosts,
   getAllPostsByUserId,
-  deletePostByUserIdAndPostId,
   getPostByUserIdAndPostId,
+  getSinglePost,
+  deletePostById,
+
   /* likes, getLikesByUserAndPost */
 } from '../DB/postsDb.js';
 
@@ -108,25 +110,27 @@ const getPostsByUserController = async (req, res, next) => {
 
 const deletePostController = async (req, res, next) => {
   try {
-    const { userId, postId } = req.params;
+    const { postId } = req.params;
 
-    const postDeleted = await deletePostByUserIdAndPostId(userId, postId);
+    //Obtener información del post para verificar si el usuario es el creador del post. 
+    const post = await getSinglePost(postId);
 
-    if (postDeleted) {
-      res.send({
-        status: 'ok',
-        message: 'El post se ha borrado!',
-      });
-    } else {
-      res.status(404).send({
-        status: 'error',
-        message: 'No se ha encontrado el post o no se ha podido borrar',
-      });
+   //Verifica si el usuario es el creador del post.
+    if (post.userId!= req.userId) {
+      throw generateError('No tienes permisos para borrar este post', 401);
     }
+   //Eliminar el post.
+   await deletePostById(postId);
+    res.send({
+      status: 'ok',
+      message: 'Post eliminado con éxito',
+    });
   } catch (error) {
-    next(error);
+   next(error);
   }
 };
+
+   
 
 /* const likePostController = async (req, res, next) => {
   const { postId } = req.params;

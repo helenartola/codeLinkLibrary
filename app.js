@@ -36,8 +36,8 @@ app.use(morgan('dev'));
 //Rutas de usuarios (cada ruta tendrá que gestionar un controlador)
 //Las funciones newUserController, getUser... las creamos dentro del archivo users.js de la carpeta controllers. Y luego las importamos aquí.
 app.post('/user', newUserController);
-app.get('/users', getAllUsersController);
-app.get('/user/:id', getUserController);
+app.get('/users', authUser, getAllUsersController);
+app.get('/user/:id', authUser, getUserController);
 app.post('/login', loginController);
 app.delete('/user/:id', authUser, deleteUserController);
 
@@ -46,7 +46,7 @@ app.get('/', getPostsController); //Devuelve todos los posts de todos los usuari
 app.get('/posts/:id', getPostsByUserController); //Devuelve todos los posts de un único usuario
 app.get('/user/:userId/post/:postId', getPostByUserController); //Nos devuelve un post concreto de un usuario en concreto
 app.post('/', authUser, newPostController); //Crea un post
-app.delete('/user/:userId/post/:postId', authUser, deletePostController); //Borramos un post concreto de un usuario concreto
+app.delete('/post/:postId', authUser, deletePostController); //Borramos un post concreto de un usuario concreto
 
 /* // Nuevas rutas para "Likes"
 app.post('/post/:postId/like', authUser, likePostController); */
