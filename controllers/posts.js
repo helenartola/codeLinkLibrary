@@ -4,7 +4,8 @@ import {
   getAllPostsByUserId,
   deletePostByUserIdAndPostId,
   getPostByUserIdAndPostId,
-  /* likes, getLikesByUserAndPost */
+  likes,
+  getLikesByUserAndPost
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -128,7 +129,7 @@ const deletePostController = async (req, res, next) => {
   }
 };
 
-/* const likePostController = async (req, res, next) => {
+  const likePostController = async (req, res, next) => {
   const { postId } = req.params;
   const userId = req.user.userId; // Suponiendo que ya has autenticado al usuario.
 
@@ -154,7 +155,7 @@ const deletePostController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}; */
+};
 
 //Exportamos todas las funciones definidas.
 
@@ -164,5 +165,5 @@ export {
   newPostController,
   getPostsByUserController,
   deletePostController,
-  /* likePostController */
+  likePostController
 };

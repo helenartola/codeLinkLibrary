@@ -92,7 +92,7 @@ const deletePostByUserIdAndPostId = async (userId, postId) => {
   }
 };
 
-/* const likes = async (userId, postId) => {//creamos funcion para likes
+ const likes = async (userId, postId) => {//creamos funcion para likes
   let connection;
 
   try {
@@ -107,13 +107,11 @@ const deletePostByUserIdAndPostId = async (userId, postId) => {
   } finally {
     if (connection) connection.release();
   } 
-};*/
+};
 
 // En postDB.js
 
-// ...
-
-/* const getLikesByUserAndPost = async (userId, postId) => {
+ const getLikesByUserAndPost = async (userId, postId) => {
   let connection;
 
   try {
@@ -129,7 +127,7 @@ const deletePostByUserIdAndPostId = async (userId, postId) => {
   } finally {
     if (connection) connection.release();
   }
-}; */
+}; 
 
 export {
   createPost,
@@ -137,5 +135,6 @@ export {
   getAllPostsByUserId,
   deletePostByUserIdAndPostId,
   getPostByUserIdAndPostId,
-  /* likes, getLikesByUserAndPost */
+  likes,
+  getLikesByUserAndPost
 };
