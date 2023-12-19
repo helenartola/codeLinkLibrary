@@ -2,30 +2,6 @@
 
 Plataforma para compartir y guardar enlaces de desarrollo web.
 
-# Características de la entrega
-
-· La entrega debe hacerse antes del martes 19/12/23 a las 18:00 a mi e-mail (stefano. peraldini@hackaboss.com). Lo tenéis en el calendario.
-
-· Para este proyecto únicamente tenéis que enviarme el link al repositorio.
-
-· En los pdf:
-hay una sencilla descripción de una plataforma, vosotros tendréis que implementar solo el Backend/API. Nada de HTML y CSS, el Front lo haremos en el proyecto 3 con React.
-
-· Cuando se habla de usuario anónimo se entiende una persona que usa la plataforma sin hacer login.
-
-· Todos los miembros del equipo debéis tener commits y aparecer como colaboradores en el repositorio.
-
-· Dentro del repositorio debe haber un archivo initDB.js que genere la estructura de la base de datos (no es necesario que incluya datos).
-
-· El repositorio también debe incluir la colección de Postman con todos los endpoints correctamente construidos (con su body en caso de necesitarlo)
-
-· Aquí os dejo el vídeo de cómo crear y exportar una colección de postman:
-https://www.loom.com/share/5933cf4ace734702951450a273995e47?sid=77801fe8-f9e6-47de-a0e7-4cdbd82879c8
-
-· Podéis pedir tutorías, aunque concretamente para el proyecto solamente se darán durante la semana que viene y hasta el día de la entrega.
-
-· PD: el vídeo del prework de la semana 13 puede ser de gran ayuda.
-
 # Comandos para saber en que rama estamos
 
 -- Para saber en que rama estamos -> git branch
@@ -95,46 +71,3 @@ Realiza el pull desde la rama remota main -> git pull origin main
 **Configuramos extensiones:**
 
 - npm i / npm install: express, dotenv, mysql2, nodemon...
-
-**Definimos la BDD:**
-
-- Definimos tablas y su contenido para la base de datos.
-
-**Manejo de errores:**
-
-- Definimos posibles errores
-
-**Postman:**
-
-- Creamos colecciones postman
-
-# Endpoints
-
-Registro y Autenticación:
-
-✓POST /api/login: Inicio de sesión de un usuario.✓
-
-Enlaces Compartidos:
-
-✓ GET /api/links: Obtener todos los enlaces compartidos (públicos o privados) por los usuarios. ✓
-✓ GET /api/links/:userId: Obtener enlaces específicos compartidos por un usuario. ✓
-✓ POST /api/links: Compartir un nuevo enlace. ✓ 
-/*PUT /api/links/:linkId: Actualizar información de un enlace compartido.*/
-DELETE /api/links/:linkId: Eliminar un enlace compartido.
-
-Usuarios:
-✓ POST /users: Crear un usuario nuevo. ✓
-✓ GET /api/users: Obtener información de todos los usuarios. ✓
-✓ GET /api/users/:userId: Obtener información específica de un usuario. ✓
-PUT /api/users/:userId: Actualizar información de un usuario.
-✓ DELETE /api/users/:userId: Eliminar un usuario. ✓
-
-Likes:
-
-POST /api/like/:linkId: Dar un "like" a un enlace específico.
-DELETE /api/like/:linkId: Quitar el "like" de un enlace específico.
-GET /api/like/:linkId/count: Obtener la cantidad total de "likes" para un enlace específico.
-
-Búsqueda ?:
-
-/*GET /api/search?q=query: Realizar una búsqueda de enlaces o usuarios basada en una consulta.*/
