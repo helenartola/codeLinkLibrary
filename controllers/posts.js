@@ -5,7 +5,7 @@ import {
   getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
-  likePost
+  likePost,
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -111,45 +111,47 @@ const deletePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
 
-    //Obtener información del post para verificar si el usuario es el creador del post. 
+    //Obtener información del post para verificar si el usuario es el creador del post.
     const post = await getSinglePost(postId);
 
-   //Verifica si el usuario es el creador del post.
-    if (post.userId!= req.userId) {
+    //Verifica si el usuario es el creador del post.
+    if (post.userId != req.userId) {
       throw generateError('No tienes permisos para borrar este post', 401);
     }
-   //Eliminar el post.
-   await deletePostById(postId);
+    //Eliminar el post.
+    await deletePostById(postId);
     res.send({
       status: 'ok',
       message: 'Post eliminado con éxito',
     });
   } catch (error) {
-   next(error);
+    next(error);
   }
 };
 
-   
-
- const likePostController = async (req, res, next) => {
-  const { postId } = req.params;
-  const userId = req.userId; // Suponiendo que ya has autenticado al usuario.
-
+const likePostController = async (req, res, next) => {
   try {
-    const {numLikes, isLiked} = await likePost(userId, postId);
+    const { postId } = req.params;
+    const userId = req.userId; // Suponiendo que ya has autenticado al usuario.
+
+    const post = await getSinglePost(postId);
+    //El usuario no puede dar likes a su propio post
+    if (post.userId == req.userId) {
+      throw generateError('No puedes dar like a tu propio post', 401);
+    }
+    const { numLikes, isLiked } = await likePost(userId, postId);
     res.status(200).json({
-        status: 'ok',
-        message: 'Operacion correcta',
-        data: {
-          numLikes,
-          isLiked
-        }
-      });
-    
+      status: 'ok',
+      message: 'Operacion correcta',
+      data: {
+        numLikes,
+        isLiked,
+      },
+    });
   } catch (error) {
     next(error);
   }
-}; 
+};
 
 //Exportamos todas las funciones definidas.
 
@@ -159,5 +161,5 @@ export {
   newPostController,
   getPostsByUserController,
   deletePostController,
-  likePostController 
+  likePostController,
 };
