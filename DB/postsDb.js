@@ -169,9 +169,7 @@ const getSinglePost = async (postId) => {
       'SELECT count(*) AS numLikes FROM likes WHERE postId = ?',
       [postId]
     );
-
-    console.log( result[0].numLikes)
-  
+   
     return {
       numLikes: result[0].numLikes, 
       isLiked
