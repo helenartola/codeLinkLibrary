@@ -52,14 +52,6 @@ app.delete('/post/:postId', authUser, deletePostController); //Borramos un post 
 //app.post('/post/:postId/like', authUser, postExists,  likePostController); 
 app.post('/post/:postId/like', authUser, likePostController); 
 
-//middleware que crea post en base de datos
-app.post('/posts', (req, res) => {
-  res.status(201).send({
-    status: 'ok',
-    message: 'Post creado',
-  });
-});
-
 //middleware de ruta no encontrada
 app.use((req, res) => {
   res.status(404).send({
