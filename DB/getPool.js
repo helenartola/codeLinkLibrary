@@ -1,5 +1,5 @@
 import dotenv from 'dotenv'; //Importo dependendecia DOTENV que me sirve para acceder al archivo .env
-import mysql from 'mysql2/promise'; //Importo dependencia de mysql para manejo de base de datos
+import mysql from 'mysql2'; //Importo dependencia de mysql para manejo de base de datos
 
 dotenv.config(); //inicializo la dependencia de dotenv, lo que hace es agregar a las variables globales (process) las variables de entorno del archivo .env
 
