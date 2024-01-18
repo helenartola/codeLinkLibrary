@@ -145,7 +145,7 @@ const likePostController = async (req, res, next) => {
     const { numLikes, isLiked } = await likePost(userId, postId);
     res.status(200).json({
       status: 'ok',
-      data: 'Operacion correcta',
+      message: 'Operacion correcta',
       data: {
         numLikes,
         isLiked,
