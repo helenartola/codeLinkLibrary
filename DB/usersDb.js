@@ -98,7 +98,7 @@ const getAllUsers = async () => {
     connection = await getConnection();
     const [users] = await connection.query(
       `
-      SELECT name, lastName, userName, userAvatar, bio, createdAt, modifiedAt FROM users
+      SELECT * FROM users WHERE userId = ?
       `
     );
     return users;
@@ -114,7 +114,8 @@ const getUserById = async (id) => {
     connection = await getConnection();
     const [user] = await connection.query(
       `
-      SELECT name, lastName, userName, userAvatar, bio, createdAt, modifiedAt FROM users WHERE userId = ?`,
+      SELECT * FROM users
+      `,
       [id]
     );
 
