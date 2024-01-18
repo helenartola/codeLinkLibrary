@@ -134,9 +134,8 @@ const likePostController = async (req, res, next) => {
       throw generateError('No puedes dar like a tu propio post', 401);
     }
     const { numLikes, isLiked } = await likePost(userId, postId);
-    res.status(200).json({
+    res.send({
       status: 'ok',
-      message: 'Operacion correcta',
       data: {
         numLikes,
         isLiked,
