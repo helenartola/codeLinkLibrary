@@ -29,13 +29,13 @@ const getAllPosts = async (today) => {
     connection = await getConnection();
 
     let txtQuery = `
-    SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
+    SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId ORDER BY a.createdAt DESC
     `
 
     if(today==="true"){
       // query que devuelve los posts de hoy
       txtQuery = `
-        SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
+        SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId ORDER BY a.createdAt DESC
       `
     }
 
