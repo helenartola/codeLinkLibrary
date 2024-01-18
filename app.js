@@ -56,7 +56,7 @@ app.post('/post/:postId/like', authUser, likePostController);
 app.use((req, res) => {
   res.status(404).send({
     status: 'error',
-    message: 'Ruta no encontrada',
+    data: 'Ruta no encontrada',
   });
 });
 
@@ -65,7 +65,7 @@ app.use((error, req, res, next) => {
   console.error(error);
   res.status(error.httpStatus || 500).send({
     status: 'error',
-    message: error.message,
+    data: error.message,
   });
 });
 

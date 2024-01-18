@@ -22,13 +22,13 @@ const getPostByUserController = async (req, res, next) => {
     if (!post) {
       return res.status(404).send({
         status: 'error',
-        message: 'Post not found',
+        data: 'Post not found',
       });
     }
 
     res.send({
       status: 'ok',
-      message: post,
+      data: post,
     });
   } catch (error) {
     next(error);
@@ -42,7 +42,7 @@ const getPostsController = async (req, res, next) => {
     const posts = await getAllPosts(req.query.today);
     res.send({
       status: 'ok',
-      message: posts,
+      data: posts,
     });
   } catch (error) {
     next(error);
@@ -83,7 +83,7 @@ const newPostController = async (req, res, next) => {
     const postId = await createPost(title, url, description, req.userId);
     res.send({
       status: 'ok',
-      message: `Post ${postId} creado con éxito!`,
+      data: [`Post ${postId} creado con éxito!`],
     });
   } catch (error) {
     next(error);
@@ -98,7 +98,7 @@ const getPostsByUserController = async (req, res, next) => {
     const posts = await getAllPostsByUserId(id);
     res.send({
       status: 'ok',
-      message: posts,
+      data: posts,
     });
   } catch (error) {
     next(error);
@@ -122,7 +122,7 @@ const deletePostController = async (req, res, next) => {
     await deletePostById(postId);
     res.send({
       status: 'ok',
-      message: 'Post eliminado con éxito',
+      data: 'Post eliminado con éxito',
     });
   } catch (error) {
     next(error);
@@ -142,7 +142,7 @@ const likePostController = async (req, res, next) => {
     const { numLikes, isLiked } = await likePost(userId, postId);
     res.status(200).json({
       status: 'ok',
-      message: 'Operacion correcta',
+      data: 'Operacion correcta',
       data: {
         numLikes,
         isLiked,
