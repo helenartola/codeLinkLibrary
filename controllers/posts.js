@@ -96,6 +96,12 @@ const getPostsByUserController = async (req, res, next) => {
   try {
     const { id } = req.params;
     const posts = await getAllPostsByUserId(id);
+
+    if (!posts || posts.length === 0) {
+      //Si no hay post del usuario lanzamos un error 404.
+      throw generateError(`No se encontraron posts para el usuario con ID ${id}`, 404);
+    }
+
     res.send({
       status: 'ok',
       data: posts,
