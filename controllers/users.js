@@ -12,12 +12,13 @@ const newUserController = async (req, res, next) => {
     }
 
     const id = await createUser(email, password, name, lastName, birthDate, userName, bio);
-    console.log(id);
+    
 
     res.send({
       status: 'ok',
-      message: `User creado con id: ${id}`,
+      data: [`User creado con id: ${id}`],
     });
+
   } catch (error) {
     next(error);
   }
@@ -28,7 +29,7 @@ const getAllUsersController = async (req, res, next) => {
 
     res.send({
       status: 'ok',
-      message: users,
+      data: users,
     });
   } catch (error) {
     next(error);
@@ -42,7 +43,7 @@ const getUserController = async (req, res, next) => {
 
     res.send({
       status: 'ok',
-      message: user,
+      data: user,
     });
   } catch (error) {
     next(error);
@@ -72,7 +73,7 @@ const loginController = async (req, res, next) => {
 
     res.send({
       status: 'OK',
-      message: token,
+      data: token,
     });
   } catch (error) {
     next(error);
@@ -94,7 +95,7 @@ const deleteUserController = async (req, res, next) => {
 
     res.send({
       status: 'ok',
-      message: 'Usuario eliminado',
+      data: 'Usuario eliminado',
     });
   } catch (error) {
     next(error);
