@@ -67,39 +67,6 @@ const getAllPostsByUserId = async (userId) => {
   }
 };
 
-//Función que obtiene un post concreto de un usuario concreto
-
-const getPostByUserIdAndPostId = async (userId, postId) => {
-  let connection;
-
-  try {
-    connection = await getConnection();
-
-    const [post] = await connection.query(
-      'SELECT * FROM posts WHERE userId = ? AND postId = ?',
-      [userId, postId]
-    );
-
-    return post;
-  } finally {
-    if (connection) connection.release();
-  }
-};
-
-//Función para borrar un post concreto de un usuario en concreto
-const deletePostByUserIdAndPostId = async (userId, postId) => {
-  let connection;
-  try {
-    connection = await getConnection();
-    await connection.query(
-      'DELETE FROM posts WHERE userId = ? AND postId = ?',
-      [userId, postId]
-    );
-  } finally {
-    if (connection) connection.release();
-  }
-};
-
 //Función para borrar un post concreto de un usuario en concreto
 const deletePostById = async (postId) => {
   let connection;
@@ -183,8 +150,6 @@ export {
   createPost,
   getAllPosts,
   getAllPostsByUserId,
-  deletePostByUserIdAndPostId,
-  getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
   likePost

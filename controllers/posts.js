@@ -1,26 +1,20 @@
 import {
   createPost,
   getAllPosts,
-  getAllPostsByUserId,
-  getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
   likePost,
+  getAllPostsByUserId
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
 
-//Función que maneja las solicitudes para obtener un solo post por ID de usuario.
-
-const getPostByUserController = async (req, res, next) => {
+//Función que maneja las solicitudes para obtener un solo post.
+const getPostController = async (req, res, next) => {
   try {
-    const { userId, postId } = req.params;
+    const { postId } = req.params;
 
-    const post = await getPostByUserIdAndPostId(userId, postId);
-
-    if (!post) {
-      throw generateError(`No se encontró el post con ID ${postId} para el usuario con ID ${userId}`, 404);
-    }
+    const post = await getSinglePost(postId);
 
     res.send({
       status: 'ok',
@@ -30,7 +24,6 @@ const getPostByUserController = async (req, res, next) => {
     next(error);
   }
 };
-
 
 //Función que maneja las solicitudes para obtener todos los posts.
 
@@ -88,7 +81,6 @@ const newPostController = async (req, res, next) => {
 };
 
 //Función que maneja las solicitudes para obtener todos los posts asociados a un usuario específico, identificado por su ID.
-
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -109,7 +101,6 @@ const getPostsByUserController = async (req, res, next) => {
 };
 
 //Función que maneja las solicitudes para eliminar un post.
-
 const deletePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
@@ -159,10 +150,10 @@ const likePostController = async (req, res, next) => {
 //Exportamos todas las funciones definidas.
 
 export {
-  getPostByUserController,
+  getPostController,
   getPostsController,
   newPostController,
-  getPostsByUserController,
   deletePostController,
   likePostController,
+  getPostsByUserController
 };
