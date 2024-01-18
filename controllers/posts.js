@@ -16,14 +16,10 @@ const getPostByUserController = async (req, res, next) => {
   try {
     const { userId, postId } = req.params;
 
-    // Puedes usar las funciones específicas para obtener un post por ID de usuario y ID de post
     const post = await getPostByUserIdAndPostId(userId, postId);
 
     if (!post) {
-      return res.status(404).send({
-        status: 'error',
-        data: 'Post not found',
-      });
+      throw generateError(`No se encontró el post con ID ${postId} para el usuario con ID ${userId}`, 404);
     }
 
     res.send({
@@ -34,6 +30,7 @@ const getPostByUserController = async (req, res, next) => {
     next(error);
   }
 };
+
 
 //Función que maneja las solicitudes para obtener todos los posts.
 
