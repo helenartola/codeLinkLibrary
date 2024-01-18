@@ -55,9 +55,9 @@ const main = async () => {
       CREATE TABLE IF NOT EXISTS likes (
         likeId INT AUTO_INCREMENT PRIMARY KEY, 
         userId INT,
-        FOREIGN KEY (userId) REFERENCES users(userId),
+        FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
         postId INT,
-        FOREIGN KEY (postId) REFERENCES posts(postId),
+        FOREIGN KEY (postId) REFERENCES posts(postId) ON DELETE CASCADE,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
