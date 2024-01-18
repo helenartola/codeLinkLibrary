@@ -46,7 +46,7 @@ const main = async () => {
         description TEXT NOT NULL,
         userId INT,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-        FOREIGN KEY (userId) REFERENCES users(userId)
+        FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
       )
     `);
 
