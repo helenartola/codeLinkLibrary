@@ -50,7 +50,7 @@ app.delete('/user', authUser, userExists, deleteUserController); // Eliminar un 
 
 // Rutas de posts
 app.get('/posts', getPostsController); // Obtener todos los posts de todos los usuarios
-app.get('/posts/:id', getPostsByUserController); // Obtener todos los posts de un usuario
+app.get('/posts/user/:id', getPostsByUserController); // Obtener todos los posts de un usuario
 app.get('/user/:userId/post/:postId', getPostByUserController); // Obtener un post específico de un usuario
 app.post('/post', authUser, userExists, newPostController); // Crear un nuevo post
 app.delete('/post/:postId', authUser, userExists, deletePostController); // Eliminar un post y manejar el token
