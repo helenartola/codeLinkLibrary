@@ -10,13 +10,12 @@ import {
 
 import { generateError } from '../helpers.js';
 
-//Función que maneja las solicitudes para obtener un solo post por ID de usuario.
-
+// Función que maneja las solicitudes para obtener un solo post por ID de usuario.
 const getPostByUserController = async (req, res, next) => {
   try {
     const { userId, postId } = req.params;
 
-    // Puedes usar las funciones específicas para obtener un post por ID de usuario y ID de post
+    // Obtener un post específico por ID de usuario y post ID
     const post = await getPostByUserIdAndPostId(userId, postId);
 
     if (!post) {
@@ -35,11 +34,12 @@ const getPostByUserController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para obtener todos los posts.
-
+// Función que maneja las solicitudes para obtener todos los posts.
 const getPostsController = async (req, res, next) => {
   try {
+    // Obtener todos los posts, con opción para filtrar por fecha (req.query.today)
     const posts = await getAllPosts(req.query.today);
+
     res.send({
       status: 'ok',
       data: posts,
@@ -49,8 +49,7 @@ const getPostsController = async (req, res, next) => {
   }
 };
 
-// Función que comprueba que la url sea válida.
-
+// Función que comprueba que la URL sea válida.
 const isValidHttpUrl = (string) => {
   try {
     const newUrl = new URL(string);
@@ -60,7 +59,7 @@ const isValidHttpUrl = (string) => {
   }
 };
 
-//Función que maneja las solicitudes para crear un nuevo post.
+// Función que maneja las solicitudes para crear un nuevo post.
 // Verifica si el usuario está autenticado, y valida los datos del post antes de crearlo.
 const newPostController = async (req, res, next) => {
   try {
@@ -80,6 +79,7 @@ const newPostController = async (req, res, next) => {
       throw generateError('URL no válida', 400);
     }
 
+    // Crear un nuevo post
     const postId = await createPost(title, url, description, req.userId);
     res.send({
       status: 'ok',
@@ -90,12 +90,14 @@ const newPostController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para obtener todos los posts asociados a un usuario específico, identificado por su ID.
-
+// Función que maneja las solicitudes para obtener todos los posts asociados a un usuario específico, identificado por su ID.
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { id } = req.params;
+
+    // Obtener todos los posts asociados a un usuario específico por ID
     const posts = await getAllPostsByUserId(id);
+
     res.send({
       status: 'ok',
       data: posts,
@@ -105,20 +107,20 @@ const getPostsByUserController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para eliminar un post.
-
+// Función que maneja las solicitudes para eliminar un post.
 const deletePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
 
-    //Obtener información del post para verificar si el usuario es el creador del post.
+    // Obtener información del post para verificar si el usuario es el creador del post.
     const post = await getSinglePost(postId);
 
-    //Verifica si el usuario es el creador del post.
+    // Verificar si el usuario es el creador del post.
     if (post.userId != req.userId) {
       throw generateError('No tienes permisos para borrar este post', 401);
     }
-    //Eliminar el post.
+
+    // Eliminar el post.
     await deletePostById(postId);
     res.send({
       status: 'ok',
@@ -129,20 +131,25 @@ const deletePostController = async (req, res, next) => {
   }
 };
 
+// Función que maneja las solicitudes para dar like a un post.
 const likePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
     const userId = req.userId; // Suponiendo que ya has autenticado al usuario.
 
     const post = await getSinglePost(postId);
-    //El usuario no puede dar likes a su propio post
+
+    // El usuario no puede dar likes a su propio post
     if (post.userId == req.userId) {
       throw generateError('No puedes dar like a tu propio post', 401);
     }
+
+    // Realizar la operación de dar like al post
     const { numLikes, isLiked } = await likePost(userId, postId);
+
     res.status(200).json({
       status: 'ok',
-      data: 'Operacion correcta',
+      message: 'Operacion correcta',
       data: {
         numLikes,
         isLiked,
@@ -153,8 +160,21 @@ const likePostController = async (req, res, next) => {
   }
 };
 
-//Exportamos todas las funciones definidas.
+const deleteUserController = async (req, res, next) => {
+  try {
+    const userId = req.userId;
 
+    res.send({
+      status: 'ok',
+      data: 'Usuario eliminado con éxito',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// Exportamos todas las funciones definidas.
 export {
   getPostByUserController,
   getPostsController,
@@ -162,4 +182,6 @@ export {
   getPostsByUserController,
   deletePostController,
   likePostController,
+  deleteUserController,
 };
+
