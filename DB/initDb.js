@@ -58,7 +58,8 @@ const main = async () => {
         FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
         postId INT,
         FOREIGN KEY (postId) REFERENCES posts(postId) ON DELETE CASCADE,
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        UNIQUE (userId, postId)
       )
     `);
 

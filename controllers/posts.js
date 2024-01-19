@@ -29,7 +29,7 @@ const getPostController = async (req, res, next) => {
 
 const getPostsController = async (req, res, next) => {
   try {
-    const posts = await getAllPosts(req.query.today);
+    const posts = await getAllPosts();
     res.send({
       status: 'ok',
       data: posts,
