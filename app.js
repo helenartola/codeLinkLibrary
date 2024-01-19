@@ -44,17 +44,19 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // Rutas de usuarios
-app.post('/user', newUserController); // Crear un nuevo usuario
+app.post('/user/register', newUserController); // Crear un nuevo usuario
 app.get('/users', authUser, userExists, getAllUsersController); // Obtener todos los usuarios autenticados
 app.get('/user/:id', authUser, userExists, getUserController); // Obtener un usuario específico
-app.post('/login', loginController); // Iniciar sesión
-app.delete('/user', authUser, userExists, deleteUserController); // Eliminar un usuario y manejar el token
+app.post('/users/login', loginController); // Iniciar sesión
+app.delete('/users', authUser, userExists, deleteUserController); // Eliminar un usuario y manejar el token
+//El profesor pide que el app.delete sea /users/:id porque era como estaba antes, pero he modificado el id porque un usuario sólo puede borrarse a si mismo.
 
 // Rutas de posts
-app.get('/posts', getPostsController); // Obtener todos los posts de todos los usuarios
+
+app.post('/post', authUser, userExists, newPostController); // Crear un nuevo post
+app.get('/posts', getPostsController); // Devuelve todos los posts de todos los usuarios
 app.get('/posts/user/:id', getPostsByUserController); // Obtener todos los posts de un usuario
 app.get('/posts/:postId', getPostController); // Obtener un post específico de un usuario
-app.post('/post', authUser, userExists, newPostController); // Crear un nuevo post
 app.delete('/post/:postId', authUser, userExists, deletePostController); // Eliminar un post y manejar el token
 app.post('/post/:postId/like', authUser, userExists, likePostController); // Dar "like" a un post y manejar el token
 
