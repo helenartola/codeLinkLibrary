@@ -19,7 +19,7 @@
 2. Clonamos repositorio de github en una carpeta nueva en el pc (code-link-library ejemplo) con el comando `git clone` + `url de repositorio en github`.
 
 3. Iniciamos proyecto con el comando `npm init -y`.
-4. Instalamos dependencias con `npm install` o `npm i` (+ `express, dotenv, mysql2, jsonwebtoken, bcryptjs, morgan`).
+4. Instalamos dependencias con `npm install` o `npm i` (+ `express, dotenv, mysql2, jsonwebtoken, bcryptjs, morgan, joi, cors`).
 
 5. Modificamos el módulo `package.json` (`"type":"module"` añadimos el primero), modificamos values de (`"name"`, `"description"`, `"main"`) y dentro de `"scripts"` incluimos `"dev": "lo que se necesite"` para tareas especificas del desarrollo.
 
@@ -69,6 +69,8 @@
     - jsonwebtoken      (Manejador del usuario / JWT)
     - bcrypt            (Encriptador)
     - morgan            (Registrador de solicitudes HTTP)
+    - joi               (Validador exquemas de datos)
+    - cors              (Gestor de solicitudes HTTP / Middleware)
 
 ## ENDPOINTS
 
@@ -106,3 +108,22 @@
 - Para revisar dependencias instaladas `npm list`.
 - Para revisar dependencias instaladas de primer nivel `npm list --depth=0`.
 - Para revisar dependencias en busca de vulnerabilidades conocidas utiliza `npm audit`.
+
+## Anterior README
+
+Abrimos el proyecto code .en la terminal para abrir el directorio actual en VS Code.
+
+Dentro del directorio de tu proyecto, ejecuta el siguiente comando para iniciar un proyecto Node.js: npm init -y
+
+Instalamos y configuramos extensiones:
+
+Instalación de npm i/npm: express, dotenv, mysql2, bcrypt, jsonwebtoken, morgan.
+Debe estar definido el script dev en el archivo package.json. Abre tu archivo package.json y agrega (o modifica) la sección "scripts" para incluir un script llamado dev (o el nombre que prefieras). Este script puede realizar tareas específicas que necesites durante el desarrollo. Aquí hay un ejemplo genérico:
+
+"scripts": { "dev": "nodo app.js" }
+
+Ejecuta el comando npm run dev Una vez que hayas configurado tu script dev, puedes ejecutarlo con el siguiente comando:
+
+npm ejecutar desarrollador
+
+Esto ejecutará el script definido en la sección "scripts" de tu archivo package.json.
