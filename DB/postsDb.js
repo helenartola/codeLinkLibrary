@@ -22,7 +22,7 @@ const createPost = async (title, url, description, userId) => {
 };
 
 //Función que obtiene todos los posts de todos los usuarios
-const getAllPosts = async () => {
+const getAllPosts = async (userId = 0) => {
   let connection;
 
   try {
@@ -39,7 +39,7 @@ const getAllPosts = async () => {
     `
   
     //Obtenemos los datos publicos de todos los posts.
-    const [posts] = await connection.query(txtQuery);
+    const [posts] = await connection.query(txtQuery, [userId]);
     return posts;
   } finally {
     if (connection) connection.release();
