@@ -1,27 +1,108 @@
-# Descripción del proyecto codeLinkLibrary:
+# CODELINKLIBRARY APP
 
-Plataforma para compartir y guardar enlaces de desarrollo web.
+## DESCRIPCIÓN DEL PROYECTO:
 
-**Configuración inicial del proyecto:**
+    El equipo D conformado por Ana, tony y Helena hemos desarrollado una plataforma para compartir y guardar enlaces de desarrollo web.
 
-- Abrimos el proyecto `code .` en la terminal para abrir el directorio actual en VS Code.
+## CARACTERÍSTICAS:
 
-- Dentro del directorio de tu proyecto, ejecuta el siguiente comando para iniciar un proyecto Node.js: npm init -y
+    - Registro, login y eliminación de usuario.
+    - Creación y eliminación de post.
+    - Posibilidad de dar like a post.
+    - visibilización de post general.
+    - Visibilización de post concreto.
 
-**Instalamos e configuramos extensiones:**
+## CONFIGURACIÓN INICIAL DEL PROYECTO:
 
-- npm i / npm install: express, dotenv, mysql2, bcrypt, jsonwebtoken, morgan.
+1. Creamos repositorio en github.
 
-**Debe estar definido el script dev en el archivo package.json**
-Abre tu archivo package.json y agrega (o modifica) la sección "scripts" para incluir un script llamado dev (o el nombre que prefieras). Este script puede realizar tareas específicas que necesitas durante el desarrollo. Aquí hay un ejemplo genérico:
+2. Clonamos repositorio de github en una carpeta nueva en el pc (code-link-library ejemplo) con el comando `git clone` + `url de repositorio en github`.
 
-"scripts": {
-"dev": "node app.js"
-}
+3. Iniciamos proyecto con el comando `npm init -y`.
+4. Instalamos dependencias con `npm install` o `npm i` (+ `express, dotenv, mysql2, jsonwebtoken, bcryptjs, morgan`).
 
-**Ejecuta el comando npm run dev**
-Una vez que hayas configurado tu script dev, puedes ejecutarlo con el siguiente comando:
+5. Modificamos el módulo `package.json` (`"type":"module"` añadimos el primero), modificamos values de (`"name"`, `"description"`, `"main"`) y dentro de `"scripts"` incluimos `"dev": "lo que se necesite"` para tareas especificas del desarrollo.
 
-npm run dev
+6. Utilizamos el comando `npm run dev` despues de configurar el script dev.
 
-Esto ejecutará el script definido en la sección "scripts" de tu archivo package.json.
+7. Creamos modulo README.md con `touch README.md` (Descripción app).
+
+8. Creamos estructura básica de carpetas(`DB`, `controllers`, `middlewares`, `services`).
+
+9. Creamos módulo principal `app.js`.
+
+10. Creamos módulo ocultación archivos con `touch .gitignore`.
+
+11. Configuramos variables de entorno en un archivo `.env`. (incluimos en `.gitignore`)
+
+12. Creamos archivo de referencia `.env.example`. (dejamos solo datos de muestra)
+
+13. Creamos Pool de conexiones en db/`getPool.js`.
+
+14. Creamos la bd remoto a MySQL en db/`initDb.js`.
+
+15. Creamos en db/`postsDb.js`.
+
+16. Creamos en db/`usersDb.js`.
+
+17. Creamos middleware de JWT en middlewares/`Auth.js`.
+
+18. Creamos `Helpers.js`.
+
+19. Creamos en services `users.services.js`
+
+20. Creamos controlers para programar el funcionamiento de la app de notas.
+
+21. Creamos rutas/Endpoints (para los controllers).
+
+22. Configuramos endpoints en Postman (se hacen de uno en uno, incluiremos el archivo para los compañeros).
+
+23. Incluimos archivo del postman en el repositorio (`codelinklibrary_Api.postan_collection.son`).
+
+24. Realizamos pruebas de funcionamiento (una vez tenemos el mensaje de confirmación `Servidor corriendo en el puerto 4000`).
+
+## DEPENDENCIAS:
+
+    - express           (Agrega los módulos package.json y package-lock.json)    (El primero!!)
+    - dotenv            (Acceder al archivo .env)
+    - mysql12           (Manejador la base de datos)
+    - jsonwebtoken      (Manejador del usuario / JWT)
+    - bcrypt            (Encriptador)
+    - morgan            (Registrador de solicitudes HTTP)
+
+## ENDPOINTS
+
+- **USUARIOS**
+
+  - **POST** Registro de usuario
+  - **POST** Login de usuario
+  - **DELETE** Eliminación de usuario
+
+- **PUBLICACIONES**
+
+  - **POST** Crea un post de un usuario
+  - **DELETE** Elimina un post de un usuario
+
+- **LIKES**
+
+  - **POST** Añade un like a un post
+
+- **CONSULTAS**
+
+  - **GET** Devuelve todos los usuarios
+  - **GET** Devuelve un usuario
+  - **GET** Devuelve todos los post de todos los usuarios
+  - **GET** Devuelve todos los post de un usuario
+  - **GET** Devuelve un post de un usuario
+
+## Uso
+
+    Para ejecutar el proyecto:
+
+- En la terminal / bash usar comando `node index.js` o `npm run dev`.
+
+# Comandos útiles
+
+- Para revisar dependencias instaladas `npm list`.
+- Para revisar dependencias instaladas de primer nivel `npm list --depth=0`.
+- Para revisar dependencias en busca de vulnerabilidades conocidas utiliza `npm audit`.
