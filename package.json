@@ -14,10 +14,10 @@
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "joi": "^17.12.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "mysql2": "^3.6.5",
-    "promise": "^8.3.0"
+    "mysql2": "^3.6.5"
   },
   "devDependencies": {
     "eslint": "^8.55.0",

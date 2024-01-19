@@ -22,25 +22,24 @@ const createPost = async (title, url, description, userId) => {
 };
 
 //Función que obtiene todos los posts de todos los usuarios
-const getAllPosts = async (today) => {
+const getAllPosts = async (userId = 0) => {
   let connection;
 
   try {
     connection = await getConnection();
 
     let txtQuery = `
-    SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
+    SELECT a.title, a.url, a.description, b.username, a.createdAt,
+    COUNT(l.likeId) AS numLikes,
+    COUNT(l2.likeId) > 0 AS isLiked
+    FROM posts a JOIN users b ON a.userId = b.userId
+    LEFT JOIN likes l ON a.postId = l.postId
+    LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
+    GROUP BY a.postId ORDER BY a.createdAt DESC
     `
-
-    if(today==="true"){
-      // query que devuelve los posts de hoy
-      txtQuery = `
-        SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId
-      `
-    }
-
+  
     //Obtenemos los datos publicos de todos los posts.
-    const [posts] = await connection.query(txtQuery);
+    const [posts] = await connection.query(txtQuery, [userId]);
     return posts;
   } finally {
     if (connection) connection.release();
@@ -62,39 +61,6 @@ const getAllPostsByUserId = async (userId) => {
       [userId]
     );
     return posts;
-  } finally {
-    if (connection) connection.release();
-  }
-};
-
-//Función que obtiene un post concreto de un usuario concreto
-
-const getPostByUserIdAndPostId = async (userId, postId) => {
-  let connection;
-
-  try {
-    connection = await getConnection();
-
-    const [post] = await connection.query(
-      'SELECT * FROM posts WHERE userId = ? AND postId = ?',
-      [userId, postId]
-    );
-
-    return post;
-  } finally {
-    if (connection) connection.release();
-  }
-};
-
-//Función para borrar un post concreto de un usuario en concreto
-const deletePostByUserIdAndPostId = async (userId, postId) => {
-  let connection;
-  try {
-    connection = await getConnection();
-    await connection.query(
-      'DELETE FROM posts WHERE userId = ? AND postId = ?',
-      [userId, postId]
-    );
   } finally {
     if (connection) connection.release();
   }
@@ -169,9 +135,7 @@ const getSinglePost = async (postId) => {
       'SELECT count(*) AS numLikes FROM likes WHERE postId = ?',
       [postId]
     );
-
-    console.log( result[0].numLikes)
-  
+   
     return {
       numLikes: result[0].numLikes, 
       isLiked
@@ -185,8 +149,6 @@ export {
   createPost,
   getAllPosts,
   getAllPostsByUserId,
-  deletePostByUserIdAndPostId,
-  getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
   likePost

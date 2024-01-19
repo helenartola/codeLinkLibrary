@@ -1,34 +1,24 @@
 import {
   createPost,
   getAllPosts,
-  getAllPostsByUserId,
-  getPostByUserIdAndPostId,
   getSinglePost,
   deletePostById,
   likePost,
+  getAllPostsByUserId
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
 
-//Función que maneja las solicitudes para obtener un solo post por ID de usuario.
-
-const getPostByUserController = async (req, res, next) => {
+//Función que maneja las solicitudes para obtener un solo post.
+const getPostController = async (req, res, next) => {
   try {
-    const { userId, postId } = req.params;
+    const { postId } = req.params;
 
-    // Puedes usar las funciones específicas para obtener un post por ID de usuario y ID de post
-    const post = await getPostByUserIdAndPostId(userId, postId);
-
-    if (!post) {
-      return res.status(404).send({
-        status: 'error',
-        message: 'Post not found',
-      });
-    }
+    const post = await getSinglePost(postId);
 
     res.send({
       status: 'ok',
-      message: post,
+      data: post,
     });
   } catch (error) {
     next(error);
@@ -39,10 +29,10 @@ const getPostByUserController = async (req, res, next) => {
 
 const getPostsController = async (req, res, next) => {
   try {
-    const posts = await getAllPosts(req.query.today);
+    const posts = await getAllPosts();
     res.send({
       status: 'ok',
-      message: posts,
+      data: posts,
     });
   } catch (error) {
     next(error);
@@ -83,7 +73,7 @@ const newPostController = async (req, res, next) => {
     const postId = await createPost(title, url, description, req.userId);
     res.send({
       status: 'ok',
-      message: `Post ${postId} creado con éxito!`,
+      data: postId
     });
   } catch (error) {
     next(error);
@@ -91,14 +81,19 @@ const newPostController = async (req, res, next) => {
 };
 
 //Función que maneja las solicitudes para obtener todos los posts asociados a un usuario específico, identificado por su ID.
-
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { id } = req.params;
     const posts = await getAllPostsByUserId(id);
+
+    if (!posts || posts.length === 0) {
+      //Si no hay post del usuario lanzamos un error 404.
+      throw generateError(`No se encontraron posts para el usuario con ID ${id}`, 404);
+    }
+
     res.send({
       status: 'ok',
-      message: posts,
+      data: posts,
     });
   } catch (error) {
     next(error);
@@ -106,7 +101,6 @@ const getPostsByUserController = async (req, res, next) => {
 };
 
 //Función que maneja las solicitudes para eliminar un post.
-
 const deletePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
@@ -122,7 +116,7 @@ const deletePostController = async (req, res, next) => {
     await deletePostById(postId);
     res.send({
       status: 'ok',
-      message: 'Post eliminado con éxito',
+      data: 'Post eliminado con éxito',
     });
   } catch (error) {
     next(error);
@@ -140,9 +134,8 @@ const likePostController = async (req, res, next) => {
       throw generateError('No puedes dar like a tu propio post', 401);
     }
     const { numLikes, isLiked } = await likePost(userId, postId);
-    res.status(200).json({
+    res.send({
       status: 'ok',
-      message: 'Operacion correcta',
       data: {
         numLikes,
         isLiked,
@@ -156,10 +149,10 @@ const likePostController = async (req, res, next) => {
 //Exportamos todas las funciones definidas.
 
 export {
-  getPostByUserController,
+  getPostController,
   getPostsController,
   newPostController,
-  getPostsByUserController,
   deletePostController,
   likePostController,
+  getPostsByUserController
 };
