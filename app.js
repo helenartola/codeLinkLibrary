@@ -7,6 +7,9 @@ import express from 'express';
 // Middleware morgan que imprime en terminal el tiempo de petición
 import morgan from 'morgan';
 
+// Importamos el paquete cors
+import cors from 'cors';
+
 // Importamos las funciones que hemos creado en users.js
 import {
   newUserController,
@@ -14,7 +17,6 @@ import {
   getUserController,
   loginController,
   deleteUserController,
-
 } from './controllers/users.js';
 
 // Importamos las funciones que hemos creado en posts.js
@@ -24,8 +26,7 @@ import {
   deletePostController,
   getPostController,
   likePostController,
-  getPostsByUserController
-
+  getPostsByUserController,
 } from './controllers/posts.js';
 
 // Importamos el middleware de autenticación
@@ -36,6 +37,9 @@ import { userExists } from './middlewares/userExists.js';
 
 // Creacion del servidor con express
 const app = express();
+
+// Middleware CORS
+app.use(cors());
 
 // Le decimos a express que intente procesar los datos que se envíen en la petición en formato json.
 app.use(express.json());
