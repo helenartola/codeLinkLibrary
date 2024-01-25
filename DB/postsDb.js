@@ -29,10 +29,10 @@ const getAllPosts = async (userId = 0) => {
     connection = await getConnection();
 
     let txtQuery = `
-    SELECT a.title, a.url, a.description, b.username, a.createdAt,
+    SELECT a.*,
     COUNT(l.likeId) AS numLikes,
     COUNT(l2.likeId) > 0 AS isLiked
-    FROM posts a JOIN users b ON a.userId = b.userId
+    FROM posts a 
     LEFT JOIN likes l ON a.postId = l.postId
     LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
     GROUP BY a.postId ORDER BY a.createdAt DESC
