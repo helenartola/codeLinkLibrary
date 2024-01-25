@@ -145,11 +145,32 @@ const getSinglePost = async (postId) => {
   } 
 };
 
+//Función que busca todos los posts que continen la cadena de caracteres
+const searchPosts = async (filter) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    let finalFilter = `%${filter}%`
+
+    let txtQuery = `
+    SELECT * FROM posts WHERE UPPER(title) LIKE UPPER(?) OR UPPER(description) LIKE UPPER(?) OR UPPER(url) LIKE UPPER(?)
+    `
+    //Obtenemos los post en la búsqueda
+    const [posts] = await connection.query(txtQuery, [finalFilter, finalFilter, finalFilter]);
+    return posts;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 export {
   createPost,
   getAllPosts,
   getAllPostsByUserId,
   getSinglePost,
   deletePostById,
-  likePost
+  likePost,
+  searchPosts
 };

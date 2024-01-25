@@ -4,7 +4,8 @@ import {
   getSinglePost,
   deletePostById,
   likePost,
-  getAllPostsByUserId
+  getAllPostsByUserId,
+  searchPosts
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -26,7 +27,6 @@ const getPostController = async (req, res, next) => {
 };
 
 //Función que maneja las solicitudes para obtener todos los posts.
-
 const getPostsController = async (req, res, next) => {
   try {
     const posts = await getAllPosts();
@@ -146,13 +146,28 @@ const likePostController = async (req, res, next) => {
   }
 };
 
-//Exportamos todas las funciones definidas.
+//Función que maneja las solicitudes para obtener todos los posts en la búsqueda
+const searchPostsController = async (req, res, next) => {
+  try {
+    const{filter} = req.body;
+    
+    const posts = await searchPosts(filter);
+    res.send({
+      status: 'ok',
+      data: posts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
+//Exportamos todas las funciones definidas.
 export {
   getPostController,
   getPostsController,
   newPostController,
   deletePostController,
   likePostController,
-  getPostsByUserController
+  getPostsByUserController,
+  searchPostsController
 };

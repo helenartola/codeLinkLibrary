@@ -27,6 +27,7 @@ import {
   getPostController,
   likePostController,
   getPostsByUserController,
+  searchPostsController
 } from './controllers/posts.js';
 
 // Importamos el middleware de autenticación
@@ -63,6 +64,8 @@ app.get('/posts/user/:id', getPostsByUserController); // Obtener todos los posts
 app.get('/posts/:postId', getPostController); // Obtener un post específico de un usuario
 app.delete('/post/:postId', authUser, userExists, deletePostController); // Eliminar un post y manejar el token
 app.post('/post/:postId/like', authUser, userExists, likePostController); // Dar "like" a un post y manejar el token
+app.get('/post/search', searchPostsController); // Devuelve todos los posts que coincidan con la búsqueda
+
 
 // Middleware de ruta no encontrada
 app.use((req, res) => {
