@@ -7,15 +7,15 @@ import jwt from 'jsonwebtoken';
 const newUserController = async (req, res, next) => {
   try {
     // Extraemos los datos del cuerpo de la solicitud
-    const { email, password, name, lastName, birthDate, userName, bio } = req.body;
+    const { email, password, userName } = req.body;
 
     // Verificamos que se hayan recibido todos los campos obligatorios
-    if (!email || !password || !name || !lastName || !birthDate ||!userName) {
+    if (!email || !password || !userName) {
       throw generateError('No se han recibido todos los campos obligatorios.', 400);
     }
 
     // Creamos un nuevo usuario en la base de datos
-    const id = await createUser(email, password, name, lastName, birthDate, userName, bio);
+    const id = await createUser(email, password, userName);
 
     // Respondemos con el ID del usuario creado
     res.send({

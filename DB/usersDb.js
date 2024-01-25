@@ -11,11 +11,7 @@ import bcrypt from 'bcrypt';
 const createUser = async (
   email,
   password,
-  name,
-  lastName,
-  birthDate,
-  userName,
-  bio = ''
+  userName
 ) => {
   let connection;
 
@@ -58,6 +54,7 @@ const createUser = async (
     }
 
     //Comprobamos que la fecha resibida es válida y la formateamos correctamente
+    /*
     let finalDate;
     {
       let dateObj = new Date(birthDate);
@@ -72,14 +69,15 @@ const createUser = async (
         throw generateError('Fecha de nacimiento invalida', 400);
       }
     }
+    */
 
     // Encriptamos la password
     const passwordHash = await bcrypt.hash(password, 8);
 
     //Creamos el usuario
     const [newUser] = await connection.query(
-      `INSERT INTO users (email, password, name, lastName, birthDate, userName, bio) VALUES(?,?,?,?,?,?,?)`,
-      [email, passwordHash, name, lastName, finalDate, userName, bio]
+      `INSERT INTO users (email, password,  userName) VALUES(?,?,?)`,
+      [email, passwordHash, userName]
     );
     //Devolvemos el id
     //insertId nos da el Id del elemento que acabamos de introducir
