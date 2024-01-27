@@ -1,3 +1,6 @@
+// Importo 'querystring' sin desestructuración, ya que decodeURIComponent está disponible globalmente
+//import querystring from 'querystring';
+
 import {
   createPost,
   getAllPosts,
@@ -10,13 +13,11 @@ import {
 
 import { generateError } from '../helpers.js';
 
-//Función que maneja las solicitudes para obtener un solo post.
+// Controlador para obtener un post específico
 const getPostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
-
     const post = await getSinglePost(postId);
-
     res.send({
       status: 'ok',
       data: post,
@@ -26,7 +27,7 @@ const getPostController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para obtener todos los posts.
+// Controlador para obtener todos los posts
 const getPostsController = async (req, res, next) => {
   try {
     const posts = await getAllPosts();
@@ -39,8 +40,7 @@ const getPostsController = async (req, res, next) => {
   }
 };
 
-// Función que comprueba que la url sea válida.
-
+// Función para validar si una cadena es una URL válida
 const isValidHttpUrl = (string) => {
   try {
     const newUrl = new URL(string);
@@ -50,13 +50,11 @@ const isValidHttpUrl = (string) => {
   }
 };
 
-//Función que maneja las solicitudes para crear un nuevo post.
-// Verifica si el usuario está autenticado, y valida los datos del post antes de crearlo.
+// Controlador para crear un nuevo post
 const newPostController = async (req, res, next) => {
   try {
     const { title, url, description } = req.body;
 
-    // Verificar si userId está presente en req
     if (!req.userId) {
       throw generateError('Usuario no autenticado', 401);
     }
@@ -65,7 +63,6 @@ const newPostController = async (req, res, next) => {
       throw generateError('Titulo, url y texto obligatorio', 400);
     }
 
-    // Validamos que la descripción sea una URL válida.
     if (!isValidHttpUrl(url)) {
       throw generateError('URL no válida', 400);
     }
@@ -80,14 +77,13 @@ const newPostController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para obtener todos los posts asociados a un usuario específico, identificado por su ID.
+// Controlador para obtener todos los posts de un usuario específico
 const getPostsByUserController = async (req, res, next) => {
   try {
     const { id } = req.params;
     const posts = await getAllPostsByUserId(id);
 
     if (!posts || posts.length === 0) {
-      //Si no hay post del usuario lanzamos un error 404.
       throw generateError(`No se encontraron posts para el usuario con ID ${id}`, 404);
     }
 
@@ -100,19 +96,16 @@ const getPostsByUserController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para eliminar un post.
+// Controlador para eliminar un post específico
 const deletePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
-
-    //Obtener información del post para verificar si el usuario es el creador del post.
     const post = await getSinglePost(postId);
 
-    //Verifica si el usuario es el creador del post.
     if (post.userId != req.userId) {
       throw generateError('No tienes permisos para borrar este post', 401);
     }
-    //Eliminar el post.
+
     await deletePostById(postId);
     res.send({
       status: 'ok',
@@ -123,16 +116,18 @@ const deletePostController = async (req, res, next) => {
   }
 };
 
+// Controlador para dar like a un post específico
 const likePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const userId = req.userId; // Suponiendo que ya has autenticado al usuario.
+    const userId = req.userId;
 
     const post = await getSinglePost(postId);
-    //El usuario no puede dar likes a su propio post
+
     if (post.userId == req.userId) {
       throw generateError('No puedes dar like a tu propio post', 401);
     }
+
     const { numLikes, isLiked } = await likePost(userId, postId);
     res.send({
       status: 'ok',
@@ -146,12 +141,17 @@ const likePostController = async (req, res, next) => {
   }
 };
 
-//Función que maneja las solicitudes para obtener todos los posts en la búsqueda
+// Controlador para buscar posts según un filtro
 const searchPostsController = async (req, res, next) => {
   try {
-    const{filter} = req.body;
+    const filter = req.query.filter;
     
+    // Decodifica el filtro utilizando 'querystring'
+    //const decodedFilter = querystring.decode(filter);
+    
+    // Realiza la búsqueda de posts según el filtro decodificado
     const posts = await searchPosts(filter);
+
     res.send({
       status: 'ok',
       data: posts,
@@ -161,7 +161,7 @@ const searchPostsController = async (req, res, next) => {
   }
 };
 
-//Exportamos todas las funciones definidas.
+
 export {
   getPostController,
   getPostsController,
