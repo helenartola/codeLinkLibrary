@@ -8,11 +8,7 @@ import bcrypt from 'bcrypt';
 
 //Creamos función async que recibe un email y una password.
 //Crea un usuario en la base de datos y devuelve su id
-const createUser = async (
-  email,
-  password,
-  userName
-) => {
+const createUser = async (email, password, userName) => {
   let connection;
 
   try {
@@ -96,7 +92,7 @@ const getAllUsers = async () => {
     connection = await getConnection();
     const [users] = await connection.query(
       `
-      SELECT * FROM users WHERE userId = ?
+      SELECT * FROM users 
       `
     );
     return users;
@@ -112,7 +108,7 @@ const getUserById = async (id) => {
     connection = await getConnection();
     const [user] = await connection.query(
       `
-      SELECT * FROM users
+      SELECT * FROM users WHERE userId = ?
       `,
       [id]
     );
@@ -134,7 +130,7 @@ const getUserLoginDataByEmail = async (email) => {
     connection = await getConnection();
     const [user] = await connection.query(
       `
-      SELECT userId, password FROM users WHERE email = ?`,
+      SELECT userId, userName, password FROM users WHERE email = ?`,
       [email]
     );
 

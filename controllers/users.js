@@ -1,5 +1,11 @@
 import { generateError } from '../helpers.js';
-import { createUser, getAllUsers, getUserById, getUserLoginDataByEmail, deleteUserById } from '../DB/usersDb.js';
+import {
+  createUser,
+  getAllUsers,
+  getUserById,
+  getUserLoginDataByEmail,
+  deleteUserById,
+} from '../DB/usersDb.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -11,7 +17,10 @@ const newUserController = async (req, res, next) => {
 
     // Verificamos que se hayan recibido todos los campos obligatorios
     if (!email || !password || !userName) {
-      throw generateError('No se han recibido todos los campos obligatorios.', 400);
+      throw generateError(
+        'No se han recibido todos los campos obligatorios.',
+        400
+      );
     }
 
     // Creamos un nuevo usuario en la base de datos
@@ -69,8 +78,11 @@ const loginController = async (req, res, next) => {
     const { email, password } = req.body;
 
     // Verificamos que se hayan proporcionado el email y la contraseña
-    if (!email || !password) {  
-      throw generateError('Es necesario introducir todos los campos obligatorios.', 400);
+    if (!email || !password) {
+      throw generateError(
+        'Es necesario introducir todos los campos obligatorios.',
+        400
+      );
     }
 
     // Obtenemos los datos privados del usuario por su email
@@ -91,7 +103,10 @@ const loginController = async (req, res, next) => {
     // Respondemos con el token generado
     res.send({
       status: 'OK',
-      data: token,
+      data: {
+        token,
+        userName: user.userName,
+      },
     });
   } catch (error) {
     next(error);
@@ -115,9 +130,13 @@ const deleteUserController = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
 
 // Exportamos las funciones que importaremos en el server.js
-export { newUserController, getAllUsersController, getUserController, loginController, deleteUserController };
-
-
+export {
+  newUserController,
+  getAllUsersController,
+  getUserController,
+  loginController,
+  deleteUserController,
+};
