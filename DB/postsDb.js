@@ -61,7 +61,7 @@ const getAllPostsByUserId = async (userId) => {
     // Consultar la base de datos para obtener los posts de un usuario específico
     const [posts] = await connection.query(
       `
-      SELECT a.title, a.url, a.description, b.username, a.createdAt FROM posts a, users b where a.userId = b.userId and a.userId = ?
+      SELECT a.* FROM posts a, users b where a.userId = b.userId and a.userId = ?
       `,
       [userId]
     );
