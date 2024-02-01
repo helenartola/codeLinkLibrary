@@ -106,6 +106,7 @@ const loginController = async (req, res, next) => {
       data: {
         token,
         userName: user.userName,
+        userId: user.userId
       },
     });
   } catch (error) {
