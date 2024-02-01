@@ -37,6 +37,17 @@ const main = async () => {
       )	
     `);
 
+    //Creamos tabla de categorias.
+     await pool.query(`
+     CREATE TABLE IF NOT EXISTS categorias (
+      id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
+      name VARCHAR(50) UNIQUE NOT NULL,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP 
+      )
+    `);
+
+
     // Creamos la tabla de posts.
     await connection.query(`
       CREATE TABLE IF NOT EXISTS posts (
@@ -47,6 +58,7 @@ const main = async () => {
         userId INT,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
         FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+        FOREIGN KEY (categoriaId) REFERENCES categorias(id)
       )
     `);
 
@@ -64,6 +76,38 @@ const main = async () => {
     `);
 
     console.log( 'Tablas creadas!...')
+
+        //Insertamos categorias en su tabla
+        await pool.query(`
+        INSERT INTO categorias(name)
+        VALUES 
+           ("HTML"),
+           ("CSS"),
+           ("JAVASCRIPT"),
+           ("SQL"),
+           ("NODE.JS"),
+           ("REACT.JS"),
+           ("JAVA"),
+           ("PYTHON"),
+           ("C"),
+           ("C++"),
+           ("C#"),
+           ("PHP"),
+           ("RUBY"),
+           ("VISUAL BASIC.NET"),
+           ("TYPESCRIPT"),
+           ("POSTSCRIPT"),
+           ("SWIFT"),
+           ("RUST"),
+           ("GIT"),
+           ("Otros");
+           ;
+            `);
+    
+    
+        console.log("Categorias creadas!");
+        //Aviso de Final de proceso de creación de la BD.
+        console.log("¡Base de Datos completa!✅");
     
   } catch (err) {
     // Si hay un error, imprimimos el error y actualizamos el código de retorno a 1.
