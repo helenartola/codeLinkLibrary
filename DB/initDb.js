@@ -13,12 +13,12 @@ const main = async () => {
     // Obtenemos una conexión del pool utilizando la función getConnection.
     connection = await getConnection();
 
-    console.log( 'Borrando tablas!...')
+    console.log('Borrando tablas!...');
 
-    // Ejecutamos una consulta SQL para borrar las tablas (likes, users, posts).
-    await connection.query('DROP TABLE IF EXISTS likes, users, posts');
+    // Ejecutamos una consulta SQL para borrar las tablas (likes, users, posts, comments, categorias).
+    await connection.query('DROP TABLE IF EXISTS likes, users, posts, comments, categorias');
 
-    console.log( 'Creando tablas!...')
+    console.log('Creando tablas!...');
 
     // Creamos la tabla de usuarios.
     await connection.query(`
@@ -37,8 +37,8 @@ const main = async () => {
       )	
     `);
 
-    //Creamos tabla de categorias.
-     await pool.query(`
+    // Creamos la tabla de categorias.
+    await connection.query(`
      CREATE TABLE IF NOT EXISTS categorias (
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
       name VARCHAR(50) UNIQUE NOT NULL,
@@ -46,7 +46,6 @@ const main = async () => {
       modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP 
       )
     `);
-
 
     // Creamos la tabla de posts.
     await connection.query(`
@@ -56,8 +55,9 @@ const main = async () => {
         url VARCHAR(200) NOT NULL,
         description TEXT NOT NULL,
         userId INT,
+        categoriaId INT,  -- Agregamos la referencia a la categoría
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-        FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+        FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
         FOREIGN KEY (categoriaId) REFERENCES categorias(id)
       )
     `);
@@ -75,10 +75,23 @@ const main = async () => {
       )
     `);
 
-    console.log( 'Tablas creadas!...')
+    // Creamos la tabla de comentarios.
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS comments (
+        commentId INT AUTO_INCREMENT PRIMARY KEY, 
+        postId INT,
+        userId INT,
+        text TEXT NOT NULL,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (postId) REFERENCES posts(postId) ON DELETE CASCADE,
+        FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE
+      )
+    `);
 
-        //Insertamos categorias en su tabla
-        await pool.query(`
+    console.log('Tablas creadas!...');
+
+    // Insertamos categorias en su tabla
+    await connection.query(`
         INSERT INTO categorias(name)
         VALUES 
            ("HTML"),
@@ -103,12 +116,11 @@ const main = async () => {
            ("Otros");
            ;
             `);
-    
-    
-        console.log("Categorias creadas!");
-        //Aviso de Final de proceso de creación de la BD.
-        console.log("¡Base de Datos completa!✅");
-    
+
+    console.log("Categorias creadas!");
+    // Aviso de Final de proceso de creación de la BD.
+    console.log("¡Base de Datos completa!✅");
+
   } catch (err) {
     // Si hay un error, imprimimos el error y actualizamos el código de retorno a 1.
     console.error(err);
