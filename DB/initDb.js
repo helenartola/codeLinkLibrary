@@ -78,7 +78,7 @@ const main = async () => {
     console.log( 'Tablas creadas!...')
 
         //Insertamos categorias en su tabla
-        await pool.query(`
+        await connection.query(`
         INSERT INTO categorias(name)
         VALUES 
            ("HTML"),
