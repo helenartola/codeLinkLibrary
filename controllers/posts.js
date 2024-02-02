@@ -1,6 +1,3 @@
-// Importo 'querystring' sin desestructuración, ya que decodeURIComponent está disponible globalmente
-//import querystring from 'querystring';
-
 import {
   createPost,
   getAllPosts,
@@ -8,10 +5,22 @@ import {
   deletePostById,
   likePost,
   getAllPostsByUserId,
-  searchPosts
+  searchPosts,
+  createComment,  
+  getCommentsByPostId 
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
+
+// Función para validar si una cadena es una URL válida
+const isValidHttpUrl = (string) => {
+  try {
+    const newUrl = new URL(string);
+    return newUrl.protocol === 'http:' || newUrl.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
 
 // Controlador para obtener un post específico
 const getPostController = async (req, res, next) => {
@@ -37,16 +46,6 @@ const getPostsController = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-  }
-};
-
-// Función para validar si una cadena es una URL válida
-const isValidHttpUrl = (string) => {
-  try {
-    const newUrl = new URL(string);
-    return newUrl.protocol === 'http:' || newUrl.protocol === 'https:';
-  } catch {
-    return false;
   }
 };
 
@@ -146,9 +145,6 @@ const searchPostsController = async (req, res, next) => {
   try {
     const filter = req.query.filter;
     
-    // Decodifica el filtro utilizando 'querystring'
-    //const decodedFilter = querystring.decode(filter);
-    
     // Realiza la búsqueda de posts según el filtro decodificado
     const posts = await searchPosts(filter);
 
@@ -161,6 +157,46 @@ const searchPostsController = async (req, res, next) => {
   }
 };
 
+// Controlador para obtener comentarios de un post específico
+const getCommentsByPostIdController = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    // Lógica para obtener los comentarios del post con ID postId
+    const comentarios = await getCommentsByPostId(postId);
+
+    res.send({
+      status: 'ok',
+      data: comentarios,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Controlador para crear un nuevo comentario en un post
+const createCommentController = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const { text } = req.body;
+
+    // Validaciones adicionales para el texto del comentario
+    if (!text || text.trim() === '') {
+      throw generateError('El comentario no puede estar vacío', 400);
+    }
+
+    // Lógica para crear el comentario en el post con ID postId
+    const nuevoComentarioId = await createComment(postId, req.userId, text);
+
+    res.send({
+      status: 'ok',
+      data: {
+        nuevoComentarioId,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 export {
   getPostController,
@@ -169,5 +205,7 @@ export {
   deletePostController,
   likePostController,
   getPostsByUserController,
-  searchPostsController
+  searchPostsController,
+  getCommentsByPostIdController,
+  createCommentController,
 };

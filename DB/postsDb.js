@@ -121,6 +121,9 @@ const likePost = async (userId, postId) => {
   try {
     connection = await getConnection();
 
+    // Iniciar transacción para garantizar la integridad de la base de datos
+    await connection.beginTransaction();
+
     let isLiked;
 
     // Verificar si el usuario ya dio like al post
@@ -151,11 +154,18 @@ const likePost = async (userId, postId) => {
       [postId]
     );
 
+    // Confirmar la transacción
+    await connection.commit();
+
     // Devolver el número total de likes y si el usuario dio like
     return {
       numLikes: result[0].numLikes,
       isLiked,
     };
+  } catch (error) {
+    // Revertir la transacción en caso de error
+    if (connection) await connection.rollback();
+    throw error; // Propagar el error después de revertir la transacción
   } finally {
     if (connection) connection.release();
   }
@@ -186,6 +196,65 @@ const searchPosts = async (filter) => {
   }
 };
 
+// Función para crear un nuevo comentario en la base de datos
+const createComment = async (postId, userId, text) => {
+  let connection;
+
+  try {
+    // Validaciones
+    if (!postId || !userId || !text) {
+      throw new Error('Todos los campos son obligatorios.');
+    }
+
+    // Otras validaciones
+    connection = await getConnection();
+
+    const [result] = await connection.query(
+      `
+      INSERT INTO comments (postId, userId, text) VALUES (?, ?, ?)
+      `,
+      [postId, userId, text]
+    );
+
+    return result.insertId;
+  } catch (error) {
+    // Manejo de Errores
+    console.error('Error al crear un comentario:', error.message);
+    throw new Error('No se pudo crear el comentario. Por favor, inténtalo de nuevo.');
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+// Función para obtener todos los comentarios asociados a una publicación
+const getCommentsByPostId = async (postId) => {
+  let connection;
+
+  try {
+    // Validaciones
+    if (!postId) {
+      throw new Error('El postId es obligatorio.');
+    }
+
+    connection = await getConnection();
+
+    const [comments] = await connection.query(
+      `
+      SELECT * FROM comments WHERE postId = ?
+      `,
+      [postId]
+    );
+
+    return comments;
+  } catch (error) {
+    // Manejo de Errores
+    console.error('Error al obtener comentarios:', error.message);
+    throw new Error('No se pudieron obtener los comentarios. Por favor, inténtalo de nuevo.');
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -195,5 +264,6 @@ export {
   deletePostById,
   likePost,
   searchPosts,
+  createComment,
+  getCommentsByPostId,
 };
-
