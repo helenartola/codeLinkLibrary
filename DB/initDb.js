@@ -38,7 +38,7 @@ const main = async () => {
     `);
 
     //Creamos tabla de categorias.
-     await pool.query(`
+     await connection.query(`
      CREATE TABLE IF NOT EXISTS categorias (
       id INT UNSIGNED PRIMARY KEY AUTO_INCREMENT,
       name VARCHAR(50) UNIQUE NOT NULL,
