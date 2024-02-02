@@ -27,7 +27,8 @@ import {
   getPostController,
   likePostController,
   getPostsByUserController,
-  searchPostsController
+  searchPostsController,
+  getCommentsByPostIdController
 } from './controllers/posts.js';
 
 // Importamos el middleware de autenticación
@@ -57,7 +58,6 @@ app.delete('/users', authUser, userExists, deleteUserController); // Eliminar un
 //El profesor pide que el app.delete sea /users/:id porque era como estaba antes, pero he modificado el id porque un usuario sólo puede borrarse a si mismo.
 
 // Rutas de posts
-
 app.post('/post', authUser, userExists, newPostController); // Crear un nuevo post
 app.get('/posts', getPostsController); // Devuelve todos los posts de todos los usuarios
 app.get('/posts/user/:id', getPostsByUserController); // Obtener todos los posts de un usuario
@@ -65,6 +65,7 @@ app.get('/posts/:postId', getPostController); // Obtener un post específico de 
 app.delete('/post/:postId', authUser, userExists, deletePostController); // Eliminar un post y manejar el token
 app.post('/post/:postId/like', authUser, userExists, likePostController); // Dar "like" a un post y manejar el token
 app.get('/post/search', searchPostsController); // Devuelve todos los posts que coincidan con la búsqueda
+app.get('/post/:postId/comments', getCommentsByPostIdController); // Devuelve todos los comentarios del post
 
 
 // Middleware de ruta no encontrada
