@@ -13,11 +13,6 @@ const main = async () => {
     // Obtenemos una conexión del pool utilizando la función getConnection.
     connection = await getConnection();
 
-    console.log('Borrando tablas!...');
-
-    // Ejecutamos una consulta SQL para borrar las tablas (likes, users, posts, comments, categorias).
-    await connection.query('DROP TABLE IF EXISTS likes, users, posts, comments, categorias');
-
     console.log('Creando tablas!...');
 
     // Creamos la tabla de usuarios.
@@ -55,7 +50,7 @@ const main = async () => {
         url VARCHAR(200) NOT NULL,
         description TEXT NOT NULL,
         userId INT,
-        categoriaId INT,  -- Agregamos la referencia a la categoría
+        categoriaId INT UNSIGNED,  -- Agregamos la referencia a la categoría
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
         FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
         FOREIGN KEY (categoriaId) REFERENCES categorias(id)
