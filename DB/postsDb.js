@@ -209,6 +209,7 @@ const createComment = async (postId, userId, text) => {
     // Otras validaciones
     connection = await getConnection();
 
+    // Usar el método INSERT para añadir un nuevo comentario
     const [result] = await connection.query(
       `
       INSERT INTO comments (postId, userId, text) VALUES (?, ?, ?)
@@ -216,11 +217,16 @@ const createComment = async (postId, userId, text) => {
       [postId, userId, text]
     );
 
+    // Verificar si se insertó correctamente y devolver el ID del comentario
+    if (result.affectedRows !== 1) {
+      throw new Error('No se pudo insertar el comentario. Afectó a ' + result.affectedRows + ' filas.');
+    }
+
     return result.insertId;
   } catch (error) {
     // Manejo de Errores
     console.error('Error al crear un comentario:', error.message);
-    throw new Error('No se pudo crear el comentario. Por favor, inténtalo de nuevo.');
+    throw error; // Lanzar el error original para obtener más detalles
   } finally {
     if (connection) connection.release();
   }
