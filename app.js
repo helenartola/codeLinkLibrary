@@ -28,7 +28,8 @@ import {
   likePostController,
   getPostsByUserController,
   searchPostsController,
-  getCommentsByPostIdController
+  getCommentsByPostIdController,
+  createCommentController
 } from './controllers/posts.js';
 
 // Importamos el middleware de autenticación
@@ -66,6 +67,8 @@ app.delete('/post/:postId', authUser, userExists, deletePostController); // Elim
 app.post('/post/:postId/like', authUser, userExists, likePostController); // Dar "like" a un post y manejar el token
 app.get('/post/search', searchPostsController); // Devuelve todos los posts que coincidan con la búsqueda
 app.get('/post/:postId/comments', getCommentsByPostIdController); // Devuelve todos los comentarios del post
+app.post('/post/:postId/comments', authUser, userExists, createCommentController);//Crear comentarios en post
+
 
 
 // Middleware de ruta no encontrada
