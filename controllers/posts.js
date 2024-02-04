@@ -47,7 +47,8 @@ const getPostController = async (req, res, next) => {
 // Controlador para obtener todos los posts
 const getPostsController = async (req, res, next) => {
   try {
-    const posts = await getAllPosts();
+    const { userid } = req.headers;
+    const posts = await getAllPosts(userid ? userid : 0);
     res.send({
       status: 'ok',
       data: posts,
