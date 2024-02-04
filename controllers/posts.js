@@ -1,3 +1,4 @@
+// Importa las funciones necesarias
 import {
   createPost,
   getAllPosts,
@@ -6,8 +7,8 @@ import {
   likePost,
   getAllPostsByUserId,
   searchPosts,
-  createComment,  
-  getCommentsByPostId 
+  createComment,
+  getCommentsByPostId,
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -27,9 +28,16 @@ const getPostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
     const post = await getSinglePost(postId);
+
+    // Incluye el número total de "likes" en la respuesta
+    const postWithLikes = {
+      ...post,
+      numLikes: post.numLikes || 0,
+    };
+
     res.send({
       status: 'ok',
-      data: post,
+      data: postWithLikes,
     });
   } catch (error) {
     next(error);
@@ -69,7 +77,7 @@ const newPostController = async (req, res, next) => {
     const postId = await createPost(title, url, description, req.userId);
     res.send({
       status: 'ok',
-      data: postId
+      data: postId,
     });
   } catch (error) {
     next(error);
@@ -128,6 +136,10 @@ const likePostController = async (req, res, next) => {
     }
 
     const { numLikes, isLiked } = await likePost(userId, postId);
+
+    // Actualiza el número total de "likes" en el post
+    post.numLikes = numLikes;
+
     res.send({
       status: 'ok',
       data: {
@@ -144,7 +156,7 @@ const likePostController = async (req, res, next) => {
 const searchPostsController = async (req, res, next) => {
   try {
     const filter = req.query.filter;
-    
+
     // Realiza la búsqueda de posts según el filtro decodificado
     const posts = await searchPosts(filter);
 

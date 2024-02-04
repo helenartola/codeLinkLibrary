@@ -1,5 +1,5 @@
-import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
+import { generateError } from '../helpers.js';
 
 // Función para crear un nuevo post en la base de datos
 const createPost = async (title, url, description, userId) => {
