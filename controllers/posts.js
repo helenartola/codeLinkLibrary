@@ -201,9 +201,7 @@ const createCommentController = async (req, res, next) => {
 
     res.send({
       status: 'ok',
-      data: {
-        nuevoComentarioId,
-      },
+      data: nuevoComentarioId
     });
   } catch (error) {
     next(error);
