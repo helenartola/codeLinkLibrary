@@ -34,15 +34,16 @@ const getAllPosts = async (userId = 0) => {
     // Consultar la base de datos para obtener todos los posts con información adicional
     const [posts] = await connection.query(
       `
-      SELECT a.*,
+      SELECT a.*, b.userName, b.useravatar,
       COUNT(l.likeId) AS numLikes,
       COUNT(l2.likeId) > 0 AS isLiked,
       COUNT(s.savedPostId) > 0 AS isSaved
       FROM posts a 
+      JOIN users b ON a.userId = b.userId
       LEFT JOIN likes l ON a.postId = l.postId
       LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
       LEFT JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
-      GROUP BY a.postId ORDER BY a.createdAt DESC
+      GROUP BY a.postId ORDER BY a.createdAt DESC;
       `,
       [userId, userId]
     );
