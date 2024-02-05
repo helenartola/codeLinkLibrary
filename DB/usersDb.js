@@ -144,20 +144,34 @@ const getUserLoginDataByEmail = async (email) => {
 };
 
 const updateUserById = async (userId, updatedFields) => {
-  
-    // Obtiene el usuario por ID
-    const existingUser = await getUserById(userId);
+  let connection;
+  try {
+    connection = await getConnection();
+    await connection.query(
+      'UPDATE users SET name=?, lastName=?, birthDate=?, bio=? WHERE userId=?',
+      [
+        updatedFields.firstName,
+        updatedFields.lastName,
+        updatedFields.birthDate,
+        updatedFields.bio,
+        userId,
+      ]
+    );
 
-    // Actualiza los campos proporcionados
-    const updatedUser = {
-      ...existingUser,
-      ...updatedFields,
-    };
+    // Obtén y devuelve el usuario actualizado
+    const [updatedUser] = await connection.query(
+      'SELECT * FROM users WHERE userId = ?',
+      [userId]
+    );
 
-    // Realiza la actualización en SQL
-    await updateUserById(userId, updatedUser);
+    if (updatedUser.length === 0) {
+      throw generateError("No se pudo encontrar el usuario actualizado., 500");
+    }
 
-    return updatedUser;
+    return updatedUser[0];
+  } finally {
+    if (connection) connection.release();
+  }
 };
 
 const deleteUserById = async (userId) => {
