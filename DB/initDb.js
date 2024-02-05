@@ -85,6 +85,21 @@ const main = async () => {
 
     console.log('Tablas creadas!...');
 
+    // Creamos la tabla de posts guardados.
+await connection.query(`
+CREATE TABLE IF NOT EXISTS saved_posts (
+  savedPostId INT AUTO_INCREMENT PRIMARY KEY,
+  userId INT,
+  postId INT,
+  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
+  FOREIGN KEY (postId) REFERENCES posts(postId) ON DELETE CASCADE,
+  UNIQUE (userId, postId)
+)
+`);
+
+console.log('Tabla de posts guardados creada!...');
+
     // Insertamos categorias en su tabla
     await connection.query(`
         INSERT INTO categorias(name)
