@@ -36,13 +36,15 @@ const getAllPosts = async (userId = 0) => {
       `
       SELECT a.*,
       COUNT(l.likeId) AS numLikes,
-      COUNT(l2.likeId) > 0 AS isLiked
+      COUNT(l2.likeId) > 0 AS isLiked,
+      COUNT(s.savedPostId) > 0 AS isSaved
       FROM posts a 
       LEFT JOIN likes l ON a.postId = l.postId
       LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
+      LEFT JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
       GROUP BY a.postId ORDER BY a.createdAt DESC
       `,
-      [userId]
+      [userId, userId]
     );
 
     // Devolver la lista de posts con información adicional
@@ -279,7 +281,7 @@ const savePost = async (userId, postId) => {
       throw generateError('No puedes guardar tu propio post', 400);
     }
 
-    
+
     // Insertar un nuevo registro en la tabla de posts guardados
     await connection.query(
       'INSERT INTO saved_posts (userId, postId) VALUES (?, ?)',
