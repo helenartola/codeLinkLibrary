@@ -143,6 +143,23 @@ const getUserLoginDataByEmail = async (email) => {
   }
 };
 
+const updateUserById = async (userId, updatedFields) => {
+  
+    // Obtiene el usuario por ID
+    const existingUser = await getUserById(userId);
+
+    // Actualiza los campos proporcionados
+    const updatedUser = {
+      ...existingUser,
+      ...updatedFields,
+    };
+
+    // Realiza la actualización en SQL
+    await updateUserById(userId, updatedUser);
+
+    return updatedUser;
+};
+
 const deleteUserById = async (userId) => {
   let connection;
   try {
@@ -158,5 +175,6 @@ export {
   getAllUsers,
   getUserById,
   getUserLoginDataByEmail,
+  updateUserById,
   deleteUserById,
 };
