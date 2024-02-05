@@ -59,7 +59,7 @@ app.post('/user/register', newUserController); // Crea un nuevo usuario
 app.get('/users', authUser, userExists, getAllUsersController); // Obtiene todos los usuarios autenticados
 app.get('/user/:id', authUser, userExists, getUserController); // Obtiene un usuario específico
 app.post('/users/login', loginController); // Inicia sesión
-app.post('/settings', userSettingsController); // Ajustes de usuario
+app.post('/settings', authUser, userExists, userSettingsController); // Ajustes de usuario
 app.delete('/users', authUser, userExists, deleteUserController); // Elimina un usuario y maneja el token
 
 // Rutas relacionadas con los posts
