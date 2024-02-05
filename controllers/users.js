@@ -4,6 +4,7 @@ import {
   getAllUsers,
   getUserById,
   getUserLoginDataByEmail,
+  updateUserById,//import de ajustes de usuario
   deleteUserById,
 } from '../DB/usersDb.js';
 import bcrypt from 'bcrypt';
@@ -114,6 +115,40 @@ const loginController = async (req, res, next) => {
   }
 };
 
+// Controlador para los ajustes de usuario
+const userSettingsController = async (req, res, next) => {
+  try {
+    // Obtén el userId del token
+    const userId = req.userId;
+
+    const { firstName, lastName, birthDate, bio } = req.body;
+
+    // Verifica que al menos uno de los campos esté presente
+    if (!firstName && !lastName && !birthDate && !bio) {
+      throw generateError(
+        'Se requiere al menos un campo para actualizar.',
+        400
+      );
+    }
+
+    // Actualiza la información del usuario en SQL
+    const updatedUser = await updateUserById(userId, {
+      firstName,
+      lastName,
+      birthDate,
+      bio,
+    });
+
+    // Respuesta con el OK
+    res.send({
+      status: 'ok',
+      data: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Controlador para borrar un usuario
 const deleteUserController = async (req, res, next) => {
   try {
@@ -139,5 +174,6 @@ export {
   getAllUsersController,
   getUserController,
   loginController,
+  userSettingsController,//controlador de ajustes
   deleteUserController,
 };
