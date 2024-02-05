@@ -250,7 +250,9 @@ const getCommentsByPostId = async (postId) => {
 
     const [comments] = await connection.query(
       `
-      SELECT a*, b.username, b.useravatar FROM comments a, users b, WHERE a.userId = b.userId AND a.postId = ?
+      SELECT a.*, b.userName, b.userAvatar 
+      FROM comments a, users b 
+      WHERE a.userId = b.userId AND a.postId = ?
       `,
       [postId]
     );
