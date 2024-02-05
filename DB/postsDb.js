@@ -269,6 +269,17 @@ const savePost = async (userId, postId) => {
   try {
     connection = await getConnection();
 
+   // Verificar si el usuario está intentando guardar su propio post
+    const [post] = await connection.query(
+      'SELECT userId FROM posts WHERE postId = ?',
+      [postId]
+    );
+
+    if (post.length === 1 && post[0].userId === userId) {
+      throw generateError('No puedes guardar tu propio post', 400);
+    }
+
+    
     // Insertar un nuevo registro en la tabla de posts guardados
     await connection.query(
       'INSERT INTO saved_posts (userId, postId) VALUES (?, ?)',
