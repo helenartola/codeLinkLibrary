@@ -298,6 +298,23 @@ const getSavedPosts = async (userId) => {
   }
 };
 
+// Función para eliminar un post guardado por su ID y el ID del usuario
+const unsavePost = async (userId, postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Eliminar el post guardado por su ID y el ID del usuario
+    await connection.query(
+      'DELETE FROM saved_posts WHERE userId = ? AND postId = ?',
+      [userId, postId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -310,5 +327,6 @@ export {
   createComment,
   getCommentsByPostId,
   savePost,
-  getSavedPosts
+  getSavedPosts,
+  unsavePost,
 };

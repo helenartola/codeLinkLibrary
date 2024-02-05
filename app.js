@@ -32,7 +32,8 @@ import {
   getCommentsByPostIdController,
   createCommentController,
   savePostController,
-  getSavedPostsController
+  getSavedPostsController,
+  unsavePostController
 } from './controllers/posts.js';
 
 // Importa el middleware de autenticación
@@ -75,6 +76,7 @@ app.post('/post/:postId/comments', authUser, userExists, createCommentController
 // Rutas relacionadas con la gestión de posts guardados por los usuarios
 app.post('/post/:postId/save', authUser, userExists, savePostController); // Guarda un post para un usuario específico
 app.get('/posts/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
+app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Ruta para eliminar un post guardado por un usuario
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {

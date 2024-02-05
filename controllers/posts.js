@@ -245,6 +245,29 @@ const getSavedPostsController = async (req, res, next) => {
   }
 };
 
+// Importa la función unsavePost
+import { unsavePost } from '../DB/postsDb.js';
+
+// ... (otras funciones)
+
+// Controlador para eliminar un post guardado por un usuario
+const unsavePostController = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.userId;
+
+    // Llamamos a la función para eliminar el post guardado
+    await unsavePost(userId, postId);
+
+    res.send({
+      status: 'ok',
+      data: 'Post eliminado de favoritos con éxito',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getPostController,
   getPostsController,
@@ -256,5 +279,6 @@ export {
   getCommentsByPostIdController,
   createCommentController,
   savePostController,
-  getSavedPostsController
+  getSavedPostsController,
+  unsavePostController,
 };
