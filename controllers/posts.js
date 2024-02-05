@@ -9,6 +9,7 @@ import {
   searchPosts,
   createComment,
   getCommentsByPostId,
+  savePost, getSavedPosts 
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -209,6 +210,41 @@ const createCommentController = async (req, res, next) => {
   }
 };
 
+// Controlador para guardar un post
+const savePostController = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const userId = req.userId; // Obtener el ID del usuario desde el token
+
+    // Lógica para guardar el post
+    await savePost(userId, postId);
+
+    res.send({
+      status: 'ok',
+      data: 'Post guardado exitosamente',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Controlador para obtener posts guardados por un usuario
+const getSavedPostsController = async (req, res, next) => {
+  try {
+    const userId = req.userId; //Obtener el ID del usuario desde el token
+
+    // Lógica para obtener los posts guardados por el usuario
+    const savedPosts = await getSavedPosts(userId);
+
+    res.send({
+      status: 'ok',
+      data: savedPosts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getPostController,
   getPostsController,
@@ -219,4 +255,6 @@ export {
   searchPostsController,
   getCommentsByPostIdController,
   createCommentController,
+  savePostController,
+  getSavedPostsController
 };

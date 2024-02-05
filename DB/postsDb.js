@@ -1,3 +1,4 @@
+// Importa la función de conexión a la base de datos y las utilidades de manejo de errores
 import getConnection from './getPool.js';
 import { generateError } from '../helpers.js';
 
@@ -261,6 +262,42 @@ const getCommentsByPostId = async (postId) => {
   }
 };
 
+// Función para guardar un post
+const savePost = async (userId, postId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Insertar un nuevo registro en la tabla de posts guardados
+    await connection.query(
+      'INSERT INTO saved_posts (userId, postId) VALUES (?, ?)',
+      [userId, postId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+// Función para obtener los posts guardados por un usuario
+const getSavedPosts = async (userId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Consultar la base de datos para obtener los posts guardados por el usuario
+    const [savedPosts] = await connection.query(
+      'SELECT * FROM saved_posts WHERE userId = ?',
+      [userId]
+    );
+
+    return savedPosts;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -272,4 +309,6 @@ export {
   searchPosts,
   createComment,
   getCommentsByPostId,
+  savePost,
+  getSavedPosts
 };

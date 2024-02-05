@@ -30,6 +30,8 @@ import {
   searchPostsController,
   getCommentsByPostIdController,
   createCommentController,
+  savePostController,
+  getSavedPostsController
 } from './controllers/posts.js';
 
 // Importa el middleware de autenticación
@@ -67,6 +69,10 @@ app.post('/post/:postId/like', authUser, userExists, likePostController); // Da 
 app.get('/post/search', searchPostsController); // Devuelve todos los posts que coinciden con la búsqueda
 app.get('/post/:postId/comments', getCommentsByPostIdController); // Devuelve todos los comentarios del post
 app.post('/post/:postId/comments', authUser, userExists, createCommentController); // Crea comentarios en un post
+
+// Rutas relacionadas con la gestión de posts guardados por los usuarios
+app.post('/post/:postId/save', authUser, userExists, savePostController); // Guarda un post para un usuario específico
+app.get('/posts/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
