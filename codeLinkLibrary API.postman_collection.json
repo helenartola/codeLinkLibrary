@@ -528,6 +528,38 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/post/:postId/comment/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"post",
+								":postId",
+								"comment",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": ""
+								},
+								{
+									"key": "commentId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
