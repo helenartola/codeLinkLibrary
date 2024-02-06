@@ -15,6 +15,28 @@ const main = async () => {
 
     console.log('Creando tablas!...');
 
+    //Creamos tabla de avatares
+    await connection.query(`
+    CREATE TABLE IF NOT EXISTS avatars (
+      avatarId INT AUTO_INCREMENT PRIMARY KEY,
+      avatarUrl VARCHAR(100) NOT NULL
+    )
+    `);
+
+    
+    // Insertamos las URLs de los avatares por defecto
+    const defaultAvatarUrls = [
+      'url1.jpg',
+      'url2.jpg',
+      // ... otras URLs ...
+    ];
+
+    for (const url of defaultAvatarUrls) {
+      await connection.query(`
+        INSERT INTO avatars (avatarUrl) VALUES ('${url}')
+      `);
+    }
+
     // Creamos la tabla de usuarios.
     await connection.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -29,6 +51,7 @@ const main = async () => {
         bio VARCHAR(200),
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
         modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
+        FOREIGN KEY (avatarId) REFERENCES avatars(avatarId) 
       )	
     `);
 
@@ -41,6 +64,7 @@ const main = async () => {
       modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP 
       )
     `);
+
 
     // Creamos la tabla de posts.
     await connection.query(`
