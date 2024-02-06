@@ -80,7 +80,7 @@ app.post('/post/:postId/save', authUser, userExists, savePostController); // Gua
 app.get('/posts/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
 app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Ruta para eliminar un post guardado por un usuario
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
-app.put('/post/:postId/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
+app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
 
 
 // Middleware para manejar rutas no encontradas
