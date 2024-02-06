@@ -75,10 +75,10 @@ app.post('/post/:postId/like', authUser, userExists, likePostController); // Da 
 app.get('/post/search', searchPostsController); // Devuelve todos los posts que coinciden con la búsqueda
 app.get('/post/:postId/comments', getCommentsByPostIdController); // Devuelve todos los comentarios del post
 app.post('/post/:postId/comments', authUser, userExists, createCommentController); // Crea comentarios en un post
-app.delete('/post/:postId/comment/:commentId', authUser, userExists, deleteCommentController); // Ruta para eliminar un comentario de un post específico
+app.delete('/post/:postId/comment/:commentId', authUser, userExists, deleteCommentController); // Eliminar un comentario de un post específico
 app.post('/post/:postId/save', authUser, userExists, savePostController); // Guarda un post para un usuario específico
 app.get('/posts/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
-app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Ruta para eliminar un post guardado por un usuario
+app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Eliminar un post guardado por un usuario
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
 app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
 
