@@ -33,7 +33,8 @@ import {
   createCommentController,
   savePostController,
   getSavedPostsController,
-  unsavePostController
+  unsavePostController,
+  deleteCommentController
 } from './controllers/posts.js';
 
 // Importa el middleware de autenticación
@@ -72,8 +73,7 @@ app.post('/post/:postId/like', authUser, userExists, likePostController); // Da 
 app.get('/post/search', searchPostsController); // Devuelve todos los posts que coinciden con la búsqueda
 app.get('/post/:postId/comments', getCommentsByPostIdController); // Devuelve todos los comentarios del post
 app.post('/post/:postId/comments', authUser, userExists, createCommentController); // Crea comentarios en un post
-
-// Rutas relacionadas con la gestión de posts guardados por los usuarios
+app.delete('/post/:postId/comment/:commentId', authUser, userExists, deleteCommentController); // Ruta para eliminar un comentario de un post específico
 app.post('/post/:postId/save', authUser, userExists, savePostController); // Guarda un post para un usuario específico
 app.get('/posts/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
 app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Ruta para eliminar un post guardado por un usuario

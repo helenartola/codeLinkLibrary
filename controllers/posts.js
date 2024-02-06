@@ -9,7 +9,10 @@ import {
   searchPosts,
   createComment,
   getCommentsByPostId,
-  savePost, getSavedPosts 
+  savePost, 
+  getSavedPosts,
+  unsavePost,
+  deleteComment
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -245,11 +248,6 @@ const getSavedPostsController = async (req, res, next) => {
   }
 };
 
-// Importa la función unsavePost
-import { unsavePost } from '../DB/postsDb.js';
-
-// ... (otras funciones)
-
 // Controlador para eliminar un post guardado por un usuario
 const unsavePostController = async (req, res, next) => {
   try {
@@ -262,6 +260,24 @@ const unsavePostController = async (req, res, next) => {
     res.send({
       status: 'ok',
       data: 'Post eliminado de favoritos con éxito',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Controlador para eliminar un comentario de un post
+const deleteCommentController = async (req, res, next) => {
+  try {
+    const { postId, commentId } = req.params;
+    const userId = req.userId;
+
+    // Lógica para eliminar el comentario
+    await deleteComment(postId, commentId, userId);
+
+    res.send({
+      status: 'ok',
+      data: 'Comentario eliminado con éxito',
     });
   } catch (error) {
     next(error);
@@ -281,4 +297,5 @@ export {
   savePostController,
   getSavedPostsController,
   unsavePostController,
+  deleteCommentController
 };

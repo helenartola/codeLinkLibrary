@@ -330,6 +330,32 @@ const unsavePost = async (userId, postId) => {
   }
 };
 
+// Función para eliminar un comentario por su ID y el ID del usuario
+const deleteComment = async (postId, commentId, userId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Verificar si el comentario pertenece al usuario actual
+    const [comment] = await connection.query(
+      'SELECT * FROM comments WHERE commentId = ? AND userId = ?',
+      [commentId, userId]
+    );
+
+    if (comment.length === 0) {
+      throw generateError('No tienes permisos para eliminar este comentario', 401);
+    }
+
+    // Eliminar el comentario de la base de datos
+    await connection.query(
+      'DELETE FROM comments WHERE commentId = ?',
+      [commentId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+};
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -344,4 +370,5 @@ export {
   savePost,
   getSavedPosts,
   unsavePost,
+  deleteComment
 };
