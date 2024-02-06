@@ -218,19 +218,46 @@
 					"response": []
 				},
 				{
-					"name": "Get All Posts",
+					"name": "Search Post",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/posts",
+							"raw": "http://localhost:8000/posts/search",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"posts"
+								"posts",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/post/:postId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"post",
+								":postId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -276,10 +303,35 @@
 					"response": []
 				},
 				{
-					"name": "Get Single Post",
+					"name": "Get All Posts",
 					"request": {
 						"method": "GET",
 						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwNzIxNDcyNCwiZXhwIjoxNzA5ODA2NzI0fQ.WZ3R5Ly5hQw7Nj0FnhfoxgkTtWcpK_HUm7JdLXAIWuA",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "http://localhost:8000/post/:postId",
 							"protocol": "http",
@@ -376,20 +428,27 @@
 					"response": []
 				},
 				{
-					"name": "Search Post",
+					"name": "Create Comments",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/posts/search",
+							"raw": "http://localhost:8000/post/:postId/comments",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"posts",
-								"search"
+								"post",
+								":postId",
+								"comments"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -423,12 +482,18 @@
 					"response": []
 				},
 				{
-					"name": "Create Comments",
+					"name": "Edit Comment",
 					"request": {
-						"method": "POST",
-						"header": [],
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwNzIxNTA2NSwiZXhwIjoxNzA5ODA3MDY1fQ._nVzqzK4Mz5_s00EMQOKIpbD1e-sqhGwVeqwcTg5nhM",
+								"type": "text"
+							}
+						],
 						"url": {
-							"raw": "http://localhost:8000/post/:postId/comments",
+							"raw": "http://localhost:8000/post/:postId/comment/:commentId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -437,11 +502,48 @@
 							"path": [
 								"post",
 								":postId",
-								"comments"
+								"comment",
+								":commentId"
 							],
 							"variable": [
 								{
 									"key": "postId",
+									"value": ""
+								},
+								{
+									"key": "commentId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/post/:postId/comment/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"post",
+								":postId",
+								"comment",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "postId",
+									"value": ""
+								},
+								{
+									"key": "commentId",
 									"value": ""
 								}
 							]
@@ -522,38 +624,6 @@
 							"variable": [
 								{
 									"key": "postId",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Comment",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8000/post/:postId/comment/:commentId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8000",
-							"path": [
-								"post",
-								":postId",
-								"comment",
-								":commentId"
-							],
-							"variable": [
-								{
-									"key": "postId",
-									"value": ""
-								},
-								{
-									"key": "commentId",
 									"value": ""
 								}
 							]

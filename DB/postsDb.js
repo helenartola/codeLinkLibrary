@@ -356,6 +356,39 @@ const deleteComment = async (postId, commentId, userId) => {
     if (connection) connection.release();
   }
 };
+
+// Función para editar un post por su ID
+const editPost = async (postId, title, url, description) => {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    // Actualizar el post en la base de datos por su ID
+    await connection.query(
+      'UPDATE posts SET title = ?, url = ?, description = ? WHERE postId = ?',
+      [title, url, description, postId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+// Función para editar un comentario por su ID
+const editComment = async (commentId, text) => {
+  let connection;
+  try {
+    connection = await getConnection();
+
+    // Actualizar el comentario en la base de datos por su ID
+    await connection.query(
+      'UPDATE comments SET text = ? WHERE commentId = ?',
+      [text, commentId]
+    );
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -370,5 +403,7 @@ export {
   savePost,
   getSavedPosts,
   unsavePost,
-  deleteComment
+  deleteComment,
+  editComment,
+  editPost
 };

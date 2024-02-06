@@ -12,7 +12,9 @@ import {
   savePost, 
   getSavedPosts,
   unsavePost,
-  deleteComment
+  deleteComment,
+  editComment,
+  editPost
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -284,6 +286,42 @@ const deleteCommentController = async (req, res, next) => {
   }
 };
 
+// Controlador para editar un post específico
+const editPostController = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const { title, url, description } = req.body;
+
+    // Lógica para editar el post con los nuevos datos proporcionados
+    await editPost(postId, title, url, description);
+
+    res.send({
+      status: 'ok',
+      data: 'Post editado exitosamente',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Controlador para editar un comentario específico
+const editCommentController = async (req, res, next) => {
+  try {
+    const { commentId } = req.params;
+    const { text } = req.body;
+
+    // Lógica para editar el comentario con los nuevos datos proporcionados
+    await editComment(commentId, text);
+
+    res.send({
+      status: 'ok',
+      data: 'Comentario editado exitosamente',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getPostController,
   getPostsController,
@@ -297,5 +335,7 @@ export {
   savePostController,
   getSavedPostsController,
   unsavePostController,
-  deleteCommentController
+  deleteCommentController,
+  editPostController,
+  editCommentController
 };
