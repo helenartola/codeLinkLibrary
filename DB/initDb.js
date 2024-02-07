@@ -15,41 +15,6 @@ const main = async () => {
 
     console.log('Creando tablas!...');
 
-    //Creamos tabla de avatares
-    await connection.query(`
-    CREATE TABLE IF NOT EXISTS avatars (
-      avatarId INT AUTO_INCREMENT PRIMARY KEY,
-      avatarUrl VARCHAR(100) NOT NULL
-    )
-    `);
-
-    
-    // Insertamos las URLs de los avatares por defecto
-    const defaultAvatarUrls = [
-      'avatars/Avatar_1.png',
-      'avatars/Avatar_2.png',
-      'avatars/Avatar_3.png',
-      'avatars/Avatar_4.png',
-      'avatars/Avatar_5.png',
-      'avatars/Avatar_6.png',
-      'avatars/Avatar_7.png',
-      'avatars/Avatar_8.png',
-      'avatars/Avatar_9.png',
-      'avatars/Avatar_10.png',
-      'avatars/Avatar_11.png',
-      'avatars/Avatar_12.png',
-      'avatars/Avatar_13.png',
-      'avatars/Avatar_14.png',
-      'avatars/Avatar_15.png'
-      // Agregar las URLs de avatares nuevos*
-    ];
-
-    for (const url of defaultAvatarUrls) {
-      await connection.query(`
-        INSERT INTO avatars (avatarUrl) VALUES ('${url}')
-      `);
-    }
-
     // Creamos la tabla de usuarios.
     await connection.query(`
       CREATE TABLE IF NOT EXISTS users (
@@ -64,7 +29,6 @@ const main = async () => {
         bio VARCHAR(200),
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
         modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
-        FOREIGN KEY (avatarId) REFERENCES avatars(avatarId) 
       )	
     `);
 
