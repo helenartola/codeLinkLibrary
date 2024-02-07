@@ -625,6 +625,26 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Trending Topic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/posts/top",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"posts",
+								"top"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

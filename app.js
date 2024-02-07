@@ -87,7 +87,7 @@ app.get('/posts/saved', authUser, userExists, getSavedPostsController); // Obtie
 app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Ruta para eliminar un post guardado por un usuario
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
 app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
-app.get('/posts/top', getTopPostsController);// Ruta para obtener los posts más votados
+app.get('/top', getTopPostsController);// Ruta para obtener los posts más votados
 
 
 // Ruta relacionada con avatares
