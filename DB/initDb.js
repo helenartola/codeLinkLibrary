@@ -26,9 +26,22 @@ const main = async () => {
     
     // Insertamos las URLs de los avatares por defecto
     const defaultAvatarUrls = [
-      'url1.jpg',
-      'url2.jpg',
-      // ... otras URLs ...
+      'avatars/Avatar_1.png',
+      'avatars/Avatar_2.png',
+      'avatars/Avatar_3.png',
+      'avatars/Avatar_4.png',
+      'avatars/Avatar_5.png',
+      'avatars/Avatar_6.png',
+      'avatars/Avatar_7.png',
+      'avatars/Avatar_8.png',
+      'avatars/Avatar_9.png',
+      'avatars/Avatar_10.png',
+      'avatars/Avatar_11.png',
+      'avatars/Avatar_12.png',
+      'avatars/Avatar_13.png',
+      'avatars/Avatar_14.png',
+      'avatars/Avatar_15.png'
+      // Agregar las URLs de avatares nuevos*
     ];
 
     for (const url of defaultAvatarUrls) {
