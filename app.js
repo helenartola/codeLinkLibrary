@@ -54,6 +54,8 @@ const app = express();
 // Middleware CORS para permitir solicitudes desde diferentes dominios
 app.use(cors());
 
+app.use(express.static("avatars"))
+
 // Configura Express para procesar datos en formato JSON
 app.use(express.json());
 
