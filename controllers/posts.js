@@ -14,7 +14,8 @@ import {
   unsavePost,
   deleteComment,
   editComment,
-  editPost
+  editPost,
+  getTopPosts
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -322,6 +323,19 @@ const editCommentController = async (req, res, next) => {
   }
 };
 
+// Controlador para obtener los posts más votados
+const getTopPostsController = async (req, res, next) => {
+  try {
+    const topPosts = await getTopPosts();
+    res.send({
+      status: 'ok',
+      data: topPosts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   getPostController,
   getPostsController,
@@ -337,5 +351,6 @@ export {
   unsavePostController,
   deleteCommentController,
   editPostController,
-  editCommentController
+  editCommentController,
+  getTopPostsController,
 };

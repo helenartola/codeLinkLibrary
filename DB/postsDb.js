@@ -389,6 +389,33 @@ const editComment = async (commentId, text) => {
   }
 };
 
+// Función para obtener los 10 posts más votados con el nombre de usuario
+const getTopPosts = async () => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    // Consultar la base de datos para obtener los 10 posts ordenados por la cantidad de likes
+    const [topLikedPosts] = await connection.query(
+      `
+      SELECT p.*, u.username, COUNT(l.likeId) AS numLikes
+      FROM posts p
+      LEFT JOIN likes l ON p.postId = l.postId
+      JOIN users u ON p.userId = u.userId
+      GROUP BY p.postId
+      ORDER BY numLikes DESC
+      LIMIT 10
+      `
+    );
+
+    // Devolver los 10 posts más votados
+    return topLikedPosts;
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -405,5 +432,6 @@ export {
   unsavePost,
   deleteComment,
   editComment,
-  editPost
+  editPost,
+  getTopPosts
 };
