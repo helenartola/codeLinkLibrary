@@ -84,10 +84,7 @@ const deletePostById = async (postId) => {
     connection = await getConnection();
 
     // Borrar el post de la base de datos por su ID
-    await connection.query(
-      'DELETE FROM posts WHERE postId = ?',
-      [postId]
-    );
+    await connection.query('DELETE FROM posts WHERE postId = ?', [postId]);
   } finally {
     if (connection) connection.release();
   }
@@ -145,10 +142,10 @@ const likePost = async (userId, postId) => {
       isLiked = true;
     } else {
       // Si el usuario ya dio like, se elimina el like (delete)
-      await connection.query(
-        'DELETE FROM likes WHERE userId=? AND postId=?',
-        [userId, postId]
-      );
+      await connection.query('DELETE FROM likes WHERE userId=? AND postId=?', [
+        userId,
+        postId,
+      ]);
       isLiked = false;
     }
 
@@ -223,7 +220,11 @@ const createComment = async (postId, userId, text) => {
 
     // Verificar si se insertó correctamente y devolver el ID del comentario
     if (result.affectedRows !== 1) {
-      throw new Error('No se pudo insertar el comentario. Afectó a ' + result.affectedRows + ' filas.');
+      throw new Error(
+        'No se pudo insertar el comentario. Afectó a ' +
+          result.affectedRows +
+          ' filas.'
+      );
     }
 
     return result.insertId;
@@ -260,7 +261,9 @@ const getCommentsByPostId = async (postId) => {
   } catch (error) {
     // Manejo de Errores
     console.error('Error al obtener comentarios:', error.message);
-    throw new Error('No se pudieron obtener los comentarios. Por favor, inténtalo de nuevo.');
+    throw new Error(
+      'No se pudieron obtener los comentarios. Por favor, inténtalo de nuevo.'
+    );
   } finally {
     if (connection) connection.release();
   }
@@ -273,7 +276,7 @@ const savePost = async (userId, postId) => {
   try {
     connection = await getConnection();
 
-   // Verificar si el usuario está intentando guardar su propio post
+    // Verificar si el usuario está intentando guardar su propio post
     const [post] = await connection.query(
       'SELECT userId FROM posts WHERE postId = ?',
       [postId]
@@ -282,7 +285,6 @@ const savePost = async (userId, postId) => {
     if (post.length === 1 && post[0].userId === userId) {
       throw generateError('No puedes guardar tu propio post', 400);
     }
-
 
     // Insertar un nuevo registro en la tabla de posts guardados
     await connection.query(
@@ -344,14 +346,16 @@ const deleteComment = async (postId, commentId, userId) => {
     );
 
     if (comment.length === 0) {
-      throw generateError('No tienes permisos para eliminar este comentario', 401);
+      throw generateError(
+        'No tienes permisos para eliminar este comentario',
+        401
+      );
     }
 
     // Eliminar el comentario de la base de datos
-    await connection.query(
-      'DELETE FROM comments WHERE commentId = ?',
-      [commentId]
-    );
+    await connection.query('DELETE FROM comments WHERE commentId = ?', [
+      commentId,
+    ]);
   } finally {
     if (connection) connection.release();
   }
@@ -380,10 +384,10 @@ const editComment = async (commentId, text) => {
     connection = await getConnection();
 
     // Actualizar el comentario en la base de datos por su ID
-    await connection.query(
-      'UPDATE comments SET text = ? WHERE commentId = ?',
-      [text, commentId]
-    );
+    await connection.query('UPDATE comments SET text = ? WHERE commentId = ?', [
+      text,
+      commentId,
+    ]);
   } finally {
     if (connection) connection.release();
   }
@@ -405,7 +409,7 @@ const getTopPosts = async () => {
       JOIN users u ON p.userId = u.userId
       GROUP BY p.postId
       ORDER BY numLikes DESC
-      LIMIT 10
+      LIMIT 5
       `
     );
 
@@ -433,5 +437,5 @@ export {
   deleteComment,
   editComment,
   editPost,
-  getTopPosts
+  getTopPosts,
 };
