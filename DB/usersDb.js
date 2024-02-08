@@ -150,7 +150,7 @@ const updateUserById = async (userId, updatedFields) => {
     await connection.query(
       'UPDATE users SET name=?, lastName=?, birthDate=?, bio=? WHERE userId=?',
       [
-        updatedFields.firstName,
+        updatedFields.name,
         updatedFields.lastName,
         updatedFields.birthDate,
         updatedFields.bio,

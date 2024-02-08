@@ -121,10 +121,10 @@ const userSettingsController = async (req, res, next) => {
     // Obtén el userId del token
     const userId = req.userId;
 
-    const { firstName, lastName, birthDate, bio } = req.body;
+    const { name, lastName, birthDate, bio } = req.body;
 
     // Verifica que al menos uno de los campos esté presente
-    if (!firstName && !lastName && !birthDate && !bio) {
+    if (!name && !lastName && !birthDate && !bio) {
       throw generateError(
         'Se requiere al menos un campo para actualizar.',
         400
@@ -133,7 +133,7 @@ const userSettingsController = async (req, res, next) => {
 
     // Actualiza la información del usuario en SQL
     const updatedUser = await updateUserById(userId, {
-      firstName,
+      name,
       lastName,
       birthDate,
       bio,
