@@ -49,24 +49,6 @@ const createUser = async (email, password, userName) => {
       }
     }
 
-    //Comprobamos que la fecha resibida es válida y la formateamos correctamente
-    /*
-    let finalDate;
-    {
-      let dateObj = new Date(birthDate);
-      if (!isNaN(dateObj) && dateObj < new Date()) {
-        let day = dateObj.getDate();
-        let month = dateObj.getMonth() + 1;
-        const year = dateObj.getFullYear();
-        finalDate = `${year}-${month < 10 ? '0' + month : month}-${
-          day < 10 ? '0' + day : day
-        }`;
-      } else {
-        throw generateError('Fecha de nacimiento invalida', 400);
-      }
-    }
-    */
-
     // Encriptamos la password
     const passwordHash = await bcrypt.hash(password, 8);
 
