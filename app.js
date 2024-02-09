@@ -69,7 +69,7 @@ app.get('/users', authUser, userExists, getAllUsersController); // Obtiene todos
 app.get('/user/:id', authUser, userExists, getUserController); // Obtiene un usuario específico
 app.post('/users/login', loginController); // Inicia sesión
 app.patch('/settings', authUser, userExists, userSettingsController); // Ajustes de usuario
-app.delete('/users', authUser, userExists, deleteUserController); // Elimina un usuario y maneja el token
+app.delete('/user/:id', authUser, userExists, deleteUserController); // Elimina un usuario y maneja el token
 
 // Rutas relacionadas con los posts
 app.post('/post', authUser, userExists, newPostController); // Crea un nuevo post
