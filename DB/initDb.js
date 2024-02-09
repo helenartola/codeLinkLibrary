@@ -26,7 +26,7 @@ const main = async () => {
         userName VARCHAR(30) UNIQUE NOT NULL, 
         password VARCHAR(100) NOT NULL,
         userAvatar VARCHAR (100),
-        bio VARCHAR(200),
+        bio VARCHAR(800),
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
         modifiedAt DATETIME ON UPDATE CURRENT_TIMESTAMP
       )	
