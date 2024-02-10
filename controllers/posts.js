@@ -237,11 +237,21 @@ const savePostController = async (req, res, next) => {
 // Controlador para obtener posts guardados por un usuario
 const getSavedPostsController = async (req, res, next) => {
   try {
-    const userId = req.userId; //Obtener el ID del usuario desde el token
+    const userId = req.userId; // Obtener el ID del usuario desde el token
 
     // Lógica para obtener los posts guardados por el usuario
     const savedPosts = await getSavedPosts(userId);
 
+    // Verifica si no se encontraron posts guardados
+    if (!savedPosts || savedPosts.length === 0) {
+      // Si no hay posts guardados, devuelve un mensaje indicando esto
+      return res.status(404).send({
+        status: 'error',
+        message: 'No se encontraron posts guardados para este usuario',
+      });
+    }
+
+    // Si se encontraron posts guardados, devuelve los posts
     res.send({
       status: 'ok',
       data: savedPosts,
@@ -250,6 +260,7 @@ const getSavedPostsController = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Controlador para eliminar un post guardado por un usuario
 const unsavePostController = async (req, res, next) => {
