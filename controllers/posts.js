@@ -2,20 +2,21 @@
 import {
   createPost,
   getAllPosts,
+  getAllPostsByUserId,
   getSinglePost,
   deletePostById,
   likePost,
-  getAllPostsByUserId,
   searchPosts,
   createComment,
   getCommentsByPostId,
-  savePost, 
+  savePost,
   getSavedPosts,
   unsavePost,
   deleteComment,
   editComment,
   editPost,
-  getTopPosts
+  getTopPosts,
+  fetchCategorias
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -347,6 +348,31 @@ const getTopPostsController = async (req, res, next) => {
   }
 };
 
+
+//Controlador obtener listado de gategorias
+const getCategoriasController = async (req, res) => {
+
+  try {
+      const categorias = await fetchCategorias();
+      
+      // Enviamos respuesta con el listado de categorías
+      res.status(200).send({
+          status: "ok",
+          message: "Listado categorías. ✅",
+          data: categorias,
+      });
+  } catch (error) {
+      // Enviamos un error 500 en caso de error interno del servidor
+      res.status(500).send({
+          status: "error",
+          message: error.message || "Error interno del servidor al obtener categorías.🔴"
+      });
+  }
+};
+
+//exportamos funciones a rutas (entries.routes.js)
+export default getCategoriasController;
+
 export {
   getPostController,
   getPostsController,
@@ -364,4 +390,5 @@ export {
   editPostController,
   editCommentController,
   getTopPostsController,
+  getCategoriasController,
 };

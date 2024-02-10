@@ -448,6 +448,30 @@ const getTopPosts = async () => {
   }
 };
 
+//Funcion para obtener lista de categorias 
+const fetchCategorias = async () => {
+  let connection;
+  
+  try {
+
+       connection = await getConnection();
+
+      // Consultamos para obtener categorías 
+      const categorias = await connection.query('SELECT id, name FROM categorias');
+      
+      // Verificamos si se encontraron categorías en la bd
+      if (categorias && categorias.length > 1) {
+          return categorias[0];
+      } else {
+          throw new Error("No se encontraron categorías.🔴");
+      }
+  } catch (error) {
+      console.error("Error al obtener categorías:", error);
+      throw new Error("Error interno del servidor al obtener categorías.🔴");
+  }
+};
+
+
 // Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
@@ -466,4 +490,5 @@ export {
   editComment,
   editPost,
   getTopPosts,
+  fetchCategorias
 };
