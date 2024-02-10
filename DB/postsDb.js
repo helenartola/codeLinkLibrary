@@ -305,7 +305,12 @@ const getSavedPosts = async (userId) => {
 
     // Consultar la base de datos para obtener los posts guardados por el usuario
     const [savedPosts] = await connection.query(
-      'SELECT * FROM saved_posts WHERE userId = ?',
+      `
+      SELECT p.*
+      FROM saved_posts sp
+      JOIN posts p ON sp.postId = p.postId
+      WHERE sp.userId = ?
+      `,
       [userId]
     );
 
@@ -316,6 +321,7 @@ const getSavedPosts = async (userId) => {
     if (connection) connection.release();
   }
 };
+
 
 
 // Función para eliminar un post guardado por su ID y el ID del usuario

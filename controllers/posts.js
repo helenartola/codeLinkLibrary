@@ -245,8 +245,8 @@ const getSavedPostsController = async (req, res, next) => {
     // Verifica si no se encontraron posts guardados
     if (!savedPosts || savedPosts.length === 0) {
       // Si no hay posts guardados, devuelve un mensaje indicando esto
-      return res.status(404).send({
-        status: 'error',
+      return res.status(200).send({
+        status: 'ok',
         message: 'No se encontraron posts guardados para este usuario',
       });
     }
