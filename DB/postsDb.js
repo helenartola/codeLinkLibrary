@@ -306,13 +306,18 @@ const getSavedPosts = async (userId) => {
     // Consultar la base de datos para obtener los posts guardados por el usuario
     const [savedPosts] = await connection.query(
       `
-      SELECT p.*, COUNT(sp.savedPostId) AS numSavedPosts
-      FROM saved_posts sp
-      JOIN posts p ON sp.postId = p.postId
-      WHERE sp.userId = ?
-      GROUP BY p.postId;
+      SELECT a.*, b.userName, b.useravatar,
+      COUNT(l.likeId) AS numLikes,
+      COUNT(l2.likeId) > 0 AS isLiked,
+      COUNT(s.savedPostId) > 0 AS isSaved
+      FROM posts a 
+      JOIN users b ON a.userId = b.userId
+      LEFT JOIN likes l ON a.postId = l.postId
+      LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
+      INNER JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
+      GROUP BY a.postId ORDER BY a.createdAt DESC;
       `,
-      [userId]
+      [userId, userId]
     );
 
     return savedPosts;
@@ -320,10 +325,6 @@ const getSavedPosts = async (userId) => {
     if (connection) connection.release();
   }
 };
-
-
-
-
 
 // Función para eliminar un post guardado por su ID y el ID del usuario
 const unsavePost = async (userId, postId) => {

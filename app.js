@@ -88,6 +88,7 @@ app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); 
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
 app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
 app.get('/top', getTopPostsController);// Ruta para obtener los posts más votados
+app.get('/')
 
 
 // Ruta relacionada con avatares
