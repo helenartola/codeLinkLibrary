@@ -90,17 +90,29 @@ const deletePostById = async (postId) => {
   }
 };
 
-// Obtener un post individual por su ID
-const getSinglePost = async (postId) => {
+const getSinglePost = async (postId, userId = 0) => {
   let connection;
 
   try {
+    // Establecer la conexión a la base de datos
     connection = await getConnection();
 
     // Consultar la base de datos para obtener un post individual por su ID
     const [post] = await connection.query(
-      'SELECT * FROM posts WHERE postId =?',
-      [postId]
+      `
+      SELECT a.*, b.userName, b.useravatar,
+      COUNT(l.likeId) AS numLikes,
+      COUNT(l2.likeId) > 0 AS isLiked,
+      COUNT(s.savedPostId) > 0 AS isSaved
+      FROM posts a 
+      JOIN users b ON a.userId = b.userId
+      LEFT JOIN likes l ON a.postId = l.postId
+      LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
+      LEFT JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
+      WHERE a.postId = ?
+      GROUP BY a.postId ORDER BY a.createdAt DESC;
+      `,
+      [userId, userId, postId]
     );
 
     // Verificar si el post existe
@@ -108,12 +120,17 @@ const getSinglePost = async (postId) => {
       throw generateError(`El post con el id ${postId} no existe`, 404);
     }
 
+    // Console.log para verificar si los posts están llegando
+    console.log("Post obtenido:", post[0]);
+
     // Devolver el post individual
     return post[0];
   } finally {
+    // Liberar la conexión a la base de datos
     if (connection) connection.release();
   }
 };
+
 
 // Función para dar like o quitar like a un post por su ID y el ID del usuario
 const likePost = async (userId, postId) => {
@@ -314,7 +331,7 @@ const getSavedPosts = async (userId) => {
       JOIN users b ON a.userId = b.userId
       LEFT JOIN likes l ON a.postId = l.postId
       LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
-      INNER JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
+      LEFT JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
       GROUP BY a.postId ORDER BY a.createdAt DESC;
       `,
       [userId, userId]
