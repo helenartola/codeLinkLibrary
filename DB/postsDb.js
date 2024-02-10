@@ -314,8 +314,6 @@ const getSavedPosts = async (userId) => {
       [userId]
     );
 
-    console.log("Posts guardados por el usuario:", savedPosts); // Agregando console.log
-
     return savedPosts;
   } finally {
     if (connection) connection.release();
