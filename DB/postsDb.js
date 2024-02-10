@@ -309,11 +309,14 @@ const getSavedPosts = async (userId) => {
       [userId]
     );
 
+    console.log("Posts guardados por el usuario:", savedPosts); // Agregando console.log
+
     return savedPosts;
   } finally {
     if (connection) connection.release();
   }
 };
+
 
 // Función para eliminar un post guardado por su ID y el ID del usuario
 const unsavePost = async (userId, postId) => {

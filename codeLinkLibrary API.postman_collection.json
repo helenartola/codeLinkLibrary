@@ -585,14 +585,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8000/posts/saved",
+							"raw": "http://localhost:8000/saved",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"posts",
 								"saved"
 							]
 						}
