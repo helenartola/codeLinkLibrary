@@ -22,10 +22,10 @@ import {
 
 // Importa las funciones controladoras de los posts desde posts.js
 import {
+  getPostController,
   getPostsController,
   newPostController,
   deletePostController,
-  getPostController,
   likePostController,
   getPostsByUserController,
   searchPostsController,
@@ -37,7 +37,8 @@ import {
   deleteCommentController,
   editPostController,
   editCommentController,
-  getTopPostsController
+  getTopPostsController,
+  getCategoriasController,
 } from './controllers/posts.js';
 
 
@@ -84,6 +85,9 @@ app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); 
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
 app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
 app.get('/top', getTopPostsController);// Ruta para obtener los posts más votados
+
+//Rutas relacionadas con categorias
+app.get('/categorias', getCategoriasController); //Obtiene todas las categorias
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {

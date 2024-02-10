@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "bc507030-b30a-43ef-bb4c-7b4710b37be9",
+		"_postman_id": "c225240c-db8e-45ff-815d-362324e7271d",
 		"name": "codeLinkLibrary API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31786528"
+		"_exporter_id": "31810234"
 	},
 	"item": [
 		{
@@ -640,6 +640,32 @@
 							"path": [
 								"posts",
 								"top"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Categorias",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/categorias",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"categorias"
 							]
 						}
 					},
