@@ -40,8 +40,6 @@ import {
   getTopPostsController
 } from './controllers/posts.js';
 
-// Importa el controlador de avatares
-import { getAllAvatarsController } from './controllers/avatars.js';
 
 // Importa el middleware de autenticación
 import { authUser } from './middlewares/auth.js';
@@ -54,8 +52,6 @@ const app = express();
 
 // Middleware CORS para permitir solicitudes desde diferentes dominios
 app.use(cors());
-
-app.use(express.static("avatars"))
 
 // Configura Express para procesar datos en formato JSON
 app.use(express.json());
@@ -88,13 +84,6 @@ app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); 
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
 app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
 app.get('/top', getTopPostsController);// Ruta para obtener los posts más votados
-
-
-
-// Ruta relacionada con avatares
-app.get('/avatars', getAllAvatarsController); // Obtiene todas las URLs de avatares
-
-
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {
