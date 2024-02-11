@@ -2,7 +2,7 @@ import getConnection from './getPool.js';
 import { generateError } from '../helpers.js';
 
 // Crear un nuevo post en la base de datos
-const createPost = async (title, url, description, userId) => {
+const createPost = async (title, url, description, userId, categoriaId) => {
   let connection;
 
   try {
@@ -11,9 +11,9 @@ const createPost = async (title, url, description, userId) => {
     // Insertar un nuevo post en la base de datos
     const [result] = await connection.query(
       `
-      INSERT INTO posts (title, url, description, userId) VALUES (?,?,?,?)
+      INSERT INTO posts (title, url, description, userId, categoriaId) VALUES (?,?,?,?,?)
       `,
-      [title, url, description, userId]
+      [title, url, description, userId , categoriaId]
     );
 
     // Devolver el ID del post recién creado
@@ -471,6 +471,33 @@ const fetchCategorias = async () => {
   }
 };
 
+// Obtener todos los posts de una categoría
+const getPostsByCategory = async (categoriaId) => {
+  let connection;
+
+  try {
+    connection = await getConnection();
+
+    const [posts] = await connection.query(
+      `
+      SELECT posts.*, users.userName, users.userAvatar
+      FROM posts
+      LEFT JOIN users ON posts.userId = users.userId
+      WHERE posts.categoriaId = ?
+      `,
+      [categoriaId]
+    );
+
+    return posts;
+  } catch (error) {
+    console.error('Error al obtener posts por categoría:', error);
+    throw new Error('Error al obtener posts por categoría.');
+  } finally {
+    if (connection) connection.release();
+  }
+};
+
+
 export {
   createPost,
   getAllPosts,
@@ -488,5 +515,6 @@ export {
   editComment,
   editPost,
   getTopPosts,
-  fetchCategorias
+  fetchCategorias,
+  getPostsByCategory
 };
