@@ -91,12 +91,20 @@
 
   - **POST** Registro de usuario
   - **POST** Login de usuario
+  - **PACTH** Modificacion de usuario
   - **DELETE** Eliminación de usuario
 
 - **PUBLICACIONES**
 
-  - **POST** Crea un post de un usuario
-  - **DELETE** Elimina un post de un usuario
+  - **POST** Creación de post de un usuario
+  - **PUT** Modificación de post
+  - **DELETE** Eliminación de post de un usuario
+
+- **COMENTARIOS**
+  
+  - **POST** Creación de comentario en post 
+  - **PUT** Modificación de comentario en post
+  - **DELETE** Eliminación de comentario en post
 
 - **LIKES**
 
@@ -104,11 +112,19 @@
 
 - **CONSULTAS**
 
-  - **GET** Devuelve todos los usuarios
   - **GET** Devuelve un usuario
+  - **GET** Devuelve todos los usuarios
+
+
+  - **GET** Devuelve los post con orden descendente de likes
+  - **GET** Devuelve todos los post que obtiene la busqueda
   - **GET** Devuelve todos los post de todos los usuarios
   - **GET** Devuelve todos los post de un usuario
   - **GET** Devuelve un post de un usuario
+
+  - **GET** Devuelve todos los post guardados de un usuario
+  - **GET** Devuelve todos los comentarios de un post
+  - **GET** Devuelve todas las categorias
 
 ## Uso
 
