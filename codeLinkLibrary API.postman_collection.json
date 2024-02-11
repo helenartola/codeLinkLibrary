@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "c225240c-db8e-45ff-815d-362324e7271d",
+		"_postman_id": "bc507030-b30a-43ef-bb4c-7b4710b37be9",
 		"name": "codeLinkLibrary API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "31810234"
+		"_exporter_id": "31786528"
 	},
 	"item": [
 		{
@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n     \"email\": \"toni@mail.com\",\n     \"password\": \"123456\",\n     \"userName\": \"T-Oni\",\n     \"name\": \"Toni\"\n }",
+							"raw": "{\n     \"email\": \"usu@mail.com\",\n     \"password\": \"123456\",\n     \"userName\": \"Usuario\",\n     \"name\": \"Usu\"\n }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -96,7 +96,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"toni@mail.com\",\n    \"password\": \"123456\"\n\n}",
+							"raw": "{\n    \"email\": \"usu@mail.com\",\n    \"password\": \"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -139,14 +139,21 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8000/users",
+							"raw": "http://localhost:8000/user/:id",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8000",
 							"path": [
-								"users"
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
 							]
 						}
 					},
@@ -646,17 +653,10 @@
 					"response": []
 				},
 				{
-					"name": "Get Categorias",
+					"name": "Get Categories",
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "",
-								"type": "text",
-								"disabled": true
-							}
-						],
+						"header": [],
 						"url": {
 							"raw": "http://localhost:8000/categorias",
 							"protocol": "http",
@@ -666,6 +666,33 @@
 							"port": "8000",
 							"path": [
 								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/categorias/:categoriaId/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"categorias",
+								":categoriaId",
+								"posts"
+							],
+							"variable": [
+								{
+									"key": "categoriaId",
+									"value": ""
+								}
 							]
 						}
 					},
