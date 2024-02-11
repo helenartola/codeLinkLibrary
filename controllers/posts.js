@@ -34,18 +34,15 @@ const isValidHttpUrl = (string) => {
 // Controlador para obtener un post específico
 const getPostController = async (req, res, next) => {
   try {
+    const { userId } = req.headers;
     const { postId } = req.params;
-    const post = await getSinglePost(postId);
-
-    // Incluye el número total de "likes" en la respuesta
-    const postWithLikes = {
-      ...post,
-      numLikes: post.numLikes || 0,
-    };
-
+    const post = await getSinglePost(postId, userId ? userId : 0);
+      // Console.log para mostrar el userId
+      console.log("UserId:", userId);
+  
     res.send({
       status: 'ok',
-      data: postWithLikes,
+      data: post,
     });
   } catch (error) {
     next(error);
@@ -57,6 +54,7 @@ const getPostsController = async (req, res, next) => {
   try {
     const { userid } = req.headers;
     const posts = await getAllPosts(userid ? userid : 0);
+    
     res.send({
       status: 'ok',
       data: posts,
@@ -221,7 +219,7 @@ const createCommentController = async (req, res, next) => {
 const savePostController = async (req, res, next) => {
   try {
     const { postId } = req.params;
-    const userId = req.userId; // Obtener el ID del usuario desde el token
+    const userId = req.userId; 
 
     // Lógica para guardar el post
     await savePost(userId, postId);
@@ -238,7 +236,7 @@ const savePostController = async (req, res, next) => {
 // Controlador para obtener posts guardados por un usuario
 const getSavedPostsController = async (req, res, next) => {
   try {
-    const userId = req.userId; // Obtener el ID del usuario desde el token
+    const userId = req.userId; 
 
     // Lógica para obtener los posts guardados por el usuario
     const savedPosts = await getSavedPosts(userId);

@@ -94,6 +94,9 @@ const getSinglePost = async (postId, userId = 0) => {
   let connection;
 
   try {
+      // Console.log para mostrar el postId y userId
+      console.log("PostId:", postId);
+      console.log("UserId:", userId);
     // Establecer la conexión a la base de datos
     connection = await getConnection();
 
@@ -331,7 +334,7 @@ const getSavedPosts = async (userId) => {
       JOIN users b ON a.userId = b.userId
       LEFT JOIN likes l ON a.postId = l.postId
       LEFT JOIN likes l2 ON a.postId = l2.postId AND l2.userId = ?
-      LEFT JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
+      INNER JOIN saved_posts s ON a.postId = s.postId AND s.userId = ?
       GROUP BY a.postId ORDER BY a.createdAt DESC;
       `,
       [userId, userId]
