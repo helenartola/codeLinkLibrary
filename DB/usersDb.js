@@ -122,28 +122,56 @@ const getUserLoginDataByEmail = async (email) => {
 // Actualiza datos del usuario
 
 
-const updateUserById = async (userId, updatedFields) => {
+const updateUserById = async (userId, updatedFields) => {//necesario implementar lógica mas compleja para password
   let connection;
   try {
     connection = await getConnection();
-    // Encriptar la nueva contraseña
-    let hashedPassword = updatedFields.password;
-    if (updatedFields.password) {
-      hashedPassword = await bcrypt.hash(updatedFields.password, 10);
+
+    let updateValues = [];
+    let sql = 'UPDATE users SET';
+    let isFirstField = true;
+
+    // IF que verifica y agrega cada campo
+    if (updatedFields.name) {
+      sql += ` name=?`;
+      updateValues.push(updatedFields.name);
+      isFirstField = false;
     }
-    await connection.query(
-      'UPDATE users SET name=?, lastName=?, birthDate=?, bio=?, password=? WHERE userId=?',
-      [
-        updatedFields.name,
-        updatedFields.lastName,
-        updatedFields.birthDate,
-        updatedFields.bio,
-        hashedPassword, // Se pasa la contraseña encriptada
-        userId,
-      ]
-    );
-    
-    // Obtén y devuelve el usuario actualizado
+
+    if (updatedFields.lastName) {
+      sql += isFirstField ? ` lastName=?` : `, lastName=?`;
+      updateValues.push(updatedFields.lastName);
+      isFirstField = false;
+    }
+
+    if (updatedFields.birthDate) {
+      sql += isFirstField ? ` birthDate=?` : `, birthDate=?`;
+      updateValues.push(updatedFields.birthDate);
+      isFirstField = false;
+    }
+
+    if (updatedFields.bio) {
+      sql += isFirstField ? ` bio=?` : `, bio=?`;
+      updateValues.push(updatedFields.bio);
+      isFirstField = false;
+    }
+
+    let hashedPassword = null;
+    if (updatedFields.password) {
+      hashedPassword = await bcrypt.hash(updatedFields.password, 10);//encripta la contraseña
+      sql += isFirstField ? ` password=?` : `, password=?`;
+      updateValues.push(hashedPassword);
+    }
+
+    // agregaa el userId al final
+    updateValues.push(userId);
+
+    // consulta completa
+    sql += ' WHERE userId=?';
+
+    await connection.query(sql, updateValues);
+
+    //devuelve el usuario actualizado
     const [updatedUser] = await connection.query(
       'SELECT * FROM users WHERE userId = ?',
       [userId]
@@ -158,7 +186,6 @@ const updateUserById = async (userId, updatedFields) => {
     if (connection) connection.release();
   }
 };
-
 
 //Elimina el usuario de la base de datos por su ID
 const deleteUserById = async (userId) => {
