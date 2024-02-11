@@ -36,7 +36,6 @@ const isValidHttpUrl = (string) => {
 const getPostController = async (req, res, next) => {
   try {
     const { userid } = req.headers;
-    console.log(JSON.stringify(req.headers));
     const { postId } = req.params;
     const post = await getSinglePost(postId, userid ? userid : 0);
       
