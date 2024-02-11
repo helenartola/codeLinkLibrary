@@ -70,7 +70,7 @@
 
 24. Desarrollamos contenido en back-end (`DB`, `Controllers` adaptación de novedades en el módulo `app.js`) por necesidades del resultado final de la App. 
 
-25. Repetimos los puntos `19, 20, 21 y 22` realizamos pruebas de funcinamiento.
+25. Repetimos los puntos `19, 20, 21 y 22` realizamos pruebas de funcionamiento.
 
 
 
