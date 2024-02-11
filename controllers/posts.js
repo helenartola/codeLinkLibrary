@@ -35,12 +35,11 @@ const isValidHttpUrl = (string) => {
 // Controlador para obtener un post específico
 const getPostController = async (req, res, next) => {
   try {
-    const { userId } = req.headers;
+    const { userid } = req.headers;
+    console.log(JSON.stringify(req.headers));
     const { postId } = req.params;
-    const post = await getSinglePost(postId, userId ? userId : 0);
-      // Console.log para mostrar el userId
-      console.log("UserId:", userId);
-  
+    const post = await getSinglePost(postId, userid ? userid : 0);
+      
     res.send({
       status: 'ok',
       data: post,
