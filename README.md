@@ -2,15 +2,22 @@
 
 ## DESCRIPCIÓN DEL PROYECTO:
 
-    El equipo D conformado por Ana, tony y Helena hemos desarrollado una plataforma para compartir y guardar enlaces de desarrollo web.
+    El equipo D conformado por Ana, tony , Helena y Cristina hemos desarrollado una plataforma para compartir y guardar enlaces de desarrollo web.
 
 ## CARACTERÍSTICAS:
 
-    - Registro, login y eliminación de usuario.
-    - Creación y eliminación de post.
-    - Posibilidad de dar like a post.
+    - Registro, login, ajustes y eliminación de usuario.
+    - Creación, modificación y eliminación de post.
+    - Creación, modificación y eliminacion de comentarios.
+    - Posibilidad de ver todos los post del usuario.
+    - Posibilidad de guardar posts de otros usuarios (disponible dejar de guardar).
+    - Posibilidad de dar like a post (disponible quitar like). 
     - visibilización de post general.
-    - Visibilización de post concreto.
+    - Visibilización de post concreto.  
+    - Visibilización de posts guardados.
+    - Visibilización de post por numero de likes.
+    - Visibilización de resultados de post/s por busqueda.
+    - Visibilización de categorias disponibles.
 
 ## CONFIGURACIÓN INICIAL DEL PROYECTO:
 
@@ -27,7 +34,7 @@
 
 7. Creamos modulo README.md con `touch README.md` (Descripción app).
 
-8. Creamos estructura básica de carpetas(`DB`, `controllers`, `middlewares`, `services`).
+8. Creamos estructura básica de carpetas(`DB`, `controllers`, `middlewares`).
 
 9. Creamos módulo principal `app.js`.
 
@@ -47,19 +54,25 @@
 
 17. Creamos middleware de JWT en middlewares/`Auth.js`.
 
-18. Creamos `Helpers.js`.
+18. Creamos controllers para programar el funcionamiento de la app de notas.
 
-19. Creamos en services `users.services.js`
+19. Creamos rutas/Endpoints (para los controllers).
 
-20. Creamos controlers para programar el funcionamiento de la app de notas.
+20. Configuramos endpoints en Postman (se hacen de uno en uno, incluiremos el archivo para los compañeros).
 
-21. Creamos rutas/Endpoints (para los controllers).
+21. Incluimos archivo del postman en el repositorio (`codelinklibrary_Api.postan_collection.son`).
 
-22. Configuramos endpoints en Postman (se hacen de uno en uno, incluiremos el archivo para los compañeros).
+22. Realizamos pruebas de funcionamiento (una vez tenemos el mensaje de confirmación `Servidor corriendo en el puerto 4000`).
 
-23. Incluimos archivo del postman en el repositorio (`codelinklibrary_Api.postan_collection.son`).
+- Comenzamos con el desarrollo front-end de la App.
 
-24. Realizamos pruebas de funcionamiento (una vez tenemos el mensaje de confirmación `Servidor corriendo en el puerto 4000`).
+23. Añadimos mejoras en el codigo a partir de la base de backend.
+
+24. Desarrollamos contenido en back-end (`DB`, `Controllers` adaptación de novedades en el módulo `app.js`) por necesidades del resultado final de la App. 
+
+25. Repetimos los puntos `19, 20, 21 y 22` realizamos pruebas de funcinamiento.
+
+
 
 ## DEPENDENCIAS:
 
