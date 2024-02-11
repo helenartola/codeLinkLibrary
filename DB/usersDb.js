@@ -120,21 +120,29 @@ const getUserLoginDataByEmail = async (email) => {
 };
 
 // Actualiza datos del usuario
+
+
 const updateUserById = async (userId, updatedFields) => {
   let connection;
   try {
     connection = await getConnection();
+    // Encriptar la nueva contraseña
+    let hashedPassword = updatedFields.password;
+    if (updatedFields.password) {
+      hashedPassword = await bcrypt.hash(updatedFields.password, 10);
+    }
     await connection.query(
-      'UPDATE users SET name=?, lastName=?, birthDate=?, bio=? WHERE userId=?',
+      'UPDATE users SET name=?, lastName=?, birthDate=?, bio=?, password=? WHERE userId=?',
       [
         updatedFields.name,
         updatedFields.lastName,
         updatedFields.birthDate,
         updatedFields.bio,
+        hashedPassword, // Se pasa la contraseña encriptada
         userId,
       ]
     );
-
+    
     // Obtén y devuelve el usuario actualizado
     const [updatedUser] = await connection.query(
       'SELECT * FROM users WHERE userId = ?',
@@ -142,7 +150,7 @@ const updateUserById = async (userId, updatedFields) => {
     );
 
     if (updatedUser.length === 0) {
-      throw generateError("No se pudo encontrar el usuario actualizado., 500");
+      throw generateError("No se pudo encontrar el usuario actualizado.", 500);
     }
 
     return updatedUser[0];
@@ -150,6 +158,7 @@ const updateUserById = async (userId, updatedFields) => {
     if (connection) connection.release();
   }
 };
+
 
 //Elimina el usuario de la base de datos por su ID
 const deleteUserById = async (userId) => {
