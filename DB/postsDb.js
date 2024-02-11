@@ -1,8 +1,7 @@
-// Importa la función de conexión a la base de datos y las utilidades de manejo de errores
 import getConnection from './getPool.js';
 import { generateError } from '../helpers.js';
 
-// Función para crear un nuevo post en la base de datos
+// Crear un nuevo post en la base de datos
 const createPost = async (title, url, description, userId) => {
   let connection;
 
@@ -31,7 +30,7 @@ const getAllPosts = async (userId = 0) => {
   try {
     connection = await getConnection();
 
-    // Consultar la base de datos para obtener todos los posts con información adicional
+    // Consulta a la base de datos para obtener todos los posts con información adicional
     const [posts] = await connection.query(
       `
       SELECT a.*, b.userName, b.useravatar,
@@ -62,7 +61,7 @@ const getAllPostsByUserId = async (userId) => {
   try {
     connection = await getConnection();
 
-    // Consultar la base de datos para obtener los posts de un usuario específico
+    // Consulta a la base de datos para obtener los posts de un usuario específico
     const [posts] = await connection.query(
       `
       SELECT a.* FROM posts a, users b where a.userId = b.userId and a.userId = ?
@@ -90,6 +89,7 @@ const deletePostById = async (postId) => {
   }
 };
 
+//Obtener un post individual por su ID
 const getSinglePost = async (postId, userId = 0) => {
   let connection;
 
@@ -123,9 +123,6 @@ const getSinglePost = async (postId, userId = 0) => {
       throw generateError(`El post con el id ${postId} no existe`, 404);
     }
 
-    // Console.log para verificar si los posts están llegando
-    console.log("Post obtenido:", post[0]);
-
     // Devolver el post individual
     return post[0];
   } finally {
@@ -135,7 +132,7 @@ const getSinglePost = async (postId, userId = 0) => {
 };
 
 
-// Función para dar like o quitar like a un post por su ID y el ID del usuario
+// Dar like o quitar like a un post por su ID y el ID del usuario
 const likePost = async (userId, postId) => {
   let connection;
 
@@ -153,7 +150,7 @@ const likePost = async (userId, postId) => {
       [userId, postId]
     );
 
-    // Si el usuario no ha dado like, se agrega el like (insert)
+    // Si el usuario no ha dado like, se agrega el like.
     if (likes.length === 0) {
       await connection.query(
         'INSERT INTO likes (userId, postId) VALUES (?, ?)',
@@ -161,7 +158,7 @@ const likePost = async (userId, postId) => {
       );
       isLiked = true;
     } else {
-      // Si el usuario ya dio like, se elimina el like (delete)
+      // Si el usuario ya dio like, se elimina el like.
       await connection.query('DELETE FROM likes WHERE userId=? AND postId=?', [
         userId,
         postId,
@@ -192,7 +189,7 @@ const likePost = async (userId, postId) => {
   }
 };
 
-// Función para buscar posts que contengan un término específico en el título, descripción o URL
+// Obtener un posts que contenga un término específico en el título, descripción o URL.
 const searchPosts = async (filter) => {
   let connection;
 
@@ -217,7 +214,7 @@ const searchPosts = async (filter) => {
   }
 };
 
-// Función para crear un nuevo comentario en la base de datos
+// Crear un nuevo comentario en la base de datos
 const createComment = async (postId, userId, text) => {
   let connection;
 
@@ -257,7 +254,7 @@ const createComment = async (postId, userId, text) => {
   }
 };
 
-// Función para obtener todos los comentarios asociados a una publicación
+// Obtener todos los comentarios asociados a una publicación
 const getCommentsByPostId = async (postId) => {
   let connection;
 
@@ -289,7 +286,7 @@ const getCommentsByPostId = async (postId) => {
   }
 };
 
-// Función para guardar un post
+// Guardar un post
 const savePost = async (userId, postId) => {
   let connection;
 
@@ -316,7 +313,7 @@ const savePost = async (userId, postId) => {
   }
 };
 
-// Función para obtener los posts guardados por un usuario
+// Obtener los posts guardados por un usuario
 const getSavedPosts = async (userId) => {
   let connection;
 
@@ -346,7 +343,7 @@ const getSavedPosts = async (userId) => {
   }
 };
 
-// Función para eliminar un post guardado por su ID y el ID del usuario
+// Eliminar un post guardado por su ID y el ID del usuario
 const unsavePost = async (userId, postId) => {
   let connection;
 
@@ -363,7 +360,7 @@ const unsavePost = async (userId, postId) => {
   }
 };
 
-// Función para eliminar un comentario por su ID y el ID del usuario
+// Eliminar un comentario por su ID y el ID del usuario
 const deleteComment = async (postId, commentId, userId) => {
   let connection;
 
@@ -392,7 +389,7 @@ const deleteComment = async (postId, commentId, userId) => {
   }
 };
 
-// Función para editar un post por su ID
+// Editar un post por su ID
 const editPost = async (postId, title, url, description) => {
   let connection;
   try {
@@ -408,7 +405,7 @@ const editPost = async (postId, title, url, description) => {
   }
 };
 
-// Función para editar un comentario por su ID
+// Editar un comentario por su ID
 const editComment = async (commentId, text) => {
   let connection;
   try {
@@ -424,14 +421,14 @@ const editComment = async (commentId, text) => {
   }
 };
 
-// Función para obtener los 10 posts más votados con el nombre de usuario
+// Obtener los 5 posts más votados con el nombre de usuario
 const getTopPosts = async () => {
   let connection;
 
   try {
     connection = await getConnection();
 
-    // Consultar la base de datos para obtener los 10 posts ordenados por la cantidad de likes
+    // Consultar la base de datos para obtener los 5 posts ordenados por la cantidad de likes
     const [topLikedPosts] = await connection.query(
       `
       SELECT p.*, u.username, COUNT(l.likeId) AS numLikes
@@ -444,14 +441,14 @@ const getTopPosts = async () => {
       `
     );
 
-    // Devolver los 10 posts más votados
+    // Devolver los 5 posts más votados
     return topLikedPosts;
   } finally {
     if (connection) connection.release();
   }
 };
 
-//Funcion para obtener lista de categorias 
+// Obtenerbtener lista de categorias 
 const fetchCategorias = async () => {
   let connection;
   
@@ -474,8 +471,6 @@ const fetchCategorias = async () => {
   }
 };
 
-
-// Exportar todas las funciones para su uso en otros archivos
 export {
   createPost,
   getAllPosts,

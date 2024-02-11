@@ -1,4 +1,4 @@
-// Función para generar un objeto de error con un mensaje y código de estado HTTP específicos
+//Generaun objeto de error con un mensaje y código de estado HTTP específicos
 const generateError = (message, status) => {
   // Crear un nuevo objeto de error con el mensaje proporcionado
   const error = new Error(message);

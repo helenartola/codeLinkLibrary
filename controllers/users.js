@@ -4,8 +4,8 @@ import {
   getAllUsers,
   getUserById,
   getUserLoginDataByEmail,
-  updateUserById,//import de ajustes de usuario
-  deleteUserById,
+  updateUserById,
+  deleteUserById
 } from '../DB/usersDb.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -168,12 +168,11 @@ const deleteUserController = async (req, res, next) => {
   }
 };
 
-// Exportamos las funciones que importaremos en el server.js
 export {
   newUserController,
   getAllUsersController,
   getUserController,
   loginController,
-  userSettingsController,//controlador de ajustes
-  deleteUserController,
+  userSettingsController,
+  deleteUserController
 };

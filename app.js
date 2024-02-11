@@ -62,29 +62,30 @@ app.use(morgan('dev'));
 
 // Rutas relacionadas con los usuarios
 app.post('/user/register', newUserController); // Crea un nuevo usuario
-app.get('/users', authUser, userExists, getAllUsersController); // Obtiene todos los usuarios autenticados
-app.get('/user/:id', authUser, userExists, getUserController); // Obtiene un usuario específico
 app.post('/users/login', loginController); // Inicia sesión
 app.patch('/settings', authUser, userExists, userSettingsController); // Ajustes de usuario
 app.delete('/user/:id', authUser, userExists, deleteUserController); // Elimina un usuario y maneja el token
+app.get('/user/:id', authUser, userExists, getUserController); // Obtiene un usuario específico
+app.get('/users', authUser, userExists, getAllUsersController); // Obtiene todos los usuarios autenticados
+
 
 // Rutas relacionadas con los posts
-app.post('/post', authUser, userExists, newPostController); // Crea un nuevo post
-app.get('/posts', getPostsController); // Devuelve todos los posts de todos los usuarios
-app.get('/posts/user/:id', getPostsByUserController); // Obtiene todos los posts de un usuario
-app.get('/posts/:postId', getPostController); // Obtiene un post específico de un usuario
-app.delete('/post/:postId', authUser, userExists, deletePostController); // Elimina un post y maneja el token
-app.post('/post/:postId/like', authUser, userExists, likePostController); // Da "like" a un post y maneja el token
-app.get('/post/search', searchPostsController); // Devuelve todos los posts que coinciden con la búsqueda
-app.get('/post/:postId/comments', getCommentsByPostIdController); // Devuelve todos los comentarios del post
-app.post('/post/:postId/comments', authUser, userExists, createCommentController); // Crea comentarios en un post
-app.delete('/post/:postId/comment/:commentId', authUser, userExists, deleteCommentController); // Ruta para eliminar un comentario de un post específico
-app.post('/post/:postId/save', authUser, userExists, savePostController); // Guarda un post para un usuario específico
-app.get('/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
-app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); // Ruta para eliminar un post guardado por un usuario
+app.post('/post', authUser, userExists, newPostController); //Crea un nuevo post
+app.get('/posts/:postId', getPostController); //Obtiene un post específico de un usuario
+app.get('/posts/user/:id', getPostsByUserController); //Obtiene todos los posts de un usuario
+app.get('/post/search', searchPostsController); //Devuelve todos los posts que coinciden con la búsqueda
+app.get('/posts', getPostsController); //Devuelve todos los posts de todos los usuarios
 app.put('/post/:postId', authUser, userExists, editPostController); //Editar un post
-app.put('/post/comment/:commentId', authUser, userExists, editCommentController); // Editar un comentario
-app.get('/top', getTopPostsController);// Ruta para obtener los posts más votados
+app.delete('/post/:postId', authUser, userExists, deletePostController); //Elimina un post 
+app.post('/post/:postId/comments', authUser, userExists, createCommentController); //Crea comentarios en un post
+app.get('/post/:postId/comments', getCommentsByPostIdController); //Devuelve todos los comentarios del post
+app.put('/post/comment/:commentId', authUser, userExists, editCommentController); //Editar un comentario
+app.delete('/post/:postId/comment/:commentId', authUser, userExists, deleteCommentController); //Elimina un comentario
+app.post('/post/:postId/like', authUser, userExists, likePostController); //Da "like" a un post 
+app.get('/top', getTopPostsController);//Obtiene post más votados.
+app.post('/post/:postId/save', authUser, userExists, savePostController); //Guarda un post 
+app.get('/saved', authUser, userExists, getSavedPostsController); // Obtiene todos los posts guardados por un usuario
+app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); //Eliminar un guardado en un post.
 
 //Rutas relacionadas con categorias
 app.get('/categorias', getCategoriasController); //Obtiene todas las categorias

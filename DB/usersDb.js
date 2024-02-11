@@ -1,13 +1,8 @@
-//Archivo donde vamos a crear funciones que se encarguen de hacer todo el trabajo relacionado con la base de datos.
-//Esto debería hacer todo el trabajo de conectar con la base de datos
-
-//Conectamos con la base de datos
 import { generateError } from '../helpers.js';
 import getConnection from './getPool.js';
 import bcrypt from 'bcrypt';
 
-//Creamos función async que recibe un email y una password.
-//Crea un usuario en la base de datos y devuelve su id
+//Crear un usuario
 const createUser = async (email, password, userName) => {
   let connection;
 
@@ -16,14 +11,13 @@ const createUser = async (email, password, userName) => {
 
     //Comprobamos que no exista otro usuario con ese email
     {
-      //Los corchetes de user los ponemos para desestructurar y que coja solo el primer valor del array que no va a devolver el await
       const [user] = await connection.query(
         `
         SELECT userId FROM users WHERE email = ?
         `,
         [email]
       );
-      //con el if le vamos a decir que si el usuario es mayor de 1 nos devuelva que ya existe un usuario con el mismo email.
+
       if (user.length > 0) {
         throw generateError(
           'Ya existe un usuario en la base de datos con este email.',
@@ -40,7 +34,7 @@ const createUser = async (email, password, userName) => {
         `,
         [userName]
       );
-      //con el if le vamos a decir que si el usuario es mayor de 1 nos devuelva que ya existe un usuario con el mismo userName.
+      
       if (user.length > 0) {
         throw generateError(
           'Ya existe un usuario en la base de datos con este nombre de usuario.',
@@ -58,15 +52,14 @@ const createUser = async (email, password, userName) => {
       [email, passwordHash, userName]
     );
     //Devolvemos el id
-    //insertId nos da el Id del elemento que acabamos de introducir
     return newUser.insertId;
 
-    //si la connexión se ha creado, finalmente la cierra
   } finally {
     if (connection) connection.release();
   }
 };
-//Obtenemos los datos públicos de todos los usuarios de la base de datos y omitimos información sensible como id, password, email, etc
+
+//Obtenemos los datos públicos de todos los usuarios
 const getAllUsers = async () => {
   let connection;
 
@@ -82,6 +75,7 @@ const getAllUsers = async () => {
     if (connection) connection.release();
   }
 };
+
 //Obtenemos los datos públicos del usuario solicitado
 const getUserById = async (id) => {
   let connection;
@@ -125,6 +119,7 @@ const getUserLoginDataByEmail = async (email) => {
   }
 };
 
+// Actualiza datos del usuario
 const updateUserById = async (userId, updatedFields) => {
   let connection;
   try {
@@ -156,11 +151,15 @@ const updateUserById = async (userId, updatedFields) => {
   }
 };
 
+//Elimina el usuario de la base de datos por su ID
 const deleteUserById = async (userId) => {
   let connection;
   try {
     connection = await getConnection();
-    await connection.query(`DELETE FROM users WHERE userId =?`, [userId]);
+    await connection.query(
+      `DELETE FROM users WHERE userId =?`, 
+      [userId]);
+      
   } finally {
     if (connection) connection.release();
   }

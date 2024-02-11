@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { generateError } from "../helpers.js";
 
+// Autenticar al usuario mediante token de autorización.
 const authUser = async (req, res, next) => {
     try {
         const { authorization } = req.headers;
@@ -29,7 +30,7 @@ const authUser = async (req, res, next) => {
         // Saltamos al controlador
         next();
     } catch (error) {
-        // Puedes imprimir el mensaje de error original en la consola.
+       
         console.error('Error en authUser middleware:', error.message);
         next(error);
     }

@@ -1,4 +1,3 @@
-// Importamos la función getConnection desde el archivo getPool.js.
 import getConnection from './getPool.js';
 
 // Definimos una función principal asíncrona.
@@ -42,7 +41,6 @@ const main = async () => {
       )
     `);
 
-
     // Creamos la tabla de posts.
     await connection.query(`
       CREATE TABLE IF NOT EXISTS posts (
@@ -84,51 +82,52 @@ const main = async () => {
       )
     `);
 
-    console.log('Tablas creadas!...');
+      console.log('Tablas creadas!...');
 
     // Creamos la tabla de posts guardados.
-await connection.query(`
-CREATE TABLE IF NOT EXISTS saved_posts (
-  savedPostId INT AUTO_INCREMENT PRIMARY KEY,
-  userId INT,
-  postId INT,
-  createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
-  FOREIGN KEY (postId) REFERENCES posts(postId) ON DELETE CASCADE,
-  UNIQUE (userId, postId)
-)
-`);
+    await connection.query(`
+    CREATE TABLE IF NOT EXISTS saved_posts (
+      savedPostId INT AUTO_INCREMENT PRIMARY KEY,
+      userId INT,
+      postId INT,
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (userId) REFERENCES users(userId) ON DELETE CASCADE,
+      FOREIGN KEY (postId) REFERENCES posts(postId) ON DELETE CASCADE,
+      UNIQUE (userId, postId)
+    )
+    `);
 
-console.log('Tabla de posts guardados creada!...');
+      console.log('Tabla de posts guardados creada!...');
 
     // Insertamos categorias en su tabla
     await connection.query(`
-        INSERT INTO categorias(name)
-        VALUES 
-           ("HTML"),
-           ("CSS"),
-           ("JAVASCRIPT"),
-           ("SQL"),
-           ("NODE.JS"),
-           ("REACT.JS"),
-           ("JAVA"),
-           ("PYTHON"),
-           ("C"),
-           ("C++"),
-           ("C#"),
-           ("PHP"),
-           ("RUBY"),
-           ("VISUAL BASIC.NET"),
-           ("TYPESCRIPT"),
-           ("POSTSCRIPT"),
-           ("SWIFT"),
-           ("RUST"),
-           ("GIT"),
-           ("Otros");
-           ;
-            `);
+      INSERT INTO categorias(name)
+      VALUES 
+          ("HTML"),
+          ("CSS"),
+          ("JAVASCRIPT"),
+          ("SQL"),
+          ("NODE.JS"),
+          ("REACT.JS"),
+          ("JAVA"),
+          ("PYTHON"),
+          ("C"),
+          ("C++"),
+          ("C#"),
+          ("PHP"),
+          ("RUBY"),
+          ("VISUAL BASIC.NET"),
+          ("TYPESCRIPT"),
+          ("POSTSCRIPT"),
+          ("SWIFT"),
+          ("RUST"),
+          ("GIT"),
+          ("Otros");
+          ;
+      `);
 
-    console.log("Categorias creadas!");
+      console.log("Categorias creadas!");
+
     // Aviso de Final de proceso de creación de la BD.
     console.log("¡Base de Datos completa!✅");
 
