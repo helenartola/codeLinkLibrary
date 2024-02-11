@@ -39,6 +39,7 @@ import {
   editCommentController,
   getTopPostsController,
   getCategoriasController,
+  getPostsByCategoriasController,
 } from './controllers/posts.js';
 
 
@@ -88,7 +89,8 @@ app.get('/saved', authUser, userExists, getSavedPostsController); // Obtiene tod
 app.delete('/post/:postId/unsave', authUser, userExists, unsavePostController); //Eliminar un guardado en un post.
 
 //Rutas relacionadas con categorias
-app.get('/categorias', getCategoriasController); //Obtiene todas las categorias
+app.get('/categorias', getCategoriasController); //Obtiene todas las categorias.
+app.get('/categorias/:categoriaId/posts', getPostsByCategoriasController);//Obtiene todos los posts de una categoria.
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res) => {

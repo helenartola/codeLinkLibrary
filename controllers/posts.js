@@ -16,7 +16,8 @@ import {
   editComment,
   editPost,
   getTopPosts,
-  fetchCategorias
+  fetchCategorias,
+  getPostsByCategory
 } from '../DB/postsDb.js';
 
 import { generateError } from '../helpers.js';
@@ -67,7 +68,7 @@ const getPostsController = async (req, res, next) => {
 // Controlador para crear un nuevo post
 const newPostController = async (req, res, next) => {
   try {
-    const { title, url, description } = req.body;
+    const { title, url, description, categoryId } = req.body;
 
     if (!req.userId) {
       throw generateError('Usuario no autenticado', 401);
@@ -81,10 +82,11 @@ const newPostController = async (req, res, next) => {
       throw generateError('URL no válida', 400);
     }
 
-    const postId = await createPost(title, url, description, req.userId);
+    const postId = await createPost(title, url, description, req.userId, categoryId);
     res.send({
       status: 'ok',
       data: postId,
+      categoryId,
     });
   } catch (error) {
     next(error);
@@ -368,6 +370,34 @@ const getCategoriasController = async (req, res) => {
   }
 };
 
+//Controlador obtener todos lost post de una gategoria
+const getPostsByCategoriasController = async (req, res) => {
+
+  try {
+         // Obtener la ID de la categoría desde los parámetros de la solicitud
+    const { categoriaId } = req.params;
+
+    // Llamar a la función que obtiene los posts de la categoría
+    const PostsCategorias = await getPostsByCategory(categoriaId);
+    console.log('PostsCategorias:', PostsCategorias)
+      // Enviamos respuesta con el listado de posts de una categoría
+      res.status(200).send({
+          status: "ok",
+          message: "Posts de la categoría. ✅",
+          data: PostsCategorias,
+          categoriaId,
+
+      });
+  } catch (error) {
+      // Enviamos un error 500 en caso de error interno del servidor
+      res.status(500).send({
+          status: "error",
+          message: error.message || "Error interno del servidor al obtener lost posts de esta categoría.🔴"
+      });
+  }
+};
+
+
 export {
   getPostController,
   getPostsController,
@@ -386,4 +416,5 @@ export {
   editCommentController,
   getTopPostsController,
   getCategoriasController,
+  getPostsByCategoriasController
 };
