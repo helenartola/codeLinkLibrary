@@ -377,7 +377,7 @@ const getPostsByCategoriasController = async (req, res) => {
 
     // Llamar a la función que obtiene los posts de la categoría
     const PostsCategorias = await getPostsByCategory(categoriaId);
-    console.log('PostsCategorias:', PostsCategorias)
+    
       // Enviamos respuesta con el listado de posts de una categoría
       res.status(200).send({
           status: "ok",
